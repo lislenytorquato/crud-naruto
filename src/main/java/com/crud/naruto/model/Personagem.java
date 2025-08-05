@@ -6,22 +6,36 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
-
-@Getter
-@Setter
 @ToString
 @AllArgsConstructor
 public class Personagem {
 
+    @ToString.Exclude
+    private Long id;
+
+    @Getter
+    @Setter
     private String nome;
+
+    @Getter
+    @Setter
     private int idade;
+
+    @Getter
+    @Setter
     private String aldeia;
+
+    @Getter
+    @Setter
     private List<String> jutsus;
+
+    @Getter
+    @Setter
     private int chakra;
 
-    public List<String> adicionarJutsu(String novoJutsu){
-         jutsus.add(novoJutsu);
-         return jutsus;
+    public boolean adicionarJutsu(String novoJutsu){
+        return jutsus.add(novoJutsu);
+
     }
     public int aumentarChakra(int quantidade){
         return chakra += quantidade;

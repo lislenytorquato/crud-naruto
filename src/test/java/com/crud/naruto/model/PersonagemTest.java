@@ -1,29 +1,61 @@
 package com.crud.naruto.model;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import com.crud.naruto.helper.AssertionsHelper;
+import org.junit.jupiter.api.*;
 
-import java.util.List;
+import static com.crud.naruto.helper.TestHelper.*;
 
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PersonagemTest {
 
     private static Personagem personagem;
 
     @BeforeAll
     static void setup(){
-        personagem = new Personagem("Naruto",15,"Japão", List.of("Taijutsu"),100);
+
+        personagem = new Personagem(ID_PERSONAGEM_NARUTO,NOME_PERSONAGEM_NARUTO, IDADE_PERSONAGEM_NARUTO, ALDEIA_PERSONAGEM_NARUTO, JUTSUS_PERSONAGEM_NARUTO, CHAKRA_PERSONAGEM_NARUTO);
     }
 
-    @DisplayName("Deve testar anotação lombok All Args Constructor")
+    @DisplayName("1- Deve testar anotação lombok All Args Constructor")
     @Test
+    @Order(1)
     void deveTestarAllArgsConstructor(){
-        Assertions.assertEquals("Naruto",personagem.getNome());
-        Assertions.assertEquals(15,personagem.getIdade());
-        Assertions.assertEquals("Japão",personagem.getAldeia());
-        Assertions.assertEquals(List.of("Taijutsu"),personagem.getJutsus());
-        Assertions.assertEquals(100,personagem.getChakra());
+        JUTSUS_PERSONAGEM_NARUTO.add(NINJUTSU);
+        AssertionsHelper.assertEqualsParaTestarConstrutor(personagem,NOME_PERSONAGEM_NARUTO, IDADE_PERSONAGEM_NARUTO, ALDEIA_PERSONAGEM_NARUTO, JUTSUS_PERSONAGEM_NARUTO, CHAKRA_PERSONAGEM_NARUTO);
+
+    }
+
+    @DisplayName("2- Deve testar anotação lombok setter")
+    @Test
+    @Order(3)
+    void deveTestarSetter(){
+        Personagem sakura = criarPersonagemSakura(personagem);
+        AssertionsHelper.assertEqualsParaSetter(personagem,sakura);
+    }
+
+
+    @DisplayName("3- Deve testar anotação lombok toString")
+    @Test
+    @Order(2)
+    void deveTestarToString(){
+        AssertionsHelper.assertTrueParaToString(personagem,NOME_PERSONAGEM_NARUTO, IDADE_PERSONAGEM_NARUTO, ALDEIA_PERSONAGEM_NARUTO, JUTSUS_PERSONAGEM_NARUTO, CHAKRA_PERSONAGEM_NARUTO);
+    }
+
+    @DisplayName("4- Deve testar adicionar jutsu")
+    @Test
+    @Order(4)
+    void deveTestarAdicionarJutsu(){
+        boolean jutsuAdicionado = personagem.adicionarJutsu(JUTSU_NOVO);
+
+        AssertionsHelper.assertTrueParaAdicionarJutsu(jutsuAdicionado,personagem);
+    }
+
+    @DisplayName("5- Deve testar aumentar chacra")
+    @Test
+    @Order(5)
+    void deveTestarAumentarChakra(){
+        int chakraAumentado = personagem.aumentarChakra(QUANTIDADE);
+
+        AssertionsHelper.assertEqualsParaAumentarChakra(personagem,chakraAumentado);
     }
 }

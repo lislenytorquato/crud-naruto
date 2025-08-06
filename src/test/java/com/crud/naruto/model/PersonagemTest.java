@@ -9,11 +9,13 @@ import static com.crud.naruto.helper.TestHelper.*;
 public class PersonagemTest {
 
     private static Personagem personagem;
+    private static Personagem naruto;
 
     @BeforeAll
     static void setup(){
 
         personagem = new Personagem(ID_PERSONAGEM_NARUTO,NOME_PERSONAGEM_NARUTO, IDADE_PERSONAGEM_NARUTO, ALDEIA_PERSONAGEM_NARUTO, JUTSUS_PERSONAGEM_NARUTO, CHAKRA_PERSONAGEM_NARUTO);
+        naruto = criarPersonagemNaruto();
     }
 
     @DisplayName("1- Deve testar anotação lombok All Args Constructor")
@@ -21,7 +23,8 @@ public class PersonagemTest {
     @Order(1)
     void deveTestarAllArgsConstructor(){
         JUTSUS_PERSONAGEM_NARUTO.add(NINJUTSU);
-        AssertionsHelper.assertEqualsParaTestarConstrutor(personagem,NOME_PERSONAGEM_NARUTO, IDADE_PERSONAGEM_NARUTO, ALDEIA_PERSONAGEM_NARUTO, JUTSUS_PERSONAGEM_NARUTO, CHAKRA_PERSONAGEM_NARUTO);
+
+        AssertionsHelper.assertEqualsParaTestarConstrutor(personagem,naruto);
 
     }
 
@@ -29,7 +32,8 @@ public class PersonagemTest {
     @Test
     @Order(3)
     void deveTestarSetter(){
-        Personagem sakura = criarPersonagemSakura(personagem);
+        Personagem sakura = criarPersonagemSakura();
+        setPersonagem(personagem,sakura);
         AssertionsHelper.assertEqualsParaSetter(personagem,sakura);
     }
 
@@ -38,7 +42,7 @@ public class PersonagemTest {
     @Test
     @Order(2)
     void deveTestarToString(){
-        AssertionsHelper.assertTrueParaToString(personagem,NOME_PERSONAGEM_NARUTO, IDADE_PERSONAGEM_NARUTO, ALDEIA_PERSONAGEM_NARUTO, JUTSUS_PERSONAGEM_NARUTO, CHAKRA_PERSONAGEM_NARUTO);
+        AssertionsHelper.assertTrueParaToString(personagem,naruto);
     }
 
     @DisplayName("4- Deve testar adicionar jutsu")

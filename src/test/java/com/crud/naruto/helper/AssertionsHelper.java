@@ -9,28 +9,29 @@ import static com.crud.naruto.helper.TestHelper.JUTSU_NOVO;
 
 public class AssertionsHelper {
 
-    public static void assertEqualsParaTestarConstrutor(Personagem personagem, String nome, int idade, String aldeia, List<String> jutsus, int chackra){
-        Assertions.assertEquals(nome,personagem.getNome());
-        Assertions.assertEquals(idade,personagem.getIdade());
-        Assertions.assertEquals(aldeia,personagem.getAldeia());
-        Assertions.assertEquals(jutsus,personagem.getJutsus());
-        Assertions.assertEquals(chackra,personagem.getChakra());
+    public static void assertEqualsParaTestarConstrutor(Personagem personagem, Personagem personagemAtributos){
+
+        Assertions.assertEquals(personagemAtributos.getNome(),personagem.getNome());
+        Assertions.assertEquals(personagemAtributos.getIdade(),personagem.getIdade());
+        Assertions.assertEquals(personagemAtributos.getAldeia(),personagem.getAldeia());
+        Assertions.assertEquals(personagemAtributos.getJutsus(),personagem.getJutsus());
+        Assertions.assertEquals(personagemAtributos.getChakra(),personagem.getChakra());
     }
 
-    public static void assertEqualsParaSetter(Personagem personagem, Personagem personagemNovo){
-        Assertions.assertEquals(personagemNovo.getNome(),personagem.getNome());
-        Assertions.assertEquals(personagemNovo.getIdade(),personagem.getIdade());
-        Assertions.assertEquals(personagemNovo.getAldeia(),personagem.getAldeia());
-        Assertions.assertEquals(personagemNovo.getJutsus(),personagem.getJutsus());
-        Assertions.assertEquals(personagemNovo.getChakra(),personagem.getChakra());
+    public static void assertEqualsParaSetter(Personagem personagem, Personagem personagemAtributos){
+        Assertions.assertEquals(personagemAtributos.getNome(),personagem.getNome());
+        Assertions.assertEquals(personagemAtributos.getIdade(),personagem.getIdade());
+        Assertions.assertEquals(personagemAtributos.getAldeia(),personagem.getAldeia());
+        Assertions.assertEquals(personagemAtributos.getJutsus(),personagem.getJutsus());
+        Assertions.assertEquals(personagemAtributos.getChakra(),personagem.getChakra());
     }
 
-    public static void assertTrueParaToString(Personagem personagem, String nome, int idade, String aldeia, List<String> jutsus, int chackra){
-        Assertions.assertTrue(personagem.toString().contains(nome));
-        Assertions.assertTrue(personagem.toString().contains(Integer.toString(idade)));
-        Assertions.assertTrue(personagem.toString().contains(aldeia));
-        Assertions.assertTrue(personagem.toString().contains(jutsus.toString()));
-        Assertions.assertTrue(personagem.toString().contains(Integer.toString(chackra)));
+    public static void assertTrueParaToString(Personagem personagem, Personagem personagemAtributos){
+        Assertions.assertTrue(personagem.toString().contains(personagemAtributos.getNome()));
+        Assertions.assertTrue(personagem.toString().contains(Integer.toString(personagemAtributos.getIdade())));
+        Assertions.assertTrue(personagem.toString().contains(personagemAtributos.getAldeia()));
+        Assertions.assertTrue(personagem.toString().contains(personagemAtributos.getJutsus().get(0)));
+        Assertions.assertTrue(personagem.toString().contains(Integer.toString(personagemAtributos.getChakra())));
     }
 
     public static void assertTrueParaAdicionarJutsu(boolean jutsuAdicionado, Personagem personagem){

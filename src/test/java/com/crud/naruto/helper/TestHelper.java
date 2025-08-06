@@ -44,33 +44,26 @@ public class TestHelper {
     public static final String DESVIAR_FRASE_NINJUTSU = "Desviei com Ninjutsu!";
     public static final String DESVIAR_FRASE_TAIJUTSU = "Desviei com Taijutsu!";
 
-    public static Personagem criarPersonagemSakura(Personagem personagem){
-        personagem.setNome(NOME_PERSONAGEM_SAKURA);
-        personagem.setIdade(IDADE_PERSONAGEM_SAKURA);
-        personagem.setAldeia(ALDEIA_PERSONAGEM_SAKURA);
-        personagem.setJutsus(JUTSUS_PERSONAGEM_SAKURA);
-        personagem.setChakra(CHAKRA_PERSONAGEM_SAKURA);
-
-        return personagem;
+    public static Personagem criarPersonagemSakura(){
+        return new Personagem(ID_PERSONAGEM_SAKURA,NOME_PERSONAGEM_SAKURA,IDADE_PERSONAGEM_SAKURA,ALDEIA_PERSONAGEM_SAKURA,JUTSUS_PERSONAGEM_SAKURA,CHAKRA_PERSONAGEM_SAKURA);
     }
 
-    public static Personagem criarPersonagemNaruto(Personagem personagem){
-        personagem.setNome(NOME_PERSONAGEM_NARUTO);
-        personagem.setIdade(IDADE_PERSONAGEM_NARUTO);
-        personagem.setAldeia(ALDEIA_PERSONAGEM_NARUTO);
-        personagem.setJutsus(JUTSUS_PERSONAGEM_NARUTO);
-        personagem.setChakra(CHAKRA_PERSONAGEM_NARUTO);
+    public static Personagem criarPersonagemNaruto(){
 
-        return personagem;
+        return new Personagem(ID_PERSONAGEM_NARUTO,NOME_PERSONAGEM_NARUTO,IDADE_PERSONAGEM_NARUTO,ALDEIA_PERSONAGEM_NARUTO,JUTSUS_PERSONAGEM_NARUTO,CHAKRA_PERSONAGEM_NARUTO);
     }
 
-    public static Personagem criarPersonagemRockieLee(Personagem personagem){
-        personagem.setNome(NOME_PERSONAGEM_ROCKIE_LEE);
-        personagem.setIdade(IDADE_PERSONAGEM_ROCKIE_LEE);
-        personagem.setAldeia(ALDEIA_PERSONAGEM_ROCKIE_LEE);
-        personagem.setJutsus(JUTSUS_PERSONAGEM_ROCKIE_LEE);
-        personagem.setChakra(CHAKRA_PERSONAGEM_ROCKIE_LEE);
+    public static Personagem criarPersonagemRockieLee(){
 
-        return personagem;
+        return new Personagem(ID_PERSONAGEM_ROCKIE_LEE,NOME_PERSONAGEM_ROCKIE_LEE,IDADE_PERSONAGEM_ROCKIE_LEE,ALDEIA_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,CHAKRA_PERSONAGEM_ROCKIE_LEE);
+    }
+
+    public static void setPersonagem(Personagem personagem,Personagem personagemNovo){
+        personagem.setNome(personagemNovo.getNome());
+        personagem.setIdade(personagemNovo.getIdade());
+        personagem.setAldeia(personagemNovo.getAldeia());
+        personagem.setJutsus(personagemNovo.getJutsus());
+        personagem.setChakra(personagemNovo.getChakra());
+
     }
 }

@@ -1,16 +1,18 @@
 package com.crud.naruto.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.List;
-@ToString
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @AllArgsConstructor
 public class Personagem {
 
-    @ToString.Exclude
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Getter
@@ -42,4 +44,9 @@ public class Personagem {
     }
 
 
+    @Override
+    public String toString() {
+
+        return "Personagem -> "+ "nome: " + nome + " idade: " + idade + " aldeia: " + aldeia + " jutsus: "  + jutsus.stream().sorted().toList() + " chakra: " + chakra;
+    }
 }

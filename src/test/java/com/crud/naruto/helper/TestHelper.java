@@ -1,5 +1,7 @@
 package com.crud.naruto.helper;
 
+import com.crud.naruto.dto.PersonagemRequestDto;
+import com.crud.naruto.dto.PersonagemResponseDto;
 import com.crud.naruto.model.Personagem;
 
 import java.util.ArrayList;
@@ -65,5 +67,13 @@ public class TestHelper {
         personagem.setJutsus(personagemNovo.getJutsus());
         personagem.setChakra(personagemNovo.getChakra());
 
+    }
+    public static PersonagemRequestDto criarRequestDto(){
+        JUTSUS_PERSONAGEM_ROCKIE_LEE.add(TAIJUTSU);
+        return new PersonagemRequestDto(NOME_PERSONAGEM_ROCKIE_LEE,IDADE_PERSONAGEM_ROCKIE_LEE,ALDEIA_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,CHAKRA_PERSONAGEM_ROCKIE_LEE);
+    }
+    public static PersonagemResponseDto criarResponseDto(){
+        JUTSUS_PERSONAGEM_ROCKIE_LEE.add(TAIJUTSU);
+        return new PersonagemResponseDto(NOME_PERSONAGEM_ROCKIE_LEE,IDADE_PERSONAGEM_ROCKIE_LEE,ALDEIA_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,CHAKRA_PERSONAGEM_ROCKIE_LEE);
     }
 }

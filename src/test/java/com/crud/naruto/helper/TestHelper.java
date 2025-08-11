@@ -68,11 +68,11 @@ public class TestHelper {
         personagem.setChakra(personagemNovo.getChakra());
 
     }
-    public static PersonagemRequestDto criarRequestDto(){
+    public static PersonagemRequestDto criarRockieLeeRequestDto(){
         JUTSUS_PERSONAGEM_ROCKIE_LEE.add(TAIJUTSU);
         return new PersonagemRequestDto(NOME_PERSONAGEM_ROCKIE_LEE,IDADE_PERSONAGEM_ROCKIE_LEE,ALDEIA_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,CHAKRA_PERSONAGEM_ROCKIE_LEE);
     }
-    public static PersonagemResponseDto criarResponseDto(){
+    public static PersonagemResponseDto criarRockieLeeResponseDto(){
         JUTSUS_PERSONAGEM_ROCKIE_LEE.add(TAIJUTSU);
         return new PersonagemResponseDto(NOME_PERSONAGEM_ROCKIE_LEE,IDADE_PERSONAGEM_ROCKIE_LEE,ALDEIA_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,CHAKRA_PERSONAGEM_ROCKIE_LEE);
     }

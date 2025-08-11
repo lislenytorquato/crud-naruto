@@ -1,5 +1,6 @@
 package com.crud.naruto.helper;
 
+import com.crud.naruto.dto.PersonagemResponseDto;
 import com.crud.naruto.model.Personagem;
 import org.junit.jupiter.api.Assertions;
 
@@ -43,4 +44,11 @@ public class AssertionsHelper {
         Assertions.assertEquals(personagem.getChakra(),chakraAumentado);
     }
 
+    public  static void assertEqualsParaResponseEPersonagem(PersonagemResponseDto response, PersonagemResponseDto responseDto){
+        Assertions.assertEquals(response.getNome(),responseDto.getNome());
+        Assertions.assertEquals(response.getIdade(),responseDto.getIdade());
+        Assertions.assertEquals(response.getAldeia(),responseDto.getAldeia());
+        Assertions.assertEquals(response.getJutsus(),responseDto.getJutsus());
+        Assertions.assertEquals(response.getChakra(),responseDto.getChakra());
+    }
 }

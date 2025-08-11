@@ -2,6 +2,7 @@ package com.crud.naruto.helper;
 
 import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
+import com.crud.naruto.model.NinjaDeTaijutsu;
 import com.crud.naruto.model.Personagem;
 
 import java.util.ArrayList;
@@ -58,6 +59,11 @@ public class TestHelper {
     public static Personagem criarPersonagemRockieLee(){
 
         return new Personagem(ID_PERSONAGEM_ROCKIE_LEE,NOME_PERSONAGEM_ROCKIE_LEE,IDADE_PERSONAGEM_ROCKIE_LEE,ALDEIA_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,CHAKRA_PERSONAGEM_ROCKIE_LEE);
+    }
+
+    public static NinjaDeTaijutsu criarPersonagemRockieLeeNinjaDeTaijutsu(){
+
+        return new NinjaDeTaijutsu(ID_PERSONAGEM_ROCKIE_LEE,NOME_PERSONAGEM_ROCKIE_LEE,IDADE_PERSONAGEM_ROCKIE_LEE,ALDEIA_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,CHAKRA_PERSONAGEM_ROCKIE_LEE);
     }
 
     public static void setPersonagem(Personagem personagem,Personagem personagemNovo){

@@ -43,7 +43,6 @@ public class PersonagemServiceTest {
     static void setUp(){
 
         requestDto = TestHelper.criarRockieLeeRequestDto();
-       // responseDto= TestHelper.criarRockieLeeResponseDto();
     }
 
     @DisplayName("1- Deve criar um personagem")

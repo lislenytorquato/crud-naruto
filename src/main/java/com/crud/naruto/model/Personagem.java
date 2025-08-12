@@ -3,16 +3,19 @@ package com.crud.naruto.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@NoArgsConstructor
 @AllArgsConstructor
 public class Personagem {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long id;
 
     @Getter
@@ -47,6 +50,6 @@ public class Personagem {
     @Override
     public String toString() {
 
-        return "Personagem -> "+ "nome: " + nome + " idade: " + idade + " aldeia: " + aldeia + " jutsus: "  + jutsus.stream().sorted().toList() + " chakra: " + chakra;
+        return "{"+ "nome: " + nome + " idade: " + idade + " aldeia: " + aldeia + " jutsus: "  + jutsus.stream().sorted().toList() + " chakra: " + chakra + "}";
     }
 }

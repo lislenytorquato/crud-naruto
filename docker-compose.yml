@@ -7,7 +7,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - naruto_dados:C:\Users\lisleny.silva\Documents\volumes:/var/lib/postgresql/data
+      - C:/Users/lisleny.silva/Documents/volumes:/var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4

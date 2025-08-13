@@ -1,9 +1,9 @@
 package com.crud.naruto.exception;
 
-public class PersonagemNaoEncontradoException extends RuntimeException{
+public class JutsuNaoEncontradoException extends RuntimeException{
 
     @Override
     public String getMessage() {
-        return "Personagem não encontrado";
+        return "Jutsu não encontrado";
     }
 }

@@ -2,6 +2,7 @@ package com.crud.naruto.service;
 
 import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
+import com.crud.naruto.exception.PersonagemNaoEncontradoException;
 import com.crud.naruto.helper.AssertionsHelper;
 import com.crud.naruto.helper.TestHelper;
 import com.crud.naruto.interfaces.Ninja;
@@ -171,6 +172,22 @@ public class PersonagemServiceTest {
         Assertions.assertEquals(frase,desvioResponse);
     }
 
+    @DisplayName("9- Deve lancar excecao para personagem nao encontrado ")
+    @Test
+    @Order(9)
+    void deveLancarExcecaoPersonagemNaoEncontrado(){
+
+        Assertions.assertThrows(PersonagemNaoEncontradoException.class,()->personagemService.usarJutsu(4L));
+    }
+
+    @DisplayName("10- Deve lancar excecao para Jutsu nao encontrado ")
+    @Test
+    @Order(10)
+    void deveLancarExcecaoJutsuNaoEncontrado(){
+
+        personagemRockieLee.getJutsus().remove(TAIJUTSU);
+        Assertions.assertThrows(PersonagemNaoEncontradoException.class,()->personagemService.usarJutsu(ID_PERSONAGEM_ROCKIE_LEE));
+    }
 
     private void mockEncontrarPorId(Long id, Personagem personagem){
         Mockito.when(personagemRepository.findById(id)).thenReturn(Optional.of(personagem));

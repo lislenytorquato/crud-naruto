@@ -9,11 +9,12 @@ import com.crud.naruto.mapper.PersonagemMapper;
 import com.crud.naruto.model.NinjaDeTaijutsu;
 import com.crud.naruto.model.Personagem;
 import com.crud.naruto.repository.PersonagemRepository;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -21,15 +22,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static com.crud.naruto.helper.TestHelper.*;
 import static org.mockito.ArgumentMatchers.any;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(MockitoExtension.class)
 public class PersonagemServiceTest {
 
     private static PersonagemRequestDto requestDto;
-    private static PersonagemResponseDto responseDto;
+    private static Personagem personagemRockieLee;
+    private static Long idRockieLee;
+    private static Personagem personagemNaruto;
+    private static Long idNaruto;
+    private static Personagem personagemSakura;
+    private static Long idSakura;
 
     @InjectMocks
     PersonagemService personagemService;
@@ -42,11 +50,19 @@ public class PersonagemServiceTest {
     @BeforeAll
     static void setUp(){
 
+         personagemRockieLee = criarPersonagemRockieLee();
+         idRockieLee = ID_PERSONAGEM_ROCKIE_LEE;
+         personagemNaruto = criarPersonagemNaruto();
+         idNaruto = ID_PERSONAGEM_NARUTO;
+         personagemSakura = criarPersonagemSakura();
+         idSakura = ID_PERSONAGEM_SAKURA;
+
         requestDto = TestHelper.criarRockieLeeRequestDto();
     }
 
     @DisplayName("1- Deve criar um personagem")
     @Test
+    @Order(5)
     void deveCriarUmPersonagem(){
         Personagem personagem = mapper.requestDtoParaEntiy(requestDto);
 
@@ -62,41 +78,42 @@ public class PersonagemServiceTest {
 
     @DisplayName("2- Deve editar um personagem")
     @Test
+    @Order(6)
     void deveEditarUmPersonagem(){
-        Optional<Personagem> personagem = Optional.of(criarPersonagemRockieLee());
 
-        mockEncontrarPorId();
+        mockEncontrarPorId(idRockieLee,personagemRockieLee);
 
-        mapper.atualizarPersonagem(personagem.get(),requestDto);
+        mapper.atualizarPersonagem(personagemRockieLee,requestDto);
 
-        mockSalvarPersonagem(personagem.get());
+        mockSalvarPersonagem(personagemRockieLee);
 
-        PersonagemResponseDto responseDto = mapper.entityParaResponseDto(personagem.get());
+        PersonagemResponseDto responseDto = mapper.entityParaResponseDto(personagemRockieLee);
 
-        PersonagemResponseDto response = personagemService.editarPersonagem(ID_PERSONAGEM_ROCKIE_LEE,requestDto);
+        PersonagemResponseDto response = personagemService.editarPersonagem(idRockieLee,requestDto);
 
         AssertionsHelper.assertEqualsParaCompararComResponse(response,responseDto);
     }
 
     @DisplayName("3- Deve deletar um personagem")
     @Test
+    @Order(8)
     void deveDeletarUmPersonagem(){
-        Optional<Personagem> personagem = Optional.of(criarPersonagemRockieLee());
 
-        mockEncontrarPorId();
+        mockEncontrarPorId(idRockieLee,personagemRockieLee);
 
         Mockito.doNothing().when(personagemRepository).delete(any(Personagem.class));
 
-        personagemService.deletarPersonagem(ID_PERSONAGEM_ROCKIE_LEE);
+        personagemService.deletarPersonagem(idRockieLee);
 
-        Mockito.verify(personagemRepository,Mockito.atMost(1)).delete(personagem.get());
+        Mockito.verify(personagemRepository,Mockito.atMost(1)).delete(personagemRockieLee);
 
     }
 
     @DisplayName("4- Deve listar todos os personagens")
     @Test
+    @Order(4)
     void deveListarPersonagens(){
-        List<Personagem> listaDePersonagens = List.of(criarPersonagemRockieLee());
+        List<Personagem> listaDePersonagens = List.of(personagemRockieLee);
 
         Mockito.when(personagemRepository.findAll()).thenReturn(listaDePersonagens);
 
@@ -110,52 +127,69 @@ public class PersonagemServiceTest {
 
     @DisplayName("5- Deve adicionar o jutsu de um personagem ")
     @Test
+    @Order(7)
     void deveAdicionarJutsuDePersonagem(){
-        Optional<Personagem> personagem = Optional.of(criarPersonagemRockieLee());
-        mockEncontrarPorId();
-        mockSalvarPersonagem(personagem.get());
-        Boolean jutsuAdicionado = personagemService.adiconarJutsu(ID_PERSONAGEM_ROCKIE_LEE, JUTSU_NOVO);
+
+        mockEncontrarPorId(idRockieLee,personagemRockieLee);
+        mockSalvarPersonagem(personagemRockieLee);
+        Boolean jutsuAdicionado = personagemService.adiconarJutsu(idRockieLee, JUTSU_NOVO);
 
         Assertions.assertTrue(jutsuAdicionado);
     }
 
     @DisplayName("6- Deve aumentar o chakra de um personagem ")
     @Test
+    @Order(3)
     void deveAumentarChakraDePersonagem(){
-        Optional<Personagem> personagem = Optional.of(criarPersonagemRockieLee());
-        mockEncontrarPorId();
-        mockSalvarPersonagem(personagem.get());
-        int chakraAumentado = personagemService.aumentarChakra(ID_PERSONAGEM_ROCKIE_LEE, QUANTIDADE);
+
+        mockEncontrarPorId(idRockieLee,personagemRockieLee);
+        mockSalvarPersonagem(personagemRockieLee);
+        int chakraAumentado = personagemService.aumentarChakra(idRockieLee, QUANTIDADE);
 
         Assertions.assertNotEquals(CHAKRA_PERSONAGEM_ROCKIE_LEE,chakraAumentado);
     }
 
     @DisplayName("7- Deve usar jutsu de um personagem ")
-    @Test
-    void deveUsarJutsuDePersonagem(){
-        Mockito.when(personagemRepository.findById(TestHelper.ID_PERSONAGEM_ROCKIE_LEE)).thenReturn(Optional.of(criarPersonagemRockieLeeNinjaDeTaijutsu()));
-        NinjaDeTaijutsu ninjaDeTaijutsu = new NinjaDeTaijutsu(ID_PERSONAGEM_ROCKIE_LEE,NOME_PERSONAGEM_ROCKIE_LEE,IDADE_PERSONAGEM_ROCKIE_LEE,ALDEIA_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,CHAKRA_PERSONAGEM_ROCKIE_LEE);
-        String jutsuUsado = ninjaDeTaijutsu.usarJutsu();
-        String jutsuUsadoResponse = personagemService.usarJutsu(ID_PERSONAGEM_ROCKIE_LEE);
+    @Order(1)
+    @ParameterizedTest
+    @MethodSource("geraPersonagensUsandoJutsu")
+    void deveUsarJutsuDePersonagem(Long id,Personagem personagem,String frase){
+        mockEncontrarPorId(id,personagem);
+        String jutsuUsadoResponse = personagemService.usarJutsu(id);
 
-        Assertions.assertEquals(jutsuUsado,jutsuUsadoResponse);
+        Assertions.assertEquals(frase,jutsuUsadoResponse);
     }
 
     @DisplayName("8- Deve desviar de um personagem ")
-    @Test
-    void deveDesviarDeUmPersonagem(){
-        Mockito.when(personagemRepository.findById(TestHelper.ID_PERSONAGEM_ROCKIE_LEE)).thenReturn(Optional.of(criarPersonagemRockieLeeNinjaDeTaijutsu()));
-        NinjaDeTaijutsu ninjaDeTaijutsu = new NinjaDeTaijutsu(ID_PERSONAGEM_ROCKIE_LEE,NOME_PERSONAGEM_ROCKIE_LEE,IDADE_PERSONAGEM_ROCKIE_LEE,ALDEIA_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,CHAKRA_PERSONAGEM_ROCKIE_LEE);
-        String desvioUsado = ninjaDeTaijutsu.desviar();
-        String desvioUsadoResponse = personagemService.desviar(ID_PERSONAGEM_ROCKIE_LEE);
+    @Order(2)
+    @ParameterizedTest
+    @MethodSource("geraPersonagensDesviando")
+    void deveDesviarDePersonagem(Long id,Personagem personagem,String frase){
+        mockEncontrarPorId(id,personagem);
+        String desvioResponse = personagemService.desviar(id);
 
-        Assertions.assertEquals(desvioUsado,desvioUsadoResponse);
+        Assertions.assertEquals(frase,desvioResponse);
     }
 
-    private void mockEncontrarPorId(){
-        Mockito.when(personagemRepository.findById(TestHelper.ID_PERSONAGEM_ROCKIE_LEE)).thenReturn(Optional.of(criarPersonagemRockieLee()));
+
+    private void mockEncontrarPorId(Long id, Personagem personagem){
+        Mockito.when(personagemRepository.findById(id)).thenReturn(Optional.of(personagem));
     }
     private void mockSalvarPersonagem(Personagem personagem){
         Mockito.when(personagemRepository.save(any(Personagem.class))).thenReturn(personagem);
+    }
+    private static Stream<Arguments> geraPersonagensUsandoJutsu(){
+        return Stream.of(
+                Arguments.of(idNaruto,personagemNaruto, USAR_JUTSU_FRASE_NINJUTSU),
+                Arguments.of(idSakura,personagemSakura,USAR_JUTSU_FRASE_GENJUTSU),
+                Arguments.of(idRockieLee,personagemRockieLee,USAR_JUTSU_FRASE_TAIJUTSU)
+        );
+    }
+    private static Stream<Arguments> geraPersonagensDesviando(){
+        return Stream.of(
+                Arguments.of(idNaruto,personagemNaruto, DESVIAR_FRASE_NINJUTSU),
+                Arguments.of(idSakura,personagemSakura,DESVIAR_FRASE_GENJUTSU),
+                Arguments.of(idRockieLee,personagemRockieLee,DESVIAR_FRASE_TAIJUTSU)
+        );
     }
 }

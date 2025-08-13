@@ -2,6 +2,7 @@ package com.crud.naruto.service;
 
 import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
+import com.crud.naruto.exception.JutsuNaoEncontradoException;
 import com.crud.naruto.exception.PersonagemNaoEncontradoException;
 import com.crud.naruto.interfaces.Ninja;
 import com.crud.naruto.mapper.PersonagemMapper;
@@ -62,16 +63,18 @@ public class PersonagemService {
 
         if (personagem.getJutsus().contains("Genjutsu")){
             NinjaDeGenjutsu ninjaDeGenjutsu = mapper.personagemParaGenjutsu(personagem);
-            ninjaDeGenjutsu.usarJutsu();
+            return ninjaDeGenjutsu.usarJutsu();
         }else if (personagem.getJutsus().contains("Taijutsu")){
             NinjaDeTaijutsu ninjaDeTaijutsu = mapper.personagemParaTaijutsu(personagem);
-            ninjaDeTaijutsu.usarJutsu();
+            return ninjaDeTaijutsu.usarJutsu();
         }else if (personagem.getJutsus().contains("Ninjutsu")){
             NinjaDeNinjutsu ninjaDeNinjutsu = mapper.personagemParaNinjutsu(personagem);
-            ninjaDeNinjutsu.usarJutsu();
+            return ninjaDeNinjutsu.usarJutsu();
+        }else {
+            throw new JutsuNaoEncontradoException();
         }
 
-        throw new PersonagemNaoEncontradoException();
+
 
     }
     public String desviar(Long id){
@@ -79,16 +82,18 @@ public class PersonagemService {
 
         if (personagem.getJutsus().contains("Genjutsu")){
             NinjaDeGenjutsu ninjaDeGenjutsu = mapper.personagemParaGenjutsu(personagem);
-            ninjaDeGenjutsu.desviar();
+            return ninjaDeGenjutsu.desviar();
         }else if (personagem.getJutsus().contains("Taijutsu")){
             NinjaDeTaijutsu ninjaDeTaijutsu = mapper.personagemParaTaijutsu(personagem);
-            ninjaDeTaijutsu.desviar();
+            return ninjaDeTaijutsu.desviar();
         }else if (personagem.getJutsus().contains("Ninjutsu")){
             NinjaDeNinjutsu ninjaDeNinjutsu = mapper.personagemParaNinjutsu(personagem);
-            ninjaDeNinjutsu.desviar();
+            return ninjaDeNinjutsu.desviar();
+        }else {
+            throw new JutsuNaoEncontradoException();
         }
 
-        throw new PersonagemNaoEncontradoException();
+
 
     }
 

@@ -48,11 +48,12 @@ public class TestHelper {
     public static final String DESVIAR_FRASE_TAIJUTSU = "Desviei com Taijutsu!";
 
     public static Personagem criarPersonagemSakura(){
+        JUTSUS_PERSONAGEM_SAKURA.add(GENJUTSU);
         return new Personagem(ID_PERSONAGEM_SAKURA,NOME_PERSONAGEM_SAKURA,IDADE_PERSONAGEM_SAKURA,ALDEIA_PERSONAGEM_SAKURA,JUTSUS_PERSONAGEM_SAKURA,CHAKRA_PERSONAGEM_SAKURA);
     }
 
     public static Personagem criarPersonagemNaruto(){
-
+        JUTSUS_PERSONAGEM_NARUTO.add(NINJUTSU);
         return new Personagem(ID_PERSONAGEM_NARUTO,NOME_PERSONAGEM_NARUTO,IDADE_PERSONAGEM_NARUTO,ALDEIA_PERSONAGEM_NARUTO,JUTSUS_PERSONAGEM_NARUTO,CHAKRA_PERSONAGEM_NARUTO);
     }
 
@@ -64,11 +65,6 @@ public class TestHelper {
     public static Personagem criarPersonagemRockieLee(){
 
         return new Personagem(ID_PERSONAGEM_ROCKIE_LEE,NOME_PERSONAGEM_ROCKIE_LEE,IDADE_PERSONAGEM_ROCKIE_LEE,ALDEIA_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,CHAKRA_PERSONAGEM_ROCKIE_LEE);
-    }
-
-    public static NinjaDeTaijutsu criarPersonagemRockieLeeNinjaDeTaijutsu(){
-
-        return new NinjaDeTaijutsu(ID_PERSONAGEM_ROCKIE_LEE,NOME_PERSONAGEM_ROCKIE_LEE,IDADE_PERSONAGEM_ROCKIE_LEE,ALDEIA_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,CHAKRA_PERSONAGEM_ROCKIE_LEE);
     }
 
     public static void setPersonagem(Personagem personagem,Personagem personagemNovo){

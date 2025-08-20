@@ -83,7 +83,7 @@ public class PersonagemControllerIntegrationTest {
 
         mockMvc.perform(put("/api/personagem/"+personagemSalvo.getId()+"/adiciona-jutsu")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"jutsus\": Taijutsu }"))
+                        .content("\" Taijutsu\""))
                 .andExpect(status().isOk());
     }
 

@@ -14,8 +14,8 @@ public class NinjaDeNinjutsuTest {
 
     @BeforeAll
     static void setup(){
-        JUTSUS_PERSONAGEM_NARUTO.add(NINJUTSU);
-        ninjaDeNinjutsu  = new NinjaDeNinjutsu(ID_PERSONAGEM_NARUTO,NOME_PERSONAGEM_NARUTO, IDADE_PERSONAGEM_NARUTO, ALDEIA_PERSONAGEM_NARUTO, JUTSUS_PERSONAGEM_NARUTO, CHAKRA_PERSONAGEM_NARUTO);
+
+        ninjaDeNinjutsu  = new NinjaDeNinjutsu(ID_PERSONAGEM_NARUTO,NOME_PERSONAGEM_NARUTO, JUTSUS_PERSONAGEM_NARUTO, CHAKRA_PERSONAGEM_NARUTO, VIDA_PERSONAGEM_NARUTO);
         naruto = criarPersonagemNaruto();
     }
 
@@ -24,7 +24,7 @@ public class NinjaDeNinjutsuTest {
     @Order(1)
     void deveTestarConstrutor(){
 
-        AssertionsHelper.assertEqualsParaTestarConstrutor(ninjaDeNinjutsu,naruto);
+        AssertionsHelper.assertEqualsPersonagem(ninjaDeNinjutsu,naruto);
     }
 
     @DisplayName("2- deve testar setter")
@@ -34,7 +34,7 @@ public class NinjaDeNinjutsuTest {
 
         Personagem sakura = criarPersonagemSakura();
         setPersonagem(ninjaDeNinjutsu,sakura);
-        AssertionsHelper.assertEqualsParaSetter(ninjaDeNinjutsu,sakura);
+        AssertionsHelper.assertEqualsPersonagem(ninjaDeNinjutsu,sakura);
     }
 
     @DisplayName("3- deve testar toString")
@@ -49,9 +49,9 @@ public class NinjaDeNinjutsuTest {
     @Test
     @Order(4)
     void deveTestarAdicionarJutsu(){
-        boolean jutsuAdicionado = ninjaDeNinjutsu.adicionarJutsu(JUTSU_NOVO);
+        ninjaDeNinjutsu.adicionarJutsu(TAIJUTSU,DANO_TAIJUTSU);
 
-        AssertionsHelper.assertTrueParaAdicionarJutsu(jutsuAdicionado,ninjaDeNinjutsu);
+        AssertionsHelper.assertParaAdicionarJutsu(ninjaDeNinjutsu, TAIJUTSU,DANO_TAIJUTSU);
     }
 
     @DisplayName("5- Deve testar aumentar chacra")

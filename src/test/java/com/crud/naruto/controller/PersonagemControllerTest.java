@@ -81,8 +81,8 @@ public class PersonagemControllerTest {
     @DisplayName("5- deve adicionar Jutsu a um personagem")
     @Test
     void deveAdicionarJutsu(){
-        Mockito.when(personagemService.adiconarJutsu(ID_PERSONAGEM_ROCKIE_LEE,JUTSU_NOVO)).thenReturn(true);
-        ResponseEntity<Boolean> response = personagemController.adicionarJutsu(ID_PERSONAGEM_ROCKIE_LEE,JUTSU_NOVO);
+        Mockito.doNothing().when(personagemService).adiconarJutsu(ID_PERSONAGEM_ROCKIE_LEE,NINJUTSU,DANO_NINJUTSU);
+        ResponseEntity<Boolean> response = personagemController.adicionarJutsu(ID_PERSONAGEM_ROCKIE_LEE,NINJUTSU,DANO_NINJUTSU);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
@@ -90,7 +90,7 @@ public class PersonagemControllerTest {
     @DisplayName("6- deve aumentar chakra de um personagem")
     @Test
     void deveAumentarChakra(){
-        Mockito.when(personagemService.aumentarChakra(ID_PERSONAGEM_ROCKIE_LEE,QUANTIDADE)).thenReturn(requestDto.getChakra());
+        Mockito.when(personagemService.aumentarChakra(ID_PERSONAGEM_ROCKIE_LEE,QUANTIDADE)).thenReturn(responseDto.getChakra());
         ResponseEntity<Integer> response = personagemController.aumentarChakra(ID_PERSONAGEM_ROCKIE_LEE,QUANTIDADE);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());

@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @AllArgsConstructor
 public class PersonagemResponseDto {
     private String nome;
-    private int idade;
-    private String aldeia;
-    private List<String> jutsus;
+    private Map<String,Integer> jutsus;
     private int chakra;
+    private int vida;
 }

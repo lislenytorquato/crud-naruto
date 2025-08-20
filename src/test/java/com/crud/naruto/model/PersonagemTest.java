@@ -14,7 +14,7 @@ public class PersonagemTest {
     @BeforeAll
     static void setup(){
 
-        personagem = new Personagem(ID_PERSONAGEM_NARUTO,NOME_PERSONAGEM_NARUTO, IDADE_PERSONAGEM_NARUTO, ALDEIA_PERSONAGEM_NARUTO, JUTSUS_PERSONAGEM_NARUTO, CHAKRA_PERSONAGEM_NARUTO);
+        personagem = new Personagem(ID_PERSONAGEM_NARUTO,NOME_PERSONAGEM_NARUTO, JUTSUS_PERSONAGEM_NARUTO, CHAKRA_PERSONAGEM_NARUTO,VIDA_PERSONAGEM_NARUTO);
         naruto = criarPersonagemNaruto();
     }
 
@@ -22,9 +22,8 @@ public class PersonagemTest {
     @Test
     @Order(1)
     void deveTestarAllArgsConstructor(){
-        JUTSUS_PERSONAGEM_NARUTO.add(NINJUTSU);
 
-        AssertionsHelper.assertEqualsParaTestarConstrutor(personagem,naruto);
+        AssertionsHelper.assertEqualsPersonagem(personagem,naruto);
 
     }
 
@@ -34,7 +33,7 @@ public class PersonagemTest {
     void deveTestarSetter(){
         Personagem sakura = criarPersonagemSakura();
         setPersonagem(personagem,sakura);
-        AssertionsHelper.assertEqualsParaSetter(personagem,sakura);
+        AssertionsHelper.assertEqualsPersonagem(personagem,sakura);
     }
 
 
@@ -49,9 +48,9 @@ public class PersonagemTest {
     @Test
     @Order(4)
     void deveTestarAdicionarJutsu(){
-        boolean jutsuAdicionado = personagem.adicionarJutsu(JUTSU_NOVO);
+        personagem.adicionarJutsu(TAIJUTSU,DANO_TAIJUTSU);
 
-        AssertionsHelper.assertTrueParaAdicionarJutsu(jutsuAdicionado,personagem);
+        AssertionsHelper.assertParaAdicionarJutsu(personagem, TAIJUTSU,DANO_TAIJUTSU);
     }
 
     @DisplayName("5- Deve testar aumentar chacra")

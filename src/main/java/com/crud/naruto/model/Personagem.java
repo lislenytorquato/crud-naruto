@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -11,33 +12,27 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Personagem {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE) private Long id;
+    @Setter(AccessLevel.NONE)
+    @ToString.Exclude
+    private Long id;
 
     private String nome;
 
-    private int idade;
+    private Map<String,Integer> jutsus;
 
-    private String aldeia;
+    private int chakra = 100;
 
-    private List<String> jutsus;
+    private int vida;
 
-    private int chakra;
-
-    public boolean adicionarJutsu(String novoJutsu){
-        return jutsus.add(novoJutsu);
+    public void adicionarJutsu(String jutsu, Integer dano){
+        jutsus.put(jutsu, dano);
 
     }
     public int aumentarChakra(int quantidade){
         return chakra += quantidade;
-    }
-
-
-    @Override
-    public String toString() {
-
-        return "{"+ "nome: " + nome + " idade: " + idade + " aldeia: " + aldeia + " jutsus: "  + jutsus.stream().sorted().toList() + " chakra: " + chakra + "}";
     }
 }

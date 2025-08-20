@@ -4,9 +4,7 @@ import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
 import com.crud.naruto.exception.JutsuNaoEncontradoException;
 import com.crud.naruto.exception.PersonagemNaoEncontradoException;
-import com.crud.naruto.interfaces.Ninja;
 import com.crud.naruto.mapper.PersonagemMapper;
-import com.crud.naruto.model.NinjaDeGenjutsu;
 import com.crud.naruto.model.NinjaDeNinjutsu;
 import com.crud.naruto.model.NinjaDeTaijutsu;
 import com.crud.naruto.model.Personagem;
@@ -46,11 +44,10 @@ public class PersonagemService {
         List<Personagem> listaDePersonagens = personagemRepository.findAll();
         return mapper.listaEntityParaListaResponseDto(listaDePersonagens);
     }
-    public boolean adiconarJutsu(Long id, String novoJutsu){
+    public void adiconarJutsu(Long id, String novoJutsu, Integer dano){
         Personagem personagem = encontrarPersonagemPorId(id);
-        boolean jutsuAdicionado = personagem.adicionarJutsu(novoJutsu);
+        personagem.adicionarJutsu(novoJutsu, dano);
         salvarPersonagem(personagem);
-        return jutsuAdicionado;
     }
     public int aumentarChakra(Long id, int quantidade){
         Personagem personagem = encontrarPersonagemPorId(id);
@@ -61,13 +58,10 @@ public class PersonagemService {
     public String usarJutsu(Long id){
         Personagem personagem = encontrarPersonagemPorId(id);
 
-        if (personagem.getJutsus().contains("Genjutsu")){
-            NinjaDeGenjutsu ninjaDeGenjutsu = mapper.personagemParaGenjutsu(personagem);
-            return ninjaDeGenjutsu.usarJutsu();
-        }else if (personagem.getJutsus().contains("Taijutsu")){
+        if (personagem.getJutsus().containsKey("Taijutsu")){
             NinjaDeTaijutsu ninjaDeTaijutsu = mapper.personagemParaTaijutsu(personagem);
             return ninjaDeTaijutsu.usarJutsu();
-        }else if (personagem.getJutsus().contains("Ninjutsu")){
+        }else if (personagem.getJutsus().containsKey("Ninjutsu")){
             NinjaDeNinjutsu ninjaDeNinjutsu = mapper.personagemParaNinjutsu(personagem);
             return ninjaDeNinjutsu.usarJutsu();
         }else {
@@ -80,20 +74,15 @@ public class PersonagemService {
     public String desviar(Long id){
         Personagem personagem = encontrarPersonagemPorId(id);
 
-        if (personagem.getJutsus().contains("Genjutsu")){
-            NinjaDeGenjutsu ninjaDeGenjutsu = mapper.personagemParaGenjutsu(personagem);
-            return ninjaDeGenjutsu.desviar();
-        }else if (personagem.getJutsus().contains("Taijutsu")){
+        if (personagem.getJutsus().containsKey("Taijutsu")){
             NinjaDeTaijutsu ninjaDeTaijutsu = mapper.personagemParaTaijutsu(personagem);
             return ninjaDeTaijutsu.desviar();
-        }else if (personagem.getJutsus().contains("Ninjutsu")){
+        }else if (personagem.getJutsus().containsKey("Ninjutsu")){
             NinjaDeNinjutsu ninjaDeNinjutsu = mapper.personagemParaNinjutsu(personagem);
             return ninjaDeNinjutsu.desviar();
         }else {
             throw new JutsuNaoEncontradoException();
         }
-
-
 
     }
 

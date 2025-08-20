@@ -5,9 +5,7 @@ import com.crud.naruto.dto.PersonagemResponseDto;
 import com.crud.naruto.exception.PersonagemNaoEncontradoException;
 import com.crud.naruto.helper.AssertionsHelper;
 import com.crud.naruto.helper.TestHelper;
-import com.crud.naruto.interfaces.Ninja;
 import com.crud.naruto.mapper.PersonagemMapper;
-import com.crud.naruto.model.NinjaDeTaijutsu;
 import com.crud.naruto.model.Personagem;
 import com.crud.naruto.repository.PersonagemRepository;
 import org.junit.jupiter.api.*;
@@ -15,7 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -133,9 +130,9 @@ public class PersonagemServiceTest {
 
         mockEncontrarPorId(idRockieLee,personagemRockieLee);
         mockSalvarPersonagem(personagemRockieLee);
-        Boolean jutsuAdicionado = personagemService.adiconarJutsu(idRockieLee, JUTSU_NOVO);
+        personagemService.adiconarJutsu(idRockieLee, NINJUTSU,DANO_NINJUTSU);
 
-        Assertions.assertTrue(jutsuAdicionado);
+        AssertionsHelper.assertParaAdicionarJutsu(personagemRockieLee,NINJUTSU,DANO_NINJUTSU);
     }
 
     @DisplayName("6- Deve aumentar o chakra de um personagem ")
@@ -198,14 +195,12 @@ public class PersonagemServiceTest {
     private static Stream<Arguments> geraPersonagensUsandoJutsu(){
         return Stream.of(
                 Arguments.of(idNaruto,personagemNaruto, USAR_JUTSU_FRASE_NINJUTSU),
-                Arguments.of(idSakura,personagemSakura,USAR_JUTSU_FRASE_GENJUTSU),
                 Arguments.of(idRockieLee,personagemRockieLee,USAR_JUTSU_FRASE_TAIJUTSU)
         );
     }
     private static Stream<Arguments> geraPersonagensDesviando(){
         return Stream.of(
                 Arguments.of(idNaruto,personagemNaruto, DESVIAR_FRASE_NINJUTSU),
-                Arguments.of(idSakura,personagemSakura,DESVIAR_FRASE_GENJUTSU),
                 Arguments.of(idRockieLee,personagemRockieLee,DESVIAR_FRASE_TAIJUTSU)
         );
     }

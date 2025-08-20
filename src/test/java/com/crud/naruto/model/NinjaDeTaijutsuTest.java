@@ -11,11 +11,13 @@ public class NinjaDeTaijutsuTest {
 
     private static NinjaDeTaijutsu ninjaDeTaijutsu;
     private static Personagem rockieLee;
+    private static Jutsu jutsu;
 
     @BeforeAll
     static void setup(){
         ninjaDeTaijutsu = new NinjaDeTaijutsu(ID_PERSONAGEM_ROCKIE_LEE,NOME_PERSONAGEM_ROCKIE_LEE, JUTSUS_PERSONAGEM_ROCKIE_LEE, CHAKRA_PERSONAGEM_ROCKIE_LEE, VIDA_PERSONAGEM_ROCKIE_LEE);
         rockieLee = criarPersonagemRockieLee();
+        jutsu = new Jutsu(DANO_TAIJUTSU,CONSUMO_CHAKRA_TAIJUTSU);
     }
 
     @DisplayName("1- deve testar construtor")
@@ -48,7 +50,7 @@ public class NinjaDeTaijutsuTest {
     @Test
     @Order(4)
     void deveTestarAdicionarJutsu(){
-       ninjaDeTaijutsu.adicionarJutsu(NINJUTSU,DANO_NINJUTSU);
+       ninjaDeTaijutsu.adicionarJutsu(NINJUTSU,jutsu);
 
         AssertionsHelper.assertParaAdicionarJutsu(ninjaDeTaijutsu, NINJUTSU,DANO_NINJUTSU);
     }

@@ -18,6 +18,9 @@ public class TestHelper {
     public static final Integer DANO_NINJUTSU = 50;
     public static final Integer DANO_TAIJUTSU = 88;
 
+    public static final int CONSUMO_CHAKRA_NINJUTSU = 25;
+    public static final int CONSUMO_CHAKRA_TAIJUTSU = 25;
+
     public static final Long ID_PERSONAGEM_NARUTO = 1L;
     public static final String NOME_PERSONAGEM_NARUTO = "Naruto";
     public static final Map<String,Integer> JUTSUS_PERSONAGEM_NARUTO = new HashMap<>();

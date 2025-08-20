@@ -22,14 +22,14 @@ public class Personagem {
 
     private String nome;
 
-    private Map<String,Integer> jutsus;
+    private Map<String,Jutsu> jutsus;
 
     private int chakra = 100;
 
     private int vida;
 
-    public void adicionarJutsu(String jutsu, Integer dano){
-        jutsus.put(jutsu, dano);
+    public void adicionarJutsu(String nome, Jutsu jutsu){
+        jutsus.put(nome, jutsu);
 
     }
     public int aumentarChakra(int quantidade){

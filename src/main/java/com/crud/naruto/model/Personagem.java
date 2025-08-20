@@ -1,10 +1,7 @@
 package com.crud.naruto.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -12,30 +9,21 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class Personagem {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter
-    private Long id;
+    @Setter(AccessLevel.NONE) private Long id;
 
-    @Getter
-    @Setter
     private String nome;
 
-    @Getter
-    @Setter
     private int idade;
 
-    @Getter
-    @Setter
     private String aldeia;
 
-    @Getter
-    @Setter
     private List<String> jutsus;
 
-    @Getter
-    @Setter
     private int chakra;
 
     public boolean adicionarJutsu(String novoJutsu){

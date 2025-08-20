@@ -98,7 +98,7 @@ public class PersonagemService {
     }
 
     private Personagem encontrarPersonagemPorId(Long id){
-        return personagemRepository.findById(id).stream().findFirst().orElseThrow(PersonagemNaoEncontradoException::new);
+        return personagemRepository.findById(id).orElseThrow(PersonagemNaoEncontradoException::new);
     }
     private void salvarPersonagem(Personagem personagem){
         personagemRepository.save(personagem);

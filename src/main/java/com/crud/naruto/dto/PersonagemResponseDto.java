@@ -1,5 +1,6 @@
 package com.crud.naruto.dto;
 
+import com.crud.naruto.model.Jutsu;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,7 +11,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class PersonagemResponseDto {
     private String nome;
-    private Map<String,Integer> jutsus;
+    private Map<String, Jutsu> jutsus;
     private int chakra;
     private int vida;
 }

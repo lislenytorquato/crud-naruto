@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -81,8 +80,8 @@ public class PersonagemControllerTest {
     @DisplayName("5- deve adicionar Jutsu a um personagem")
     @Test
     void deveAdicionarJutsu(){
-        Mockito.doNothing().when(personagemService).adiconarJutsu(ID_PERSONAGEM_ROCKIE_LEE,NINJUTSU,DANO_NINJUTSU);
-        ResponseEntity<Boolean> response = personagemController.adicionarJutsu(ID_PERSONAGEM_ROCKIE_LEE,NINJUTSU,DANO_NINJUTSU);
+        Mockito.doNothing().when(personagemService).adiconarJutsu(ID_PERSONAGEM_ROCKIE_LEE, NOME_NINJUTSU,ninjutsu);
+        ResponseEntity<Boolean> response = personagemController.adicionarJutsu(ID_PERSONAGEM_ROCKIE_LEE, NOME_NINJUTSU,ninjutsu);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
     }

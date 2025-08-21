@@ -11,14 +11,12 @@ public class NinjaDeNinjutsuTest {
 
     private static NinjaDeNinjutsu ninjaDeNinjutsu;
     private static Personagem naruto;
-    private static Jutsu jutsu;
 
     @BeforeAll
     static void setup(){
 
         ninjaDeNinjutsu  = new NinjaDeNinjutsu(ID_PERSONAGEM_NARUTO,NOME_PERSONAGEM_NARUTO, JUTSUS_PERSONAGEM_NARUTO, CHAKRA_PERSONAGEM_NARUTO, VIDA_PERSONAGEM_NARUTO);
         naruto = criarPersonagemNaruto();
-        jutsu = new Jutsu(DANO_TAIJUTSU,CONSUMO_CHAKRA_TAIJUTSU);
 
     }
 
@@ -52,9 +50,9 @@ public class NinjaDeNinjutsuTest {
     @Test
     @Order(4)
     void deveTestarAdicionarJutsu(){
-        ninjaDeNinjutsu.adicionarJutsu(TAIJUTSU,jutsu);
+        ninjaDeNinjutsu.adicionarJutsu(NOME_TAIJUTSU, taijutsu);
 
-        AssertionsHelper.assertParaAdicionarJutsu(ninjaDeNinjutsu, TAIJUTSU,DANO_TAIJUTSU);
+        AssertionsHelper.assertParaAdicionarJutsu(ninjaDeNinjutsu, NOME_TAIJUTSU,taijutsu);
     }
 
     @DisplayName("5- Deve testar aumentar chacra")

@@ -5,6 +5,7 @@ import com.crud.naruto.dto.PersonagemResponseDto;
 import com.crud.naruto.exception.JutsuNaoEncontradoException;
 import com.crud.naruto.exception.PersonagemNaoEncontradoException;
 import com.crud.naruto.mapper.PersonagemMapper;
+import com.crud.naruto.model.Jutsu;
 import com.crud.naruto.model.NinjaDeNinjutsu;
 import com.crud.naruto.model.NinjaDeTaijutsu;
 import com.crud.naruto.model.Personagem;
@@ -44,9 +45,9 @@ public class PersonagemService {
         List<Personagem> listaDePersonagens = personagemRepository.findAll();
         return mapper.listaEntityParaListaResponseDto(listaDePersonagens);
     }
-    public void adiconarJutsu(Long id, String novoJutsu, Integer dano){
+    public void adiconarJutsu(Long id, String nomeJutsu, Jutsu jutsu){
         Personagem personagem = encontrarPersonagemPorId(id);
-        personagem.adicionarJutsu(novoJutsu, dano);
+        personagem.adicionarJutsu(nomeJutsu, jutsu);
         salvarPersonagem(personagem);
     }
     public int aumentarChakra(Long id, int quantidade){

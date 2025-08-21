@@ -1,11 +1,9 @@
 package com.crud.naruto.helper;
 
 import com.crud.naruto.dto.PersonagemResponseDto;
+import com.crud.naruto.model.Jutsu;
 import com.crud.naruto.model.Personagem;
 import org.junit.jupiter.api.Assertions;
-
-import static com.crud.naruto.helper.TestHelper.DANO_NINJUTSU;
-import static com.crud.naruto.helper.TestHelper.NINJUTSU;
 
 public class AssertionsHelper {
 
@@ -22,9 +20,9 @@ public class AssertionsHelper {
         Assertions.assertTrue(personagem.toString().contains(Integer.toString(personagemAtributos.getChakra())));
     }
 
-    public static void assertParaAdicionarJutsu(Personagem personagem, String jutsu, Integer dano){
-        Assertions.assertTrue(personagem.getJutsus().containsKey(jutsu));
-        Assertions.assertEquals(dano,personagem.getJutsus().get(jutsu));
+    public static void assertParaAdicionarJutsu(Personagem personagem, String nomeJutsu, Jutsu jutsu){
+        Assertions.assertTrue(personagem.getJutsus().containsKey(nomeJutsu));
+        Assertions.assertEquals(jutsu,personagem.getJutsus().get(nomeJutsu));
     }
 
     public static void assertEqualsParaAumentarChakra(Personagem personagem, int chakraAumentado){

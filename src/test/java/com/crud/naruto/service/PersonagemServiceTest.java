@@ -130,9 +130,9 @@ public class PersonagemServiceTest {
 
         mockEncontrarPorId(idRockieLee,personagemRockieLee);
         mockSalvarPersonagem(personagemRockieLee);
-        personagemService.adiconarJutsu(idRockieLee, NINJUTSU,DANO_NINJUTSU);
+        personagemService.adiconarJutsu(idRockieLee, NOME_NINJUTSU,ninjutsu);
 
-        AssertionsHelper.assertParaAdicionarJutsu(personagemRockieLee,NINJUTSU,DANO_NINJUTSU);
+        AssertionsHelper.assertParaAdicionarJutsu(personagemRockieLee, NOME_NINJUTSU,ninjutsu);
     }
 
     @DisplayName("6- Deve aumentar o chakra de um personagem ")
@@ -182,7 +182,7 @@ public class PersonagemServiceTest {
     @Order(10)
     void deveLancarExcecaoJutsuNaoEncontrado(){
 
-        personagemRockieLee.getJutsus().remove(TAIJUTSU);
+        personagemRockieLee.getJutsus().remove(NOME_TAIJUTSU);
         Assertions.assertThrows(PersonagemNaoEncontradoException.class,()->personagemService.usarJutsu(ID_PERSONAGEM_ROCKIE_LEE));
     }
 

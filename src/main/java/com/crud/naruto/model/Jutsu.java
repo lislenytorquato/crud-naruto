@@ -1,7 +1,6 @@
 package com.crud.naruto.model;
 
 import lombok.*;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -9,7 +8,7 @@ import lombok.*;
 @ToString
 public class Jutsu {
 
-    private int chakra;
+    private int dano;
     private int consumoDeChakra;
 
 }

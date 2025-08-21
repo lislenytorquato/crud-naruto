@@ -2,6 +2,7 @@ package com.crud.naruto.controller;
 
 import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
+import com.crud.naruto.model.Jutsu;
 import com.crud.naruto.service.PersonagemService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +49,8 @@ public class PersonagemController {
 
     @ApiResponse(description = "Adicionar jutsu ao personagem", responseCode = "200")
     @PutMapping("{id}/adiciona-jutsu")
-    ResponseEntity<Boolean> adicionarJutsu(@PathVariable Long id, @RequestBody String jutsu, @RequestBody Integer dano){
-        personagemService.adiconarJutsu(id, jutsu, dano);
+    ResponseEntity<Boolean> adicionarJutsu(@PathVariable Long id, @RequestBody String nomeJutsu, @RequestBody Jutsu jutsu){
+        personagemService.adiconarJutsu(id,nomeJutsu, jutsu);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

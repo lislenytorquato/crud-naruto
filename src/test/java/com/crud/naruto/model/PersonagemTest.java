@@ -16,6 +16,7 @@ public class PersonagemTest {
 
         personagem = new Personagem(ID_PERSONAGEM_NARUTO,NOME_PERSONAGEM_NARUTO, JUTSUS_PERSONAGEM_NARUTO, CHAKRA_PERSONAGEM_NARUTO,VIDA_PERSONAGEM_NARUTO);
         naruto = criarPersonagemNaruto();
+
     }
 
     @DisplayName("1- Deve testar anotação lombok All Args Constructor")
@@ -48,9 +49,9 @@ public class PersonagemTest {
     @Test
     @Order(4)
     void deveTestarAdicionarJutsu(){
-        personagem.adicionarJutsu(TAIJUTSU,DANO_TAIJUTSU);
+        personagem.adicionarJutsu(NOME_TAIJUTSU,taijutsu);
 
-        AssertionsHelper.assertParaAdicionarJutsu(personagem, TAIJUTSU,DANO_TAIJUTSU);
+        AssertionsHelper.assertParaAdicionarJutsu(personagem, NOME_TAIJUTSU,taijutsu);
     }
 
     @DisplayName("5- Deve testar aumentar chacra")

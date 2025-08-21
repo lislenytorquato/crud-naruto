@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.Optional;
@@ -184,6 +185,14 @@ public class PersonagemServiceTest {
 
         personagemRockieLee.getJutsus().remove(NOME_TAIJUTSU);
         Assertions.assertThrows(PersonagemNaoEncontradoException.class,()->personagemService.usarJutsu(ID_PERSONAGEM_ROCKIE_LEE));
+    }
+
+    @DisplayName("11- Deve lancar excecao quando nome na request for nulo")
+    @Test
+    @Order(11)
+    void deveLancarExcecaoNotBlankNoRequestDto(){
+        PersonagemRequestDto requestDtoNomeNulo = criarPersonagemRequestDtoNomeNulo();
+        Assertions.assertThrows(MethodArgumentNotValidException.class,()->personagemService.criarPersonagem(requestDtoNomeNulo));
     }
 
     private void mockEncontrarPorId(Long id, Personagem personagem){

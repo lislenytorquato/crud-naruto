@@ -82,4 +82,24 @@ public class TestHelper {
     public static PersonagemResponseDto criarRockieLeeResponseDto(){
         return new PersonagemResponseDto(NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,CHAKRA_PERSONAGEM_ROCKIE_LEE, VIDA_PERSONAGEM_ROCKIE_LEE);
     }
+    public static PersonagemRequestDto criarPersonagemRequestDtoNomeNulo(){
+        return new PersonagemRequestDto(null,JUTSUS_PERSONAGEM_NARUTO,VIDA_PERSONAGEM_NARUTO);
+    }
+    public static PersonagemRequestDto criarPersonagemRequestDtoNomeEspacoEmBranco(){
+        String NOME_ESPACO_BRANCO = "    ";
+        return new PersonagemRequestDto(NOME_ESPACO_BRANCO,JUTSUS_PERSONAGEM_NARUTO,VIDA_PERSONAGEM_NARUTO);
+    }
+    public static PersonagemRequestDto criarPersonagemRequestDtoNomeVazio(){
+        String NOME_VAZIO = "";
+        return new PersonagemRequestDto(NOME_VAZIO,JUTSUS_PERSONAGEM_NARUTO,VIDA_PERSONAGEM_NARUTO);
+    }
+    public static PersonagemRequestDto criarPersonagemRequestDtoJutsusNulo(){
+        return new PersonagemRequestDto(NOME_PERSONAGEM_NARUTO,null,VIDA_PERSONAGEM_NARUTO);
+    }
+    public static PersonagemRequestDto criarPersonagemRequestDtoVidaAbaixoDe100(){
+        return new PersonagemRequestDto(NOME_PERSONAGEM_NARUTO,JUTSUS_PERSONAGEM_NARUTO,99);
+    }
+    public static PersonagemRequestDto criarPersonagemRequestTodoInvalido(){
+        return new PersonagemRequestDto(null,null,70);
+    }
 }

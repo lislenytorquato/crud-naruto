@@ -14,10 +14,10 @@ import java.util.Map;
 @Getter
 @AllArgsConstructor
 public class PersonagemRequestDto {
-    @NotBlank
+    @NotBlank(message = "nome em branco, nulo ou vazio ")
     private String nome;
-    @NotEmpty
+    @NotEmpty(message =" jutsus vazio ou nulo" )
     private Map<String, Jutsu> jutsus;
-    @Max(100)
+    @Max(value = 100,message = "vida contém valor máximo = 100")
     private int vida;
 }

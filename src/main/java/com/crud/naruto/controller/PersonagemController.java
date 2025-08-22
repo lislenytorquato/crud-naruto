@@ -5,6 +5,7 @@ import com.crud.naruto.dto.PersonagemResponseDto;
 import com.crud.naruto.model.Jutsu;
 import com.crud.naruto.service.PersonagemService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +22,14 @@ public class PersonagemController {
 
     @ApiResponse(description = "Criar personagem", responseCode = "201")
     @PostMapping
-    ResponseEntity<PersonagemResponseDto> criar(@RequestBody PersonagemRequestDto personagemRequestDto){
+    ResponseEntity<PersonagemResponseDto> criar(@Valid @RequestBody PersonagemRequestDto personagemRequestDto){
         PersonagemResponseDto responseDto = personagemService.criarPersonagem(personagemRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @ApiResponse(description = "Editar personagem", responseCode = "200")
     @PutMapping("/{id}")
-    ResponseEntity<PersonagemResponseDto> editar(@PathVariable Long id,@RequestBody PersonagemRequestDto personagemRequestDto){
+    ResponseEntity<PersonagemResponseDto> editar(@PathVariable Long id,@Valid @RequestBody PersonagemRequestDto personagemRequestDto){
         PersonagemResponseDto responseDto = personagemService.editarPersonagem(id, personagemRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -49,14 +50,14 @@ public class PersonagemController {
 
     @ApiResponse(description = "Adicionar jutsu ao personagem", responseCode = "200")
     @PutMapping("{id}/adiciona-jutsu")
-    ResponseEntity<Boolean> adicionarJutsu(@PathVariable Long id, @RequestBody String nomeJutsu, @RequestBody Jutsu jutsu){
+    ResponseEntity<Boolean> adicionarJutsu(@PathVariable Long id, @Valid @RequestBody String nomeJutsu, @Valid @RequestBody Jutsu jutsu){
         personagemService.adiconarJutsu(id,nomeJutsu, jutsu);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ApiResponse(description = "Aumenta chakra do personagem", responseCode = "200")
     @PutMapping("{id}/aumenta-chakra")
-    ResponseEntity<Integer> aumentarChakra(@PathVariable Long id, @RequestBody int quantidade){
+    ResponseEntity<Integer> aumentarChakra(@PathVariable Long id, @Valid @RequestBody int quantidade){
         int chakraAumentado = personagemService.aumentarChakra(id, quantidade);
         return new ResponseEntity<>(chakraAumentado,HttpStatus.OK);
     }

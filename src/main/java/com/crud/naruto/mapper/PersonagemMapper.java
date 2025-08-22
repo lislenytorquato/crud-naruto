@@ -23,4 +23,5 @@ public interface PersonagemMapper {
     NinjaDeNinjutsu personagemParaNinjutsu(Personagem personagem);
     NinjaDeTaijutsu personagemParaTaijutsu(Personagem personagem);
 
+
 }

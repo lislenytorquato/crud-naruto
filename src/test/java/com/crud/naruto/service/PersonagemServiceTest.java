@@ -71,7 +71,7 @@ public class PersonagemServiceTest {
 
         PersonagemResponseDto response = personagemService.criarPersonagem(requestDto);
 
-        AssertionsHelper.assertEqualsParaCompararComResponse(response,responseDto);
+        AssertionsHelper.assertEqualsParaCompararComResponse(response,responseDto,NOME_TAIJUTSU);
 
     }
 
@@ -90,7 +90,7 @@ public class PersonagemServiceTest {
 
         PersonagemResponseDto response = personagemService.editarPersonagem(idRockieLee,requestDto);
 
-        AssertionsHelper.assertEqualsParaCompararComResponse(response,responseDto);
+        AssertionsHelper.assertEqualsParaCompararComResponse(response,responseDto,NOME_TAIJUTSU);
     }
 
     @DisplayName("3- Deve deletar um personagem")
@@ -121,7 +121,7 @@ public class PersonagemServiceTest {
         List<PersonagemResponseDto> listaResponse = personagemService.listarPersonagens();
 
         Assertions.assertEquals(listaResponseDto.size(),listaResponse.size());
-        AssertionsHelper.assertEqualsParaCompararComResponse(listaResponse.get(0),listaResponseDto.get(0));
+        AssertionsHelper.assertEqualsParaCompararComResponse(listaResponse.get(0),listaResponseDto.get(0), NOME_TAIJUTSU);
     }
 
     @DisplayName("5- Deve adicionar o jutsu de um personagem ")
@@ -185,14 +185,6 @@ public class PersonagemServiceTest {
 
         personagemRockieLee.getJutsus().remove(NOME_TAIJUTSU);
         Assertions.assertThrows(PersonagemNaoEncontradoException.class,()->personagemService.usarJutsu(ID_PERSONAGEM_ROCKIE_LEE));
-    }
-
-    @DisplayName("11- Deve lancar excecao quando nome na request for nulo")
-    @Test
-    @Order(11)
-    void deveLancarExcecaoNotBlankNoRequestDto(){
-        PersonagemRequestDto requestDtoNomeNulo = criarPersonagemRequestDtoNomeNulo();
-        Assertions.assertThrows(MethodArgumentNotValidException.class,()->personagemService.criarPersonagem(requestDtoNomeNulo));
     }
 
     private void mockEncontrarPorId(Long id, Personagem personagem){

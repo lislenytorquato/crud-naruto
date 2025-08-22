@@ -17,7 +17,7 @@ public class NinjaDeTaijutsuTest {
     static void setup(){
         ninjaDeTaijutsu = new NinjaDeTaijutsu(ID_PERSONAGEM_ROCKIE_LEE,NOME_PERSONAGEM_ROCKIE_LEE, JUTSUS_PERSONAGEM_ROCKIE_LEE, CHAKRA_PERSONAGEM_ROCKIE_LEE, VIDA_PERSONAGEM_ROCKIE_LEE);
         rockieLee = criarPersonagemRockieLee();
-        ninjutsu = new Jutsu(DANO_NINJUTSU,CONSUMO_CHAKRA_NINJUTSU);
+        ninjutsu = new Jutsu(ID_NINJUTSU,DANO_NINJUTSU,CONSUMO_CHAKRA_NINJUTSU);
     }
 
     @DisplayName("1- deve testar construtor")

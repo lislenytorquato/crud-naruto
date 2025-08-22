@@ -25,7 +25,7 @@ public class ExceptionHandler {
     public void jutsuNaoEncontradoExceptionHandler(){
     }
 
-
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String,String>>  personagemRequestDtoValidationHandler(MethodArgumentNotValidException ex){
         Map<String,String> errors = new HashMap<>();

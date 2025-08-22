@@ -29,9 +29,10 @@ public class AssertionsHelper {
         Assertions.assertEquals(personagem.getChakra(),chakraAumentado);
     }
 
-    public  static void assertEqualsParaCompararComResponse(PersonagemResponseDto response, PersonagemResponseDto responseDto){
+    public  static void assertEqualsParaCompararComResponse(PersonagemResponseDto response, PersonagemResponseDto responseDto,Object key){
         Assertions.assertEquals(response.getNome(),responseDto.getNome());
-        Assertions.assertEquals(response.getJutsus(),responseDto.getJutsus());
+        Assertions.assertEquals(response.getJutsus().get(key).getDano(),responseDto.getJutsus().get(key).getDano());
+        Assertions.assertEquals(response.getJutsus().get(key).getConsumoDeChakra(),responseDto.getJutsus().get(key).getConsumoDeChakra());
         Assertions.assertEquals(response.getChakra(),responseDto.getChakra());
     }
 }

@@ -1,5 +1,6 @@
 package com.crud.naruto.helper;
 
+import com.crud.naruto.dto.JutsuDto;
 import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
 import com.crud.naruto.model.Jutsu;
@@ -13,14 +14,18 @@ public class TestHelper {
     public static final String NOME_NINJUTSU = "Ninjutsu";
     public static final String NOME_TAIJUTSU = "Taijutsu";
 
-    public static final Integer DANO_NINJUTSU = 50;
-    public static final Integer DANO_TAIJUTSU = 88;
+    public static final Long ID_NINJUTSU = 1L;
+    public static final Long ID_TAIJUTSU = 2L;
+    public static final int DANO_NINJUTSU = 50;
+    public static final int DANO_TAIJUTSU = 88;
 
     public static final int CONSUMO_CHAKRA_NINJUTSU = 25;
     public static final int CONSUMO_CHAKRA_TAIJUTSU = 25;
 
-    public static Jutsu ninjutsu = new Jutsu(DANO_NINJUTSU,CONSUMO_CHAKRA_NINJUTSU);
-    public static Jutsu taijutsu = new Jutsu(DANO_TAIJUTSU,CONSUMO_CHAKRA_TAIJUTSU);
+    public static JutsuDto ninjutsuDto = new JutsuDto(DANO_NINJUTSU,CONSUMO_CHAKRA_NINJUTSU);
+    public static JutsuDto taijutsuDto = new JutsuDto(DANO_TAIJUTSU,CONSUMO_CHAKRA_TAIJUTSU);
+    public static Jutsu ninjutsu = new Jutsu(ID_NINJUTSU,DANO_NINJUTSU,CONSUMO_CHAKRA_NINJUTSU);
+    public static Jutsu taijutsu = new Jutsu(ID_TAIJUTSU, DANO_TAIJUTSU,CONSUMO_CHAKRA_TAIJUTSU);
 
     public static final Long ID_PERSONAGEM_NARUTO = 1L;
     public static final String NOME_PERSONAGEM_NARUTO = "Naruto";
@@ -40,6 +45,7 @@ public class TestHelper {
     public static final Long ID_PERSONAGEM_ROCKIE_LEE = 3L;
     public static final String NOME_PERSONAGEM_ROCKIE_LEE = "Rockie Lee";
     public static final Map<String,Jutsu> JUTSUS_PERSONAGEM_ROCKIE_LEE = new HashMap<>();
+    public static final Map<String,JutsuDto> JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO = new HashMap<>();
     public static final int CHAKRA_PERSONAGEM_ROCKIE_LEE = 100;
     public static final int VIDA_PERSONAGEM_ROCKIE_LEE = 100;
 
@@ -77,29 +83,26 @@ public class TestHelper {
 
     }
     public static PersonagemRequestDto criarRockieLeeRequestDto(){
-        return new PersonagemRequestDto(NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,VIDA_PERSONAGEM_ROCKIE_LEE);
+        return new PersonagemRequestDto(NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO,VIDA_PERSONAGEM_ROCKIE_LEE);
     }
     public static PersonagemResponseDto criarRockieLeeResponseDto(){
-        return new PersonagemResponseDto(NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,CHAKRA_PERSONAGEM_ROCKIE_LEE, VIDA_PERSONAGEM_ROCKIE_LEE);
+        return new PersonagemResponseDto(NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO,CHAKRA_PERSONAGEM_ROCKIE_LEE, VIDA_PERSONAGEM_ROCKIE_LEE);
     }
     public static PersonagemRequestDto criarPersonagemRequestDtoNomeNulo(){
-        return new PersonagemRequestDto(null,JUTSUS_PERSONAGEM_NARUTO,VIDA_PERSONAGEM_NARUTO);
+        return new PersonagemRequestDto(null,JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO,VIDA_PERSONAGEM_ROCKIE_LEE);
     }
     public static PersonagemRequestDto criarPersonagemRequestDtoNomeEspacoEmBranco(){
         String NOME_ESPACO_BRANCO = "    ";
-        return new PersonagemRequestDto(NOME_ESPACO_BRANCO,JUTSUS_PERSONAGEM_NARUTO,VIDA_PERSONAGEM_NARUTO);
+        return new PersonagemRequestDto(NOME_ESPACO_BRANCO,JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO,VIDA_PERSONAGEM_ROCKIE_LEE);
     }
     public static PersonagemRequestDto criarPersonagemRequestDtoNomeVazio(){
         String NOME_VAZIO = "";
-        return new PersonagemRequestDto(NOME_VAZIO,JUTSUS_PERSONAGEM_NARUTO,VIDA_PERSONAGEM_NARUTO);
+        return new PersonagemRequestDto(NOME_VAZIO,JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO,VIDA_PERSONAGEM_ROCKIE_LEE);
     }
     public static PersonagemRequestDto criarPersonagemRequestDtoJutsusNulo(){
-        return new PersonagemRequestDto(NOME_PERSONAGEM_NARUTO,null,VIDA_PERSONAGEM_NARUTO);
-    }
-    public static PersonagemRequestDto criarPersonagemRequestDtoVidaAbaixoDe100(){
-        return new PersonagemRequestDto(NOME_PERSONAGEM_NARUTO,JUTSUS_PERSONAGEM_NARUTO,99);
+        return new PersonagemRequestDto(NOME_PERSONAGEM_NARUTO,null,VIDA_PERSONAGEM_ROCKIE_LEE);
     }
     public static PersonagemRequestDto criarPersonagemRequestTodoInvalido(){
-        return new PersonagemRequestDto(null,null,70);
+        return new PersonagemRequestDto(null,null,VIDA_PERSONAGEM_ROCKIE_LEE);
     }
 }

@@ -5,6 +5,7 @@ import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
 import com.crud.naruto.exception.JutsuNaoEncontradoException;
 import com.crud.naruto.exception.PersonagemNaoEncontradoException;
+import com.crud.naruto.interfaces.Ninja;
 import com.crud.naruto.mapper.PersonagemMapper;
 import com.crud.naruto.model.Jutsu;
 import com.crud.naruto.model.NinjaDeNinjutsu;
@@ -57,12 +58,12 @@ public class PersonagemService {
         salvarPersonagem(personagem);
         return personagem.getChakra();
     }
-    public String usarJutsu(Long id){
+    private String usarJutsu(Long id){
         Personagem personagem = encontrarPersonagemPorId(id);
 
         if (personagem.getJutsus().containsKey("Taijutsu")){
             NinjaDeTaijutsu ninjaDeTaijutsu = mapper.personagemParaTaijutsu(personagem);
-            return ninjaDeTaijutsu.usarJutsu();
+             return ninjaDeTaijutsu.usarJutsu();
         }else if (personagem.getJutsus().containsKey("Ninjutsu")){
             NinjaDeNinjutsu ninjaDeNinjutsu = mapper.personagemParaNinjutsu(personagem);
             return ninjaDeNinjutsu.usarJutsu();
@@ -70,7 +71,7 @@ public class PersonagemService {
             throw new JutsuNaoEncontradoException();
         }
     }
-    public String desviar(Long id, boolean conseguiuDesviar){
+    private String desviar(Long id, boolean conseguiuDesviar){
         Personagem personagem = encontrarPersonagemPorId(id);
 
         if (personagem.getJutsus().containsKey("Taijutsu")){
@@ -85,12 +86,46 @@ public class PersonagemService {
 
     }
 
+    public String ataque(Long id){
+        Personagem personagem = encontrarPersonagemPorId(id);
+        int chakraConsumido = 0;
+
+        while (personagem.getChakra()>0){
+            usarJutsu(id);
+            chakraConsumido = chakraConsumido(personagem,chakraConsumido);
+        }
+        return "Chakra após ataque: "+ personagem.getChakra();
+    }
+    public String defesa(Long id){
+        Personagem personagem = encontrarPersonagemPorId(id);
+        int chakraConsumido = 0;
+
+        while (personagem.getChakra()>0){
+            desviar(id,true);
+            chakraConsumido(personagem,chakraConsumido);
+        }
+        desviar(id,false);
+
+        return "Chakra após defesa: "+ chakraConsumido;
+    }
+
+    public String personagemDerrotado(Long id){
+        Personagem personagem = encontrarPersonagemPorId(id);
+        if (personagem.getVida() == 0 || personagem.getChakra() == 0){
+            return "Personagem perdeu!!!";
+        }
+    }
+
 
     private Personagem encontrarPersonagemPorId(Long id){
         return personagemRepository.findById(id).orElseThrow(PersonagemNaoEncontradoException::new);
     }
     private void salvarPersonagem(Personagem personagem){
         personagemRepository.save(personagem);
+    }
+    private int chakraConsumido(Personagem personagem, int chakraConsumido){
+        chakraConsumido = personagem.getChakra() - personagem.getJutsus().values().stream().findFirst().orElseThrow().getConsumoDeChakra();
+        personagem.setChakra(chakraConsumido);
     }
 
 

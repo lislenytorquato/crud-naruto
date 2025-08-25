@@ -14,11 +14,21 @@ public class NinjaDeTaijutsu extends Personagem implements Ninja {
 
     @Override
     public String usarJutsu() {
+        this.getJutsus().get("Taijutsu").setDano(25);
+        this.getJutsus().get("Taijutsu").setConsumoDeChakra(10);
         return "Ataque de Taijutsu!!";
     }
 
     @Override
-    public String desviar() {
-        return "Desviei com Taijutsu!";
+    public String desviar(Personagem personagem, boolean conseguiuDesviar) {
+
+        if (conseguiuDesviar){
+            return "Desviei com Taijutsu!!";
+        }
+        else {
+            personagem.setVida(personagem.getVida()-this.getJutsus().get("Taijutsu").getDano());
+            return "Não desviei!! Vida: "+personagem.getVida();
+        }
+
     }
 }

@@ -53,8 +53,9 @@ public class TestHelper {
     public static final String USAR_JUTSU_FRASE_NINJUTSU = "Ataque de Ninjutsu!!";
     public static final String USAR_JUTSU_FRASE_TAIJUTSU = "Ataque de Taijutsu!!";
 
-    public static final String DESVIAR_FRASE_NINJUTSU = "Desviei com Ninjutsu!";
-    public static final String DESVIAR_FRASE_TAIJUTSU = "Desviei com Taijutsu!";
+    public static final String DESVIAR_FRASE_NINJUTSU = "Desviei com Ninjutsu!!";
+    public static final String NAO_DESVIEI_FRASE =  "Não desviei!! Vida: ";
+    public static final String DESVIAR_FRASE_TAIJUTSU = "Desviei com Taijutsu!!";
 
     public static Personagem criarPersonagemSakura(){
         JUTSUS_PERSONAGEM_SAKURA.put(NOME_NINJUTSU, ninjutsu);
@@ -83,9 +84,11 @@ public class TestHelper {
 
     }
     public static PersonagemRequestDto criarRockieLeeRequestDto(){
+        JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO.put(NOME_TAIJUTSU,taijutsuDto);
         return new PersonagemRequestDto(NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO,VIDA_PERSONAGEM_ROCKIE_LEE);
     }
     public static PersonagemResponseDto criarRockieLeeResponseDto(){
+        JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO.put(NOME_TAIJUTSU,taijutsuDto);
         return new PersonagemResponseDto(NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO,CHAKRA_PERSONAGEM_ROCKIE_LEE, VIDA_PERSONAGEM_ROCKIE_LEE);
     }
     public static PersonagemRequestDto criarPersonagemRequestDtoNomeNulo(){

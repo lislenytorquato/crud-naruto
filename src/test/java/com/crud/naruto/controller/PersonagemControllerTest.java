@@ -102,11 +102,20 @@ public class PersonagemControllerTest {
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
-    @DisplayName("8- deve desviar de um personagem")
+    @DisplayName("8- deve desviar de um personagem quando conseguiuDesviar eh true")
     @Test
-    void deveDesviar(){
-        Mockito.when(personagemService.desviar(ID_PERSONAGEM_ROCKIE_LEE)).thenReturn(DESVIAR_FRASE_TAIJUTSU);
-        ResponseEntity<String> response = personagemController.desviar(ID_PERSONAGEM_ROCKIE_LEE);
+    void deveDesviarQuandoConseguiuDesviarEhTrue(){
+        Mockito.when(personagemService.desviar(ID_PERSONAGEM_ROCKIE_LEE,true)).thenReturn(DESVIAR_FRASE_TAIJUTSU);
+        ResponseEntity<String> response = personagemController.desviar(ID_PERSONAGEM_ROCKIE_LEE,true);
+
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @DisplayName("8- deve desviar de um personagem quando conseguiuDesviar eh false")
+    @Test
+    void deveDesviarQuandoConseguiuDesviarEhFalse(){
+        Mockito.when(personagemService.desviar(ID_PERSONAGEM_ROCKIE_LEE,false)).thenReturn(DESVIAR_FRASE_TAIJUTSU);
+        ResponseEntity<String> response = personagemController.desviar(ID_PERSONAGEM_ROCKIE_LEE,false);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
     }

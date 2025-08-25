@@ -1,6 +1,7 @@
 package com.crud.naruto.model;
 
 import com.crud.naruto.helper.AssertionsHelper;
+import com.crud.naruto.helper.TestHelper;
 import org.junit.jupiter.api.*;
 
 import static com.crud.naruto.helper.TestHelper.*;
@@ -72,11 +73,19 @@ public class NinjaDeNinjutsuTest {
         Assertions.assertEquals(USAR_JUTSU_FRASE_NINJUTSU,jutsuUsado);
     }
 
-    @DisplayName("7- deve testar desviar")
+    @DisplayName("7- deve testar desviar quando conseguiuDesviar é true")
+    @Test
+    @Order(7)
+    void deveTestarDesviarQuandoConseguiuDesviarEhTrue(){
+        String desvio = ninjaDeNinjutsu.desviar(ninjaDeNinjutsu,true);
+        Assertions.assertTrue(desvio.contains(DESVIAR_FRASE_NINJUTSU));
+    }
+
+    @DisplayName("7- deve testar desviar quando conseguiuDesviar é false")
     @Test
     @Order(7)
     void deveTestarDesviar(){
-        String desvio = ninjaDeNinjutsu.desviar();
-        Assertions.assertEquals(DESVIAR_FRASE_NINJUTSU,desvio);
+        String desvio = ninjaDeNinjutsu.desviar(ninjaDeNinjutsu,false);
+        Assertions.assertTrue(desvio.contains(NAO_DESVIEI_FRASE));
     }
 }

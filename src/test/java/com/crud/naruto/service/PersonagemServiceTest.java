@@ -152,25 +152,38 @@ public class PersonagemServiceTest {
     @Order(1)
     @ParameterizedTest
     @MethodSource("geraPersonagensUsandoJutsu")
-    void deveUsarJutsuDePersonagem(Long id,Personagem personagem,String frase){
+    void deveUsarJutsuDePersonagem(Long id,Personagem personagem,String frase, String nomeJutsu){
         mockEncontrarPorId(id,personagem);
         String jutsuUsadoResponse = personagemService.usarJutsu(id);
 
         Assertions.assertEquals(frase,jutsuUsadoResponse);
+        Assertions.assertEquals(25, personagem.getJutsus().get(nomeJutsu).getDano());
+        Assertions.assertEquals(10,personagem.getJutsus().get(nomeJutsu).getConsumoDeChakra());
     }
 
-    @DisplayName("8- Deve desviar de um personagem ")
+    @DisplayName("8- Deve desviar de um personagem quando conseguiuDesviar é true")
     @Order(2)
     @ParameterizedTest
     @MethodSource("geraPersonagensDesviando")
-    void deveDesviarDePersonagem(Long id,Personagem personagem,String frase){
+    void deveDesviarDePersonagemQuandoConseguiuDesviarEhTrue(Long id,Personagem personagem,String frase){
         mockEncontrarPorId(id,personagem);
-        String desvioResponse = personagemService.desviar(id);
+        String desvioResponse = personagemService.desviar(id,true);
 
         Assertions.assertEquals(frase,desvioResponse);
     }
+    @DisplayName("9- Deve desviar de um personagem quando conseguiuDesviar é true")
+    @Order(2)
+    @ParameterizedTest
+    @MethodSource("geraPersonagensNaoDesviando")
+    void deveDesviarDePersonagemQuandoConseguiuDesviarEhFalse(Long id,Personagem personagem,String frase){
+        mockEncontrarPorId(id,personagem);
+        String desvioResponse = personagemService.desviar(id,false);
 
-    @DisplayName("9- Deve lancar excecao para personagem nao encontrado ")
+        Assertions.assertTrue(desvioResponse.contains(frase));
+        Assertions.assertTrue(desvioResponse.contains(Integer.toString(personagem.getVida())));
+    }
+
+    @DisplayName("10- Deve lancar excecao para personagem nao encontrado ")
     @Test
     @Order(9)
     void deveLancarExcecaoPersonagemNaoEncontrado(){
@@ -178,7 +191,7 @@ public class PersonagemServiceTest {
         Assertions.assertThrows(PersonagemNaoEncontradoException.class,()->personagemService.usarJutsu(4L));
     }
 
-    @DisplayName("10- Deve lancar excecao para Jutsu nao encontrado ")
+    @DisplayName("11- Deve lancar excecao para Jutsu nao encontrado ")
     @Test
     @Order(10)
     void deveLancarExcecaoJutsuNaoEncontrado(){
@@ -195,14 +208,20 @@ public class PersonagemServiceTest {
     }
     private static Stream<Arguments> geraPersonagensUsandoJutsu(){
         return Stream.of(
-                Arguments.of(idNaruto,personagemNaruto, USAR_JUTSU_FRASE_NINJUTSU),
-                Arguments.of(idRockieLee,personagemRockieLee,USAR_JUTSU_FRASE_TAIJUTSU)
+                Arguments.of(idNaruto,personagemNaruto, USAR_JUTSU_FRASE_NINJUTSU,NOME_NINJUTSU),
+                Arguments.of(idRockieLee,personagemRockieLee,USAR_JUTSU_FRASE_TAIJUTSU,NOME_TAIJUTSU)
         );
     }
     private static Stream<Arguments> geraPersonagensDesviando(){
         return Stream.of(
                 Arguments.of(idNaruto,personagemNaruto, DESVIAR_FRASE_NINJUTSU),
                 Arguments.of(idRockieLee,personagemRockieLee,DESVIAR_FRASE_TAIJUTSU)
+        );
+    }
+    private static Stream<Arguments> geraPersonagensNaoDesviando(){
+        return Stream.of(
+                Arguments.of(idNaruto,personagemNaruto, NAO_DESVIEI_FRASE),
+                Arguments.of(idRockieLee,personagemRockieLee,NAO_DESVIEI_FRASE)
         );
     }
 }

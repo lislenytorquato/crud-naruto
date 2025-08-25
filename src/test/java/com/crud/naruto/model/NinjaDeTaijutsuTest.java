@@ -15,6 +15,7 @@ public class NinjaDeTaijutsuTest {
 
     @BeforeAll
     static void setup(){
+        JUTSUS_PERSONAGEM_ROCKIE_LEE.put(NOME_TAIJUTSU,taijutsu);
         ninjaDeTaijutsu = new NinjaDeTaijutsu(ID_PERSONAGEM_ROCKIE_LEE,NOME_PERSONAGEM_ROCKIE_LEE, JUTSUS_PERSONAGEM_ROCKIE_LEE, CHAKRA_PERSONAGEM_ROCKIE_LEE, VIDA_PERSONAGEM_ROCKIE_LEE);
         rockieLee = criarPersonagemRockieLee();
         ninjutsu = new Jutsu(ID_NINJUTSU,DANO_NINJUTSU,CONSUMO_CHAKRA_NINJUTSU);
@@ -66,17 +67,25 @@ public class NinjaDeTaijutsuTest {
 
     @DisplayName("6- deve testar usar jutsu")
     @Test
-    @Order(6)
+    @Order(1)
     void deveTestarUsarJutsu(){
         String jutsuUsado = ninjaDeTaijutsu.usarJutsu();
         Assertions.assertEquals(USAR_JUTSU_FRASE_TAIJUTSU,jutsuUsado);
     }
 
-    @DisplayName("7- deve testar desviar")
+    @DisplayName("7- deve testar desviar quando conseguiuDesviar é true")
     @Test
     @Order(7)
-    void deveTestarDesviar(){
-        String desvio = ninjaDeTaijutsu.desviar();
-        Assertions.assertEquals(DESVIAR_FRASE_TAIJUTSU,desvio);
+    void deveTestarDesviarQuandoconseguiuDesviarEhTrue(){
+        String desvio = ninjaDeTaijutsu.desviar(criarPersonagemRockieLee(),true);
+        Assertions.assertTrue(desvio.contains(DESVIAR_FRASE_TAIJUTSU));
+    }
+
+    @DisplayName("7- deve testar desviar quando retornarMensagem é false")
+    @Test
+    @Order(1)
+    void deveTestarDesviarQuandoconseguiuDesviarEhFalse(){
+        String desvio = ninjaDeTaijutsu.desviar(criarPersonagemRockieLee(),false);
+        Assertions.assertTrue(desvio.contains(NAO_DESVIEI_FRASE));
     }
 }

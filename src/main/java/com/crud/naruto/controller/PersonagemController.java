@@ -70,9 +70,9 @@ public class PersonagemController {
     }
 
     @ApiResponse(description = "Desvia do personagem", responseCode = "200")
-    @GetMapping("{id}/desvia")
-    ResponseEntity<String> desviar(@PathVariable Long id){
-        String desvio = personagemService.desviar(id);
+    @GetMapping("{id}/desvia/{conseguiuDesviar}")
+    ResponseEntity<String> desviar(@PathVariable Long id, @PathVariable boolean conseguiuDesviar){
+        String desvio = personagemService.desviar(id,conseguiuDesviar);
         return new ResponseEntity<>(desvio,HttpStatus.OK);
     }
 }

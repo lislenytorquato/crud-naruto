@@ -1,7 +1,9 @@
 package com.crud.naruto.mapper;
 
+import com.crud.naruto.dto.JutsuDto;
 import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
+import com.crud.naruto.model.Jutsu;
 import com.crud.naruto.model.NinjaDeNinjutsu;
 import com.crud.naruto.model.NinjaDeTaijutsu;
 import com.crud.naruto.model.Personagem;
@@ -22,6 +24,5 @@ public interface PersonagemMapper {
     List<PersonagemResponseDto> listaEntityParaListaResponseDto(List<Personagem> personagens);
     NinjaDeNinjutsu personagemParaNinjutsu(Personagem personagem);
     NinjaDeTaijutsu personagemParaTaijutsu(Personagem personagem);
-
 
 }

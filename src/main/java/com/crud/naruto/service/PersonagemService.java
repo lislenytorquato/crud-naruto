@@ -1,5 +1,6 @@
 package com.crud.naruto.service;
 
+import com.crud.naruto.dto.JutsuDto;
 import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
 import com.crud.naruto.exception.JutsuNaoEncontradoException;
@@ -68,24 +69,22 @@ public class PersonagemService {
         }else {
             throw new JutsuNaoEncontradoException();
         }
-
-
-
     }
-    public String desviar(Long id){
+    public String desviar(Long id, boolean conseguiuDesviar){
         Personagem personagem = encontrarPersonagemPorId(id);
 
         if (personagem.getJutsus().containsKey("Taijutsu")){
             NinjaDeTaijutsu ninjaDeTaijutsu = mapper.personagemParaTaijutsu(personagem);
-            return ninjaDeTaijutsu.desviar();
+            return ninjaDeTaijutsu.desviar(personagem,conseguiuDesviar);
         }else if (personagem.getJutsus().containsKey("Ninjutsu")){
             NinjaDeNinjutsu ninjaDeNinjutsu = mapper.personagemParaNinjutsu(personagem);
-            return ninjaDeNinjutsu.desviar();
+            return ninjaDeNinjutsu.desviar(personagem,conseguiuDesviar);
         }else {
             throw new JutsuNaoEncontradoException();
         }
 
     }
+
 
     private Personagem encontrarPersonagemPorId(Long id){
         return personagemRepository.findById(id).orElseThrow(PersonagemNaoEncontradoException::new);
@@ -93,4 +92,6 @@ public class PersonagemService {
     private void salvarPersonagem(Personagem personagem){
         personagemRepository.save(personagem);
     }
+
+
 }

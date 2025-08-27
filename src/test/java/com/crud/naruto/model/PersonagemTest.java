@@ -3,6 +3,8 @@ package com.crud.naruto.model;
 import com.crud.naruto.helper.AssertionsHelper;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
+
 import static com.crud.naruto.helper.TestHelper.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

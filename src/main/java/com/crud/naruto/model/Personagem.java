@@ -22,7 +22,8 @@ public class Personagem {
 
     private String nome;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
+    @MapKey(name = "nome")
     private Map<String,Jutsu> jutsus;
 
     private int chakra = 100;

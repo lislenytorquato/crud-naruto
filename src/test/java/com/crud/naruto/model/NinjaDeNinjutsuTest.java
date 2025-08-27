@@ -4,6 +4,8 @@ import com.crud.naruto.helper.AssertionsHelper;
 import com.crud.naruto.helper.TestHelper;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
+
 import static com.crud.naruto.helper.TestHelper.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

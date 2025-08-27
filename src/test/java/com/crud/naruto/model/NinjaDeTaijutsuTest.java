@@ -3,6 +3,8 @@ package com.crud.naruto.model;
 import com.crud.naruto.helper.AssertionsHelper;
 import org.junit.jupiter.api.*;
 
+import java.util.List;
+
 import static com.crud.naruto.helper.TestHelper.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -18,7 +20,7 @@ public class NinjaDeTaijutsuTest {
         JUTSUS_PERSONAGEM_ROCKIE_LEE.put(NOME_TAIJUTSU,taijutsu);
         ninjaDeTaijutsu = new NinjaDeTaijutsu(ID_PERSONAGEM_ROCKIE_LEE,NOME_PERSONAGEM_ROCKIE_LEE, JUTSUS_PERSONAGEM_ROCKIE_LEE, CHAKRA_PERSONAGEM_ROCKIE_LEE, VIDA_PERSONAGEM_ROCKIE_LEE);
         rockieLee = criarPersonagemRockieLee();
-        ninjutsu = new Jutsu(ID_NINJUTSU,DANO_NINJUTSU,CONSUMO_CHAKRA_NINJUTSU);
+        ninjutsu = new Jutsu(ID_NINJUTSU,DANO_NINJUTSU,CONSUMO_CHAKRA_NINJUTSU,NOME_NINJUTSU);
     }
 
     @DisplayName("1- deve testar construtor")

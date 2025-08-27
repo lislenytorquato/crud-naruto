@@ -1,11 +1,13 @@
 package com.crud.naruto.controller;
 
+import com.crud.naruto.dto.JutsuDto;
 import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
 import com.crud.naruto.model.Jutsu;
 import com.crud.naruto.service.PersonagemService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/personagem")
+@RequiredArgsConstructor
 public class PersonagemController {
 
-    @Autowired
-    PersonagemService personagemService;
+    private final PersonagemService personagemService;
 
     @ApiResponse(description = "Criar personagem", responseCode = "201")
     @PostMapping
@@ -50,8 +52,8 @@ public class PersonagemController {
 
     @ApiResponse(description = "Adicionar jutsu ao personagem", responseCode = "200")
     @PutMapping("{id}/adiciona-jutsu")
-    ResponseEntity<Boolean> adicionarJutsu(@PathVariable Long id, @Valid @RequestBody String nomeJutsu, @Valid @RequestBody Jutsu jutsu){
-        personagemService.adiconarJutsu(id,nomeJutsu, jutsu);
+    ResponseEntity<Void> adicionarJutsu(@PathVariable Long id,@Valid @RequestBody JutsuDto jutsu){
+        personagemService.adiconarJutsu(id,jutsu);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -62,17 +64,24 @@ public class PersonagemController {
         return new ResponseEntity<>(chakraAumentado,HttpStatus.OK);
     }
 
-    @ApiResponse(description = "Usar jutsu do personagem", responseCode = "200")
-    @GetMapping("{id}/usa-jutsu")
-    ResponseEntity<String> usarJutsu(@PathVariable Long id){
-        String jutsuUsado = personagemService.usarJutsu(id);
-        return new ResponseEntity<>(jutsuUsado,HttpStatus.OK);
+    @ApiResponse(description = "Ataque do personagem", responseCode = "200")
+    @GetMapping("{id}/ataque")
+    ResponseEntity<String> ataque(@PathVariable Long id){
+        String ataque = personagemService.ataque(id);
+        return new ResponseEntity<>(ataque,HttpStatus.OK);
     }
 
-    @ApiResponse(description = "Desvia do personagem", responseCode = "200")
-    @GetMapping("{id}/desvia/{conseguiuDesviar}")
-    ResponseEntity<String> desviar(@PathVariable Long id, @PathVariable boolean conseguiuDesviar){
-        String desvio = personagemService.desviar(id,conseguiuDesviar);
-        return new ResponseEntity<>(desvio,HttpStatus.OK);
+    @ApiResponse(description = "defesa do personagem", responseCode = "200")
+    @GetMapping("{id}/defesa")
+    ResponseEntity<String> defesa(@PathVariable Long id){
+        String defesa = personagemService.defesa(id);
+        return new ResponseEntity<>(defesa,HttpStatus.OK);
+    }
+
+    @ApiResponse(description = "derrota do personagem", responseCode = "200")
+    @GetMapping("{id}/derrota")
+    ResponseEntity<String> derrota(@PathVariable Long id){
+        String derrota = personagemService.derrota(id);
+        return new ResponseEntity<>(derrota,HttpStatus.OK);
     }
 }

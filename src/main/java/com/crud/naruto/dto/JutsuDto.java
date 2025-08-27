@@ -9,5 +9,7 @@ public class JutsuDto {
 
     private int dano;
     private int consumoDeChakra;
+    private String nome;
+
 
 }

@@ -1,10 +1,10 @@
 package com.crud.naruto.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -19,5 +19,7 @@ public class Jutsu {
     private Long id;
     private int dano;
     private int consumoDeChakra;
+    private String nome;
+
 
 }

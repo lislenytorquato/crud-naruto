@@ -24,5 +24,7 @@ public interface PersonagemMapper {
     List<PersonagemResponseDto> listaEntityParaListaResponseDto(List<Personagem> personagens);
     NinjaDeNinjutsu personagemParaNinjutsu(Personagem personagem);
     NinjaDeTaijutsu personagemParaTaijutsu(Personagem personagem);
+    Jutsu jutsuDtoToJutsu(JutsuDto jutsuDto);
+    JutsuDto jutsuToJutsuDto(Jutsu jutsu);
 
 }

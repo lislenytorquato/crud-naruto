@@ -17,7 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.Optional;
@@ -131,7 +130,7 @@ public class PersonagemServiceTest {
 
         mockEncontrarPorId(idRockieLee,personagemRockieLee);
         mockSalvarPersonagem(personagemRockieLee);
-        personagemService.adiconarJutsu(idRockieLee, NOME_NINJUTSU,ninjutsu);
+        personagemService.adiconarJutsu(idRockieLee,ninjutsuDto);
 
         AssertionsHelper.assertParaAdicionarJutsu(personagemRockieLee, NOME_NINJUTSU,ninjutsu);
     }
@@ -148,56 +147,77 @@ public class PersonagemServiceTest {
         Assertions.assertNotEquals(CHAKRA_PERSONAGEM_ROCKIE_LEE,chakraAumentado);
     }
 
-    @DisplayName("7- Deve usar jutsu de um personagem ")
+    @DisplayName("7- Deve atacar um personagem ")
     @Order(1)
     @ParameterizedTest
-    @MethodSource("geraPersonagensUsandoJutsu")
-    void deveUsarJutsuDePersonagem(Long id,Personagem personagem,String frase, String nomeJutsu){
+    @MethodSource("geraPersonagensAtacando")
+    void deveAtacarUmPersonagem(Long id,Personagem personagem,String frase, String nomeJutsu, int chakraConsumido){
         mockEncontrarPorId(id,personagem);
-        String jutsuUsadoResponse = personagemService.usarJutsu(id);
+        String response = personagemService.ataque(id);
 
-        Assertions.assertEquals(frase,jutsuUsadoResponse);
+        Assertions.assertEquals(frase+CHAKRA_CONSUMIDO_ATAQUE_FRASE+chakraConsumido,response);
         Assertions.assertEquals(25, personagem.getJutsus().get(nomeJutsu).getDano());
         Assertions.assertEquals(10,personagem.getJutsus().get(nomeJutsu).getConsumoDeChakra());
     }
 
-    @DisplayName("8- Deve desviar de um personagem quando conseguiuDesviar é true")
+    @DisplayName("8- Deve se defender de um personagem quando conseguiuDesviar é true")
     @Order(2)
     @ParameterizedTest
-    @MethodSource("geraPersonagensDesviando")
-    void deveDesviarDePersonagemQuandoConseguiuDesviarEhTrue(Long id,Personagem personagem,String frase){
+    @MethodSource("geraPersonagensQueConseguem")
+    void deveSeDefenderDePersonagemQuandoConseguiuDesviarEhTrue(Long id,Personagem personagem,String frase, int chakraConsumido){
         mockEncontrarPorId(id,personagem);
-        String desvioResponse = personagemService.desviar(id,true);
+        String response = personagemService.defesa(id);
 
-        Assertions.assertEquals(frase,desvioResponse);
+        Assertions.assertEquals(response,frase+CHAKRA_CONSUMIDO_DEFESA_FRASE+chakraConsumido);
     }
-    @DisplayName("9- Deve desviar de um personagem quando conseguiuDesviar é true")
+    @DisplayName("9- Deve se defender de um personagem quando conseguiuDesviar é false")
     @Order(2)
     @ParameterizedTest
     @MethodSource("geraPersonagensNaoDesviando")
-    void deveDesviarDePersonagemQuandoConseguiuDesviarEhFalse(Long id,Personagem personagem,String frase){
+    void deveDesviarDePersonagemQuandoConseguiuDesviarEhFalse(Long id,Personagem personagem,String frase,int chakraConsumido){
         mockEncontrarPorId(id,personagem);
-        String desvioResponse = personagemService.desviar(id,false);
+        String response = personagemService.defesa(id);
 
-        Assertions.assertTrue(desvioResponse.contains(frase));
-        Assertions.assertTrue(desvioResponse.contains(Integer.toString(personagem.getVida())));
+        Assertions.assertEquals(response,NAO_DESVIEI_FRASE+personagem.getVida()+CHAKRA_CONSUMIDO_DEFESA_FRASE+chakraConsumido);
+        Assertions.assertTrue(response.contains(Integer.toString(personagem.getVida())));
+    }
+    @DisplayName("10- Deve continuar jogando quando vida é maior que 0 e chakra é maior que 0")
+    @Order(2)
+    @ParameterizedTest
+    @MethodSource("geraPersonagensQueConseguem")
+    void deveContinuarJogandoQuandoVidaEhMaiorQueZeroEChakraEhMaiorQueZero(Long id,Personagem personagem,String frase,int chakraConsumido){
+        mockEncontrarPorId(id,personagem);
+        String response = personagemService.derrota(id);
+
+        Assertions.assertEquals(CONTINUE_JOGANDO_FRASE, response);
     }
 
-    @DisplayName("10- Deve lancar excecao para personagem nao encontrado ")
+    @DisplayName("11- Deve ser derrotado quando vida é igual a 0 e chakra é igual a 0")
+    @Order(2)
+    @ParameterizedTest
+    @MethodSource("geraPersonagensSemVidaESemChakra")
+    void deveSerDerrotadoQuandoVidaEhMaiorQueZeroEChakraEhMaiorQueZero(Long id,Personagem personagem,String frase){
+        mockEncontrarPorId(id,personagem);
+        String response = personagemService.derrota(id);
+
+        Assertions.assertEquals(PERDEU_FRASE, response);
+    }
+
+    @DisplayName("12- Deve lancar excecao para personagem nao encontrado ")
     @Test
     @Order(9)
     void deveLancarExcecaoPersonagemNaoEncontrado(){
 
-        Assertions.assertThrows(PersonagemNaoEncontradoException.class,()->personagemService.usarJutsu(4L));
+        Assertions.assertThrows(PersonagemNaoEncontradoException.class,()->personagemService.ataque(4L));
     }
 
-    @DisplayName("11- Deve lancar excecao para Jutsu nao encontrado ")
+    @DisplayName("13- Deve lancar excecao para Jutsu nao encontrado ")
     @Test
     @Order(10)
     void deveLancarExcecaoJutsuNaoEncontrado(){
 
         personagemRockieLee.getJutsus().remove(NOME_TAIJUTSU);
-        Assertions.assertThrows(PersonagemNaoEncontradoException.class,()->personagemService.usarJutsu(ID_PERSONAGEM_ROCKIE_LEE));
+        Assertions.assertThrows(PersonagemNaoEncontradoException.class,()->personagemService.ataque(ID_PERSONAGEM_ROCKIE_LEE));
     }
 
     private void mockEncontrarPorId(Long id, Personagem personagem){
@@ -206,22 +226,32 @@ public class PersonagemServiceTest {
     private void mockSalvarPersonagem(Personagem personagem){
         Mockito.when(personagemRepository.save(any(Personagem.class))).thenReturn(personagem);
     }
-    private static Stream<Arguments> geraPersonagensUsandoJutsu(){
+    private static Stream<Arguments> geraPersonagensAtacando(){
+        int chakraConsumidoNaruto = personagemNaruto.getChakra() - CONSUMO_CHAKRA_NINJUTSU;
+        int chakraConsumidoRockieLee = personagemRockieLee.getChakra() - CONSUMO_CHAKRA_TAIJUTSU;
         return Stream.of(
-                Arguments.of(idNaruto,personagemNaruto, USAR_JUTSU_FRASE_NINJUTSU,NOME_NINJUTSU),
-                Arguments.of(idRockieLee,personagemRockieLee,USAR_JUTSU_FRASE_TAIJUTSU,NOME_TAIJUTSU)
+                Arguments.of(idNaruto,personagemNaruto, USAR_JUTSU_FRASE_NINJUTSU,NOME_NINJUTSU,chakraConsumidoNaruto),
+                Arguments.of(idRockieLee,personagemRockieLee,USAR_JUTSU_FRASE_TAIJUTSU,NOME_TAIJUTSU,chakraConsumidoRockieLee)
         );
     }
-    private static Stream<Arguments> geraPersonagensDesviando(){
+    private static Stream<Arguments> geraPersonagensQueConseguem(){
         return Stream.of(
-                Arguments.of(idNaruto,personagemNaruto, DESVIAR_FRASE_NINJUTSU),
-                Arguments.of(idRockieLee,personagemRockieLee,DESVIAR_FRASE_TAIJUTSU)
+                Arguments.of(idNaruto,personagemNaruto, DESVIAR_FRASE_NINJUTSU, personagemNaruto.getChakra()),
+                Arguments.of(idRockieLee,personagemRockieLee,DESVIAR_FRASE_TAIJUTSU, personagemRockieLee.getChakra())
         );
     }
     private static Stream<Arguments> geraPersonagensNaoDesviando(){
+        int chakraConsumidoNaruto = 0;
+        int chakraConsumidoRockieLee =0;
         return Stream.of(
-                Arguments.of(idNaruto,personagemNaruto, NAO_DESVIEI_FRASE),
-                Arguments.of(idRockieLee,personagemRockieLee,NAO_DESVIEI_FRASE)
+                Arguments.of(idNaruto,criarPersonagemNarutoSemChakra(), NAO_DESVIEI_FRASE,chakraConsumidoNaruto),
+                Arguments.of(idRockieLee,criarPersonagemRockieLeeSemChakra(),NAO_DESVIEI_FRASE,chakraConsumidoRockieLee)
+        );
+    }
+    private static Stream<Arguments> geraPersonagensSemVidaESemChakra(){
+        return Stream.of(
+                Arguments.of(idNaruto,criarPersonagemNarutoSemVidaESemChakra(), NAO_DESVIEI_FRASE),
+                Arguments.of(idRockieLee,criarPersonagemRockieLeeSemVidaESemChakra(),NAO_DESVIEI_FRASE)
         );
     }
 }

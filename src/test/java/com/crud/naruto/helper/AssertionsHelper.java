@@ -22,7 +22,8 @@ public class AssertionsHelper {
 
     public static void assertParaAdicionarJutsu(Personagem personagem, String nomeJutsu, Jutsu jutsu){
         Assertions.assertTrue(personagem.getJutsus().containsKey(nomeJutsu));
-        Assertions.assertEquals(jutsu,personagem.getJutsus().get(nomeJutsu));
+        Assertions.assertEquals(jutsu.getDano(),personagem.getJutsus().get(nomeJutsu).getDano());
+        Assertions.assertEquals(jutsu.getConsumoDeChakra(),personagem.getJutsus().get(nomeJutsu).getConsumoDeChakra());
     }
 
     public static void assertEqualsParaAumentarChakra(Personagem personagem, int chakraAumentado){

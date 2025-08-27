@@ -1,6 +1,5 @@
 package com.crud.naruto.dto;
 
-import com.crud.naruto.model.Jutsu;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;

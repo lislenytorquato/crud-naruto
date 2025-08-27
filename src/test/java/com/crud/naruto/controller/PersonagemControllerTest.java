@@ -12,7 +12,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 
@@ -78,8 +77,8 @@ public class PersonagemControllerTest {
     @DisplayName("5- deve adicionar Jutsu a um personagem")
     @Test
     void deveAdicionarJutsu(){
-        Mockito.doNothing().when(personagemService).adiconarJutsu(ID_PERSONAGEM_ROCKIE_LEE, NOME_NINJUTSU,ninjutsu);
-        ResponseEntity<Boolean> response = personagemController.adicionarJutsu(ID_PERSONAGEM_ROCKIE_LEE, NOME_NINJUTSU,ninjutsu);
+        Mockito.doNothing().when(personagemService).adiconarJutsu(ID_PERSONAGEM_ROCKIE_LEE, ninjutsuDto);
+        ResponseEntity<Void> response = personagemController.adicionarJutsu(ID_PERSONAGEM_ROCKIE_LEE, ninjutsuDto);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
@@ -93,29 +92,29 @@ public class PersonagemControllerTest {
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
-    @DisplayName("7- deve usar Jutsu de um personagem")
+    @DisplayName("7- deve atacar um personagem")
     @Test
-    void deveUsarJutsu(){
-        Mockito.when(personagemService.usarJutsu(ID_PERSONAGEM_ROCKIE_LEE)).thenReturn(USAR_JUTSU_FRASE_TAIJUTSU);
-        ResponseEntity<String> response = personagemController.usarJutsu(ID_PERSONAGEM_ROCKIE_LEE);
+    void deveAtacarPersonagem(){
+        Mockito.when(personagemService.ataque(ID_PERSONAGEM_ROCKIE_LEE)).thenReturn(USAR_JUTSU_FRASE_TAIJUTSU);
+        ResponseEntity<String> response = personagemController.ataque(ID_PERSONAGEM_ROCKIE_LEE);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
-    @DisplayName("8- deve desviar de um personagem quando conseguiuDesviar eh true")
+    @DisplayName("8- deve se defender de um personagem")
     @Test
-    void deveDesviarQuandoConseguiuDesviarEhTrue(){
-        Mockito.when(personagemService.desviar(ID_PERSONAGEM_ROCKIE_LEE,true)).thenReturn(DESVIAR_FRASE_TAIJUTSU);
-        ResponseEntity<String> response = personagemController.desviar(ID_PERSONAGEM_ROCKIE_LEE,true);
+    void deveSeDefenderDeUmPersonagem(){
+        Mockito.when(personagemService.defesa(ID_PERSONAGEM_ROCKIE_LEE)).thenReturn(DESVIAR_FRASE_TAIJUTSU);
+        ResponseEntity<String> response = personagemController.defesa(ID_PERSONAGEM_ROCKIE_LEE);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
-    @DisplayName("8- deve desviar de um personagem quando conseguiuDesviar eh false")
+    @DisplayName("9- deve um personagem ser derrotado")
     @Test
-    void deveDesviarQuandoConseguiuDesviarEhFalse(){
-        Mockito.when(personagemService.desviar(ID_PERSONAGEM_ROCKIE_LEE,false)).thenReturn(DESVIAR_FRASE_TAIJUTSU);
-        ResponseEntity<String> response = personagemController.desviar(ID_PERSONAGEM_ROCKIE_LEE,false);
+    void deveUmPersonagemSerDerrotado(){
+        Mockito.when(personagemService.derrota(ID_PERSONAGEM_ROCKIE_LEE)).thenReturn(DESVIAR_FRASE_TAIJUTSU);
+        ResponseEntity<String> response = personagemController.derrota(ID_PERSONAGEM_ROCKIE_LEE);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
     }

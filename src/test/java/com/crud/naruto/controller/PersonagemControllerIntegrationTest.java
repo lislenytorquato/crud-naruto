@@ -1,16 +1,28 @@
 package com.crud.naruto.controller;
 
+import com.crud.naruto.dto.JutsuDto;
 import com.crud.naruto.helper.TestHelper;
+import com.crud.naruto.model.Jutsu;
 import com.crud.naruto.model.Personagem;
+import com.crud.naruto.repository.JutsuRepository;
 import com.crud.naruto.repository.PersonagemRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
+
+import static com.crud.naruto.helper.TestHelper.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -24,6 +36,9 @@ public class PersonagemControllerIntegrationTest {
     @Autowired
     private PersonagemRepository personagemRepository;
 
+    @Autowired
+    private JutsuRepository jutsuRepository;
+
     private static  String jsonPersonagemRockieLee;
     private static  String jsonPersonagemNaruto;
     private static  String jsonPersonagemSakura;
@@ -32,11 +47,12 @@ public class PersonagemControllerIntegrationTest {
     void setUp() {
         personagemRepository.deleteAll();
 
-        jsonPersonagemRockieLee = "{\"nome\":\"Rockie Lee\",\"idade\":17,\"aldeia\":\"China\",\"jutsus\":[],\"chakra\":125}";
+        jsonPersonagemRockieLee = "{\"nome\": \"RockieLee\", \"jutsus\": {\"Taijutsu\": {\"dano\": 25, \"consumoDeChakra\": 10}}, \"vida\": 100}";
 
-         jsonPersonagemNaruto= "{\"nome\": \"Naruto\", \"idade\": 15, \"aldeia\": \"Japão\", \"jutsus\": [], \"chakra\": 100}";
+        jsonPersonagemNaruto=  "{\"nome\": \"Naruto\", \"jutsus\": {\"Ninjutsu\": {\"dano\": 25, \"consumoDeChakra\": 10}}, \"vida\": 100}";
 
-        jsonPersonagemSakura = "{\"nome\":\"Sakura\",\"idade\":16,\"aldeia\":\"França\",\"jutsus\":[],\"chakra\":120}";
+        jsonPersonagemSakura =  "{\"nome\": \"Sakura\", \"jutsus\": {\"Taijutsu\": {\"dano\": 10, \"consumoDeChakra\": 25}}, \"vida\": 100}";
+
     }
 
     @DisplayName("1- deve criar personagem")
@@ -79,11 +95,18 @@ public class PersonagemControllerIntegrationTest {
     @DisplayName("5- deve adicionar Jutsu")
     @Test
     void deveAdicionarJutsu() throws Exception {
+
+
+        JutsuDto jutsuDto = new JutsuDto(25,10,"Ninjutsu");
+
+
+        Jutsu jutsuSalvo = jutsuRepository.save(TestHelper.ninjutsuNarutoSemId);
+        JUTSUS_PERSONAGEM_NARUTO.put(jutsuSalvo.getNome(),jutsuSalvo);
         Personagem personagemSalvo = personagemRepository.save(TestHelper.criarPersonagemNarutoSemId());
 
         mockMvc.perform(put("/api/personagem/"+personagemSalvo.getId()+"/adiciona-jutsu")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("\" Taijutsu\""))
+                        .content(new ObjectMapper().writeValueAsString(jutsuDto)))
                 .andExpect(status().isOk());
     }
 
@@ -98,25 +121,109 @@ public class PersonagemControllerIntegrationTest {
                 .andExpect(status().isOk());
     }
 
-    @DisplayName("7- deve usar jutsu")
+    @DisplayName("7- deve atacar ninjutsu quando chakra eh maior que zero")
     @Test
-    void deveUsarJutsu() throws Exception {
+    void deveAtacarNinjutsuQuandoChakraEhMaiorQueZero() throws Exception {
 
         Personagem personagemSalvo = personagemRepository.save(TestHelper.criarPersonagemNarutoSemId());
 
-        mockMvc.perform(get("/api/personagem/"+personagemSalvo.getId()+"/usa-jutsu"))
+        mockMvc.perform(get("/api/personagem/"+personagemSalvo.getId()+"/ataque"))
                 .andExpect(status().isOk());
     }
-    @DisplayName("7- deve desviar")
+
+    @DisplayName("8- deve atacar taijutsu quando chakra eh maior que zero")
     @Test
-    void deveDesviar() throws Exception {
+    void deveAtacarTaijutsuQuandoChakraEhMaiorQueZero() throws Exception {
+
+        Personagem personagemSalvo = personagemRepository.save(TestHelper.criarPersonagemRockieLeeSemId(100,100));
+
+        mockMvc.perform(get("/api/personagem/"+personagemSalvo.getId()+"/ataque"))
+                .andExpect(status().isOk());
+    }
+
+    @DisplayName("9- deve retornar 200 quando chakra ninjutsu eh igual zero")
+    @Test
+    void deveRetornar200QuandoChakraNinjutsuEhIgualAZero() throws Exception {
+
+        Personagem personagemSalvo = personagemRepository.save(TestHelper.criarPersonagemNarutoSemIdESemChakra());
+
+        mockMvc.perform(get("/api/personagem/"+personagemSalvo.getId()+"/ataque"))
+                .andExpect(status().isOk());
+    }
+
+    @DisplayName("9- deve retornar 200 quando chakra taijutsu eh igual zero")
+    @Test
+    void deveRetornar200QuandoChakraTaijutsuEhIgualAZero() throws Exception {
+
+        Personagem personagemSalvo = personagemRepository.save(TestHelper.criarPersonagemRockieLeeSemId(0,100));
+
+        mockMvc.perform(get("/api/personagem/"+personagemSalvo.getId()+"/ataque"))
+                .andExpect(status().isOk());
+    }
+
+    @DisplayName("10- deve defender ninjutsu quando chakra eh maior que zero")
+    @Test
+    void deveDefenderNinjutsuQuandoChakraEhMaiorQueZero() throws Exception {
 
         Personagem personagemSalvo = personagemRepository.save(TestHelper.criarPersonagemNarutoSemId());
 
-        mockMvc.perform(get("/api/personagem/"+personagemSalvo.getId()+"/desvia"))
+        mockMvc.perform(get("/api/personagem/"+personagemSalvo.getId()+"/defesa"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(DESVIAR_FRASE_NINJUTSU+CHAKRA_CONSUMIDO_DEFESA_FRASE+(personagemSalvo.getChakra()-CONSUMO_CHAKRA_NINJUTSU)));
+    }
+
+    @DisplayName("11- deve defender taijutsu quando chakra eh maior que zero")
+    @Test
+    void deveDefenderTaijutsuQuandoChakraEhMaiorQueZero() throws Exception {
+
+        Personagem personagemSalvo = personagemRepository.save(TestHelper.criarPersonagemRockieLeeSemId(100,100));
+
+        mockMvc.perform(get("/api/personagem/"+personagemSalvo.getId()+"/defesa"))
                 .andExpect(status().isOk());
     }
 
+    @DisplayName("12- deve retornar 200 quando defender com ninjutsu e chakra  eh igual a zero")
+    @Test
+    void deveRetornar200QuandoDefenderNinjutsuChakraEhIgualAZero() throws Exception {
+
+        Personagem personagemSalvo = personagemRepository.save(TestHelper.criarPersonagemNarutoSemIdESemChakra());
+
+        mockMvc.perform(get("/api/personagem/"+personagemSalvo.getId()+"/defesa"))
+                .andExpect(status().isOk());
+    }
+
+    @DisplayName("13- deve retornar 200 quando derrotado com vida igual a zero")
+    @Test
+    void deveRetornar200QuandoDerrotadoComVidaIgualAZero() throws Exception {
+
+        Personagem personagemSalvo = personagemRepository.save(TestHelper.criarPersonagemRockieLeeSemId(100,0));
+
+        mockMvc.perform(get("/api/personagem/"+personagemSalvo.getId()+"/derrota"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(PERDEU_FRASE));
+    }
+
+    @DisplayName("14- deve retornar 200 quando derrotado com chakra igual a zero")
+    @Test
+    void deveRetornar200QuandoDerrotadoComChakraIgualAZero() throws Exception {
+
+        Personagem personagemSalvo = personagemRepository.save(TestHelper.criarPersonagemRockieLeeSemId(0,100));
+
+        mockMvc.perform(get("/api/personagem/"+personagemSalvo.getId()+"/derrota"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(PERDEU_FRASE));;
+    }
+
+    @DisplayName("14- deve retornar 200 quando derrota tem chakra e vida diferentes de zero")
+    @Test
+    void deveRetornar200QuandoDerrotaTemChakraEVidaDiferenteDeZero() throws Exception {
+
+        Personagem personagemSalvo = personagemRepository.save(TestHelper.criarPersonagemRockieLeeSemId(100,100));
+
+        mockMvc.perform(get("/api/personagem/"+personagemSalvo.getId()+"/derrota"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CONTINUE_JOGANDO_FRASE));
+    }
 
 
 

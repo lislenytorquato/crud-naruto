@@ -1,25 +1,27 @@
-# CRUD - NARUTO
+# CRUD - NARUTO 2
 
-O crud – naruto é uma api que simula o anime naruto para o treinamento na empresa db, utiliza a arquitetura em camadas mvc. Segue abaixo descrições dos pacotes e classes. 
+O crud – naruto 2 é uma refatoração da api que simula o anime naruto para o treinamento na empresa db, utiliza a arquitetura em camadas mvc. Segue abaixo descrições dos pacotes e classes. 
 
 
 ## MODEL
-Classe Personagem: classe pai, é a única tabela no banco. 
-
-Classe NinjaDeGenjutsu: implementa a interface Ninja conforme seu jutsu 
+Classe Personagem: classe pai, é a única tabela no banco.
 
 Classe NinjaDeNinjutsu: implementa a interface Ninja conforme seu jutsu 
 
-Classe NinjaDeTaijutsu: implementa a interface Ninja conforme seu jutsu 
+Classe NinjaDeTaijutsu: implementa a interface Ninja conforme seu jutsu
+
+Classe Jutsu: em associação com classe Personagem através de um map.
 
 ## INTERFACES
-Ninja: possui dois métodos, usarJutsu e desviar
+Ninja: possui dois métodos, usarJutsu e desviar, este recebe um personagem e um boolean se conseguiu desviar.
 
 ## DTO 
 
 Classe PersonagemRequestDto: objeto de request com os atributos de personagem sem o id; 
 
-Classe PersonagemResponseDto: objeto de response com os atributos de personagem sem o id. 
+Classe PersonagemResponseDto: objeto de response com os atributos de personagem sem o id.
+
+JutsuDto: Os atributos da classe Jutsu sem id;
 
 ## MAPPER 
 
@@ -35,25 +37,26 @@ Interface PersonagemMapper: mapeia objetos da request para entity Personagem, da
 
 	É a camada das regras de negócio 
 
-- CriarPersonagem: recebe uma request, mapeia para entity, salva no banco e retorna a response; 
+- CriarPersonagem: recebe uma request, mapeia para entity,antes salva o Jutsu, salva no banco e retorna a response; 
 
-- EditarPersonagem: recebe uma request e um id, busca o personagem e atualiza com um mapper, salva no banco e retorna a response; 
+- EditarPersonagem: recebe uma request e um id, busca o personagem,antes salva o Jutsu, atualiza e salva no banco e retorna a response; 
 
 - DeletarPersonagem: recebe um id, busca o id no banco  e deleta. Não há retorno. 
 
 - ListarPersonagens: busca todos os personagens no banco e retorna uma lista de response 
 
-- AdicionarJutsu: recebe um id, e um Jutsu, busca o id no banco e adiciona o jutsu ao personagem e salva no banco. Retorna boolean. 
+- AdicionarJutsu: recebe um id, e um Jutsu, salva o jutsu no banco,busca o id no banco e adiciona o jutsu ao personagem e salva no banco. Retorna boolean. 
 
 - AumentarChakra: recebe um id, e uma quantidade, busca o id no banco e adiciona quantidade ao chakra personagem e salva no banco. Retorna o chakra. 
 
-- UsarJutsu: recebe um id, verifica se o personagem tem genjutsu, ninjutsu ou taijutsu, então, transforma-o em um objeto das classes filhas e chama o método usarJutsu; Se não houver jutsu lança JutsuNaoEncontradoException; 
+- UsarJutsu: recebe um id, verifica se o personagem tem ninjutsu ou taijutsu, então, transforma-o em um objeto das classes filhas e chama o método usarJutsu; Se não houver jutsu lança JutsuNaoEncontradoException; 
 
 - desviar: recebe um id, verifica se o personagem tem genjutsu, ninjutsu ou taijutsu, então, transforma-o em um objeto das classes filhas e chama o método desviar; Se não houver jutsu lança JutsuNaoEncontradoException; 
 
 ## REPOSITORY 
 
-Interface PersonagemRepository estende a JpaRepository. 
+Interface PersonagemRepository estende a JpaRepository.
+Interface JutsuRepository estende a JpaRepository.
 
 ## CONTROLLER 
 

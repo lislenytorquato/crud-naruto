@@ -7,6 +7,7 @@ import com.crud.naruto.helper.AssertionsHelper;
 import com.crud.naruto.helper.TestHelper;
 import com.crud.naruto.mapper.PersonagemMapper;
 import com.crud.naruto.model.Personagem;
+import com.crud.naruto.repository.JutsuRepository;
 import com.crud.naruto.repository.PersonagemRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -57,6 +57,9 @@ public class PersonagemService {
 
     public void deletarPersonagem(Long id){
         Personagem personagem = encontrarPersonagemPorId(id);
+        personagem.getJutsus().forEach((nome,jutsu)->{
+            jutsuRepository.delete(jutsu);
+        });
         personagemRepository.delete(personagem);
     }
     public List<PersonagemResponseDto> listarPersonagens(){

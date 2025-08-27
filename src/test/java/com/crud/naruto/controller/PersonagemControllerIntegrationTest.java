@@ -47,11 +47,11 @@ public class PersonagemControllerIntegrationTest {
     void setUp() {
         personagemRepository.deleteAll();
 
-        jsonPersonagemRockieLee = "{\"nome\": \"RockieLee\", \"jutsus\": {\"Taijutsu\": {\"dano\": 25, \"consumoDeChakra\": 10}}, \"vida\": 100}";
+        jsonPersonagemRockieLee = "{\"nome\": \"RockieLee\", \"jutsus\": {\"Taijutsu\": {\"dano\": 25, \"consumoDeChakra\": 10,\"nome\": \"Taijutsu\" }}, \"vida\": 100}";
 
-        jsonPersonagemNaruto=  "{\"nome\": \"Naruto\", \"jutsus\": {\"Ninjutsu\": {\"dano\": 25, \"consumoDeChakra\": 10}}, \"vida\": 100}";
+        jsonPersonagemNaruto=  "{\"nome\": \"Naruto\", \"jutsus\": {\"Ninjutsu\": {\"dano\": 25, \"consumoDeChakra\": 10, \"nome\": \"Ninjutsu\"}}}, \"vida\": 100}";
 
-        jsonPersonagemSakura =  "{\"nome\": \"Sakura\", \"jutsus\": {\"Taijutsu\": {\"dano\": 10, \"consumoDeChakra\": 25}}, \"vida\": 100}";
+        jsonPersonagemSakura =  "{\"nome\": \"Sakura\", \"jutsus\": {\"Taijutsu\": {\"dano\": 10, \"consumoDeChakra\": 25, \"nome\": \"Taijutsu\"}}}, \"vida\": 100}";
 
     }
 

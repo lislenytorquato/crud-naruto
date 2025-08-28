@@ -2,7 +2,6 @@ package com.crud.naruto.model;
 
 import com.crud.naruto.interfaces.Ninja;
 
-import java.util.List;
 import java.util.Map;
 
 public class NinjaDeTaijutsu extends Personagem implements Ninja {

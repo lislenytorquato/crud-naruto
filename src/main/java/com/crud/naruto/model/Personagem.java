@@ -3,7 +3,6 @@ package com.crud.naruto.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 import java.util.Map;
 
 @Entity
@@ -15,7 +14,8 @@ import java.util.Map;
 @ToString
 public class Personagem {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     @ToString.Exclude
     private Long id;

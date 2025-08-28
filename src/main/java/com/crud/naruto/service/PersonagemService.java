@@ -63,6 +63,7 @@ public class PersonagemService {
         List<Personagem> listaDePersonagens = personagemRepository.findAll();
         return mapper.listaEntityParaListaResponseDto(listaDePersonagens);
     }
+
     public void adiconarJutsu(Long id, JutsuDto jutsuDto){
         Personagem personagem = encontrarPersonagemPorId(id);
         Jutsu jutsu = mapper.jutsuDtoToJutsu(jutsuDto);
@@ -72,6 +73,7 @@ public class PersonagemService {
         personagem.adicionarJutsu(jutsu.getNome(), jutsu);
         salvarPersonagem(personagem);
     }
+
     public int aumentarChakra(Long id, int quantidade){
         Personagem personagem = encontrarPersonagemPorId(id);
         personagem.aumentarChakra(quantidade);
@@ -89,6 +91,7 @@ public class PersonagemService {
         }
         return usouJutsu + " Chakra após ataque: "+ personagem.getChakra();
     }
+
     public String defesa(Long id){
         Personagem personagem = encontrarPersonagemPorId(id);
         String desviou = "";
@@ -113,16 +116,17 @@ public class PersonagemService {
             mensagem = "Personagem perdeu!!!";
 
         return mensagem;
-
     }
 
 
     private Personagem encontrarPersonagemPorId(Long id){
         return personagemRepository.findById(id).orElseThrow(PersonagemNaoEncontradoException::new);
     }
+
     private void salvarPersonagem(Personagem personagem){
         personagemRepository.save(personagem);
     }
+
     private void chakraConsumido(Personagem personagem){
 
                 personagem.getJutsus().forEach((nome,jutsu)->{
@@ -143,6 +147,7 @@ public class PersonagemService {
             throw new JutsuNaoEncontradoException();
         }
     }
+
     private String desviar(Long id, boolean conseguiuDesviar){
         Personagem personagem = encontrarPersonagemPorId(id);
 

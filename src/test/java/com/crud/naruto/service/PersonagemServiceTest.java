@@ -157,8 +157,8 @@ public class PersonagemServiceTest {
         String response = personagemService.ataque(id);
 
         Assertions.assertEquals(frase+CHAKRA_CONSUMIDO_ATAQUE_FRASE+chakraConsumido,response);
-        Assertions.assertEquals(25, personagem.getJutsus().get(nomeJutsu).getDano());
-        Assertions.assertEquals(10,personagem.getJutsus().get(nomeJutsu).getConsumoDeChakra());
+        Assertions.assertEquals(25, personagem.getJutsu().get(nomeJutsu).getDano());
+        Assertions.assertEquals(10,personagem.getJutsu().get(nomeJutsu).getConsumoDeChakra());
     }
 
     @DisplayName("8- Deve se defender de um personagem quando conseguiuDesviar é true")
@@ -217,7 +217,7 @@ public class PersonagemServiceTest {
     @Order(10)
     void deveLancarExcecaoJutsuNaoEncontrado(){
 
-        personagemRockieLee.getJutsus().remove(NOME_TAIJUTSU);
+        personagemRockieLee.getJutsu().remove(NOME_TAIJUTSU);
         Assertions.assertThrows(PersonagemNaoEncontradoException.class,()->personagemService.ataque(ID_PERSONAGEM_ROCKIE_LEE));
     }
 

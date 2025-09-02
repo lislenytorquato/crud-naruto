@@ -14,8 +14,8 @@ public class NinjaDeNinjutsu extends Personagem implements Ninja {
 
     @Override
     public String usarJutsu() {
-        this.getJutsus().get("Ninjutsu").setDano(25);
-        this.getJutsus().get("Ninjutsu").setConsumoDeChakra(10);
+        this.getJutsu().get("Ninjutsu").setDano(25);
+        this.getJutsu().get("Ninjutsu").setConsumoDeChakra(10);
         return "Ataque de Ninjutsu!!";
     }
 
@@ -25,7 +25,7 @@ public class NinjaDeNinjutsu extends Personagem implements Ninja {
             return "Desviei com Ninjutsu!!";
         }
         else {
-            personagem.setVida(personagem.getVida()-this.getJutsus().get("Ninjutsu").getDano());
+            personagem.setVida(personagem.getVida()-this.getJutsu().get("Ninjutsu").getDano());
             return "Não desviei!! Vida: "+personagem.getVida();
         }
     }

@@ -10,20 +10,20 @@ public class AssertionsHelper {
     public static void assertEqualsPersonagem(Personagem personagem, Personagem personagemAtributos){
 
         Assertions.assertEquals(personagemAtributos.getNome(),personagem.getNome());
-        Assertions.assertEquals(personagemAtributos.getJutsus(),personagem.getJutsus());
+        Assertions.assertEquals(personagemAtributos.getJutsu(),personagem.getJutsu());
         Assertions.assertEquals(personagemAtributos.getChakra(),personagem.getChakra());
     }
 
     public static void assertTrueParaToString(Personagem personagem, Personagem personagemAtributos){
         Assertions.assertTrue(personagem.toString().contains(personagemAtributos.getNome()));
-        Assertions.assertTrue(personagem.toString().contains(personagemAtributos.getJutsus().toString()));
+        Assertions.assertTrue(personagem.toString().contains(personagemAtributos.getJutsu().toString()));
         Assertions.assertTrue(personagem.toString().contains(Integer.toString(personagemAtributos.getChakra())));
     }
 
     public static void assertParaAdicionarJutsu(Personagem personagem, String nomeJutsu, Jutsu jutsu){
-        Assertions.assertTrue(personagem.getJutsus().containsKey(nomeJutsu));
-        Assertions.assertEquals(jutsu.getDano(),personagem.getJutsus().get(nomeJutsu).getDano());
-        Assertions.assertEquals(jutsu.getConsumoDeChakra(),personagem.getJutsus().get(nomeJutsu).getConsumoDeChakra());
+        Assertions.assertTrue(personagem.getJutsu().containsKey(nomeJutsu));
+        Assertions.assertEquals(jutsu.getDano(),personagem.getJutsu().get(nomeJutsu).getDano());
+        Assertions.assertEquals(jutsu.getConsumoDeChakra(),personagem.getJutsu().get(nomeJutsu).getConsumoDeChakra());
     }
 
     public static void assertEqualsParaAumentarChakra(Personagem personagem, int chakraAumentado){
@@ -32,8 +32,8 @@ public class AssertionsHelper {
 
     public  static void assertEqualsParaCompararComResponse(PersonagemResponseDto response, PersonagemResponseDto responseDto,Object key){
         Assertions.assertEquals(response.getNome(),responseDto.getNome());
-        Assertions.assertEquals(response.getJutsus().get(key).getDano(),responseDto.getJutsus().get(key).getDano());
-        Assertions.assertEquals(response.getJutsus().get(key).getConsumoDeChakra(),responseDto.getJutsus().get(key).getConsumoDeChakra());
+        Assertions.assertEquals(response.getJutsu().get(key).getDano(),responseDto.getJutsu().get(key).getDano());
+        Assertions.assertEquals(response.getJutsu().get(key).getConsumoDeChakra(),responseDto.getJutsu().get(key).getConsumoDeChakra());
         Assertions.assertEquals(response.getChakra(),responseDto.getChakra());
     }
 }

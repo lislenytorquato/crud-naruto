@@ -10,7 +10,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class PersonagemResponseDto {
     private String nome;
-    private Map<String, JutsuDto> jutsus;
+    private Map<String, JutsuDto> jutsu;
     private int chakra;
     private int vida;
 }

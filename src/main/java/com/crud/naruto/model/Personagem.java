@@ -24,14 +24,14 @@ public class Personagem {
 
     @ManyToMany
     @MapKey(name = "nome")
-    private Map<String,Jutsu> jutsus;
+    private Map<String,Jutsu> jutsu;
 
     private int chakra = 100;
 
     private int vida;
 
-    public void adicionarJutsu(String nome, Jutsu jutsu){
-        jutsus.put(nome, jutsu);
+    public void adicionarJutsu(String nome, Jutsu jutsuNovo){
+        jutsu.put(nome, jutsuNovo);
 
     }
     public int aumentarChakra(int quantidade){

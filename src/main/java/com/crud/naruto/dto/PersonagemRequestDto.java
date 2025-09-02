@@ -13,6 +13,6 @@ public class PersonagemRequestDto {
     @NotBlank(message = "nome em branco, nulo ou vazio ")
     private String nome;
     @NotEmpty(message =" jutsus vazio ou nulo" )
-    private Map<String, JutsuDto> jutsus;
+    private Map<String, JutsuDto> jutsu;
     private int vida;
 }

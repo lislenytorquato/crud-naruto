@@ -94,7 +94,7 @@ public class TestHelper {
 
     public static void setPersonagem(Personagem personagem,Personagem personagemNovo){
         personagem.setNome(personagemNovo.getNome());
-        personagem.setJutsus(personagemNovo.getJutsus());
+        personagem.setJutsu(personagemNovo.getJutsu());
         personagem.setChakra(personagemNovo.getChakra());
 
     }
@@ -111,7 +111,7 @@ public class TestHelper {
         return new Personagem(ID_PERSONAGEM_NARUTO,NOME_PERSONAGEM_NARUTO,JUTSUS_PERSONAGEM_NARUTO,0,VIDA_PERSONAGEM_NARUTO);
     }
     public static Personagem criarPersonagemNarutoSemIdESemChakra(){
-        JUTSUS_PERSONAGEM_NARUTO.put(NOME_NINJUTSU,ninjutsu);
+        //JUTSUS_PERSONAGEM_NARUTO.put(NOME_NINJUTSU,ninjutsu);
         return new Personagem(null,NOME_PERSONAGEM_NARUTO,JUTSUS_PERSONAGEM_NARUTO,0,VIDA_PERSONAGEM_NARUTO);
     }
     public static Personagem criarPersonagemRockieLeeSemChakra(){

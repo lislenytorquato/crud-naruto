@@ -1,8 +1,7 @@
 package com.crud.naruto.repository;
 
 import com.crud.naruto.model.Jutsu;
-import com.crud.naruto.model.Personagem;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface JutsuRepository extends JpaRepository<Jutsu,Long> {
+public interface JutsuRepository extends MongoRepository<Jutsu,Long> {
 }

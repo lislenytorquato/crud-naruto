@@ -1,22 +1,13 @@
 services:
-  postgres:
-    image: postgres
+  mongodb:
+    image: mongodb/mongodb-community-server:latest
     container_name: naruto-db
     env_file:
       - src/main/resources/variaveis.env
     ports:
-      - 5432:5432
+      - 27017:27017
     volumes:
-      - C:/Users/lisleny.silva/Documents/volumes:/var/lib/postgresql/data
-
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    env_file: src/main/resources/variaveis.env
-    ports:
-      - "5050:80"
-    depends_on:
-      - postgres
+      - C:/Users/lisleny.silva/Documents/volumes:data/db
 
 volumes:
   naruto_dados:

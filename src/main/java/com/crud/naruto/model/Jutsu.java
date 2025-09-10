@@ -5,13 +5,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-@Entity
+@Document(collection = "jutsu")
 public class Jutsu {
 
     @ToString.Exclude
@@ -19,8 +21,14 @@ public class Jutsu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Field(name = "dano")
     private int dano;
+
+    @Field(name = "consumoDeChakra")
     private int consumoDeChakra;
+
+    @Field(name = "nome")
     private String nome;
 
 

@@ -17,7 +17,7 @@ public class NinjaDeTaijutsuTest {
 
     @BeforeAll
     static void setup(){
-        JUTSUS_PERSONAGEM_ROCKIE_LEE.put(NOME_TAIJUTSU,taijutsu);
+        JUTSUS_PERSONAGEM_ROCKIE_LEE.add(taijutsu);
         ninjaDeTaijutsu = new NinjaDeTaijutsu(ID_PERSONAGEM_ROCKIE_LEE,NOME_PERSONAGEM_ROCKIE_LEE, JUTSUS_PERSONAGEM_ROCKIE_LEE, CHAKRA_PERSONAGEM_ROCKIE_LEE, VIDA_PERSONAGEM_ROCKIE_LEE);
         rockieLee = criarPersonagemRockieLee();
         ninjutsu = new Jutsu(ID_NINJUTSU,DANO_NINJUTSU,CONSUMO_CHAKRA_NINJUTSU,NOME_NINJUTSU);
@@ -53,7 +53,7 @@ public class NinjaDeTaijutsuTest {
     @Test
     @Order(4)
     void deveTestarAdicionarJutsu(){
-       ninjaDeTaijutsu.adicionarJutsu(NOME_NINJUTSU, ninjutsu);
+       ninjaDeTaijutsu.adicionarJutsu(ninjutsu);
 
         AssertionsHelper.assertParaAdicionarJutsu(ninjaDeTaijutsu, NOME_NINJUTSU,ninjutsu);
     }

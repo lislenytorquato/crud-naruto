@@ -3,19 +3,22 @@ package com.crud.naruto.model;
 
 import com.crud.naruto.interfaces.Ninja;
 
+import java.util.List;
 import java.util.Map;
 
 public class NinjaDeNinjutsu extends Personagem implements Ninja {
 
 
-    public NinjaDeNinjutsu(Long id, String nome, Map<String,Jutsu> jutsus,  int chakra, int vida) {
+    public NinjaDeNinjutsu(Long id, String nome, List<Jutsu> jutsus, int chakra, int vida) {
         super(id, nome, jutsus, chakra,vida);
     }
 
     @Override
     public String usarJutsu() {
-        this.getJutsus().get("Ninjutsu").setDano(25);
-        this.getJutsus().get("Ninjutsu").setConsumoDeChakra(10);
+        this.getJutsus().forEach(jutsu -> {
+            jutsu.setDano(25);
+            jutsu.setConsumoDeChakra(10);
+        });
         return "Ataque de Ninjutsu!!";
     }
 
@@ -25,7 +28,9 @@ public class NinjaDeNinjutsu extends Personagem implements Ninja {
             return "Desviei com Ninjutsu!!";
         }
         else {
-            personagem.setVida(personagem.getVida()-this.getJutsus().get("Ninjutsu").getDano());
+            this.getJutsus().forEach(jutsu -> {
+                personagem.setVida(personagem.getVida()- jutsu.getDano());
+            });
             return "Não desviei!! Vida: "+personagem.getVida();
         }
     }

@@ -2,19 +2,22 @@ package com.crud.naruto.model;
 
 import com.crud.naruto.interfaces.Ninja;
 
-import java.util.Map;
+import java.util.List;
+
 
 public class NinjaDeTaijutsu extends Personagem implements Ninja {
 
 
-    public NinjaDeTaijutsu(Long id, String nome, Map<String,Jutsu> jutsus, int chakra, int vida) {
+    public NinjaDeTaijutsu(Long id, String nome, List<Jutsu> jutsus, int chakra, int vida) {
         super(id, nome, jutsus, chakra, vida);
     }
 
     @Override
     public String usarJutsu() {
-        this.getJutsus().get("Taijutsu").setDano(25);
-        this.getJutsus().get("Taijutsu").setConsumoDeChakra(10);
+        this.getJutsus().forEach(jutsu -> {
+            jutsu.setDano(25);
+            jutsu.setConsumoDeChakra(10);
+        });
         return "Ataque de Taijutsu!!";
     }
 

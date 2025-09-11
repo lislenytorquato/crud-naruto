@@ -53,7 +53,7 @@ public class NinjaDeNinjutsuTest {
     @Test
     @Order(4)
     void deveTestarAdicionarJutsu(){
-        ninjaDeNinjutsu.adicionarJutsu(NOME_TAIJUTSU, taijutsu);
+        ninjaDeNinjutsu.adicionarJutsu(taijutsu);
 
         AssertionsHelper.assertParaAdicionarJutsu(ninjaDeNinjutsu, NOME_TAIJUTSU,taijutsu);
     }

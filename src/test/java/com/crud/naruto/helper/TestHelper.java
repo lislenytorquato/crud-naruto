@@ -7,6 +7,7 @@ import com.crud.naruto.model.Jutsu;
 import com.crud.naruto.model.NinjaDeTaijutsu;
 import com.crud.naruto.model.Personagem;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class TestHelper {
 
     public static final Long ID_PERSONAGEM_ROCKIE_LEE = 3L;
     public static final String NOME_PERSONAGEM_ROCKIE_LEE = "Rockie Lee";
-    public static final Map<String,Jutsu> JUTSUS_PERSONAGEM_ROCKIE_LEE = new HashMap<>();
+    public static final List<Jutsu> JUTSUS_PERSONAGEM_ROCKIE_LEE = new ArrayList<>();
     public static final Map<String,JutsuDto> JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO = new HashMap<>();
     public static final Map<String,Jutsu> JUTSUS_PERSONAGEM_ROCKIE_LEE_SEM_ID = new HashMap<>();
     public static final int CHAKRA_PERSONAGEM_ROCKIE_LEE = 100;

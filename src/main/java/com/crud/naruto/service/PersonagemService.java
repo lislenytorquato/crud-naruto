@@ -33,10 +33,10 @@ public class PersonagemService {
 
     public PersonagemResponseDto criarPersonagem(PersonagemRequestDto personagemRequestDto){
         Personagem personagem = mapper.requestDtoParaEntiy(personagemRequestDto);
-        personagemRequestDto.getJutsus().forEach((nome,jutsuDto)->{
+        personagemRequestDto.getJutsus().forEach(jutsuDto->{
             Jutsu jutsu = mapper.jutsuDtoToJutsu(jutsuDto);
             jutsuRepository.save(jutsu);
-            personagem.getJutsus().put(nome,jutsu);
+            personagem.getJutsus().add(jutsu);
         });
         salvarPersonagem(personagem);
         return mapper.entityParaResponseDto(personagem);
@@ -44,10 +44,10 @@ public class PersonagemService {
 
     public PersonagemResponseDto editarPersonagem(Long id, PersonagemRequestDto personagemRequestDto){
         Personagem personagem = encontrarPersonagemPorId(id);
-        personagemRequestDto.getJutsus().forEach((nome,jutsuDto)->{
+        personagemRequestDto.getJutsus().forEach(jutsuDto->{
             Jutsu jutsu = mapper.jutsuDtoToJutsu(jutsuDto);
             jutsuRepository.save(jutsu);
-            personagem.getJutsus().put(nome,jutsu);
+            personagem.getJutsus().add(jutsu);
         });
         personagem.setNome(personagemRequestDto.getNome());
         personagem.setVida(personagemRequestDto.getVida());
@@ -70,7 +70,7 @@ public class PersonagemService {
 
         jutsuRepository.save(jutsu);
 
-        personagem.adicionarJutsu(jutsu.getNome(), jutsu);
+        personagem.adicionarJutsu(jutsu);
         salvarPersonagem(personagem);
     }
 
@@ -129,15 +129,19 @@ public class PersonagemService {
 
     private void chakraConsumido(Personagem personagem){
 
-                personagem.getJutsus().forEach((nome,jutsu)->{
-            personagem.setChakra(personagem.getChakra() - personagem.getJutsus().get(nome).getConsumoDeChakra());
+        personagem.getJutsus().forEach(jutsu ->{
+            personagem.setChakra(personagem.getChakra() - jutsu.getConsumoDeChakra());
         });
     }
 
     private String usarJutsu(Long id){
         Personagem personagem = encontrarPersonagemPorId(id);
 
-        if (personagem.getJutsus().containsKey("Taijutsu")){
+        for (int i =0; i<personagem.getJutsus().size();i++) {
+            if (personagem.getJutsus().get(i).getNome().contains("Taijutsu")) {
+
+            }
+        }
             NinjaDeTaijutsu ninjaDeTaijutsu = mapper.personagemParaTaijutsu(personagem);
             return ninjaDeTaijutsu.usarJutsu();
         }else if (personagem.getJutsus().containsKey("Ninjutsu")){

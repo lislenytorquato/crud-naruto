@@ -5,13 +5,12 @@ services:
     env_file:
       - src/main/resources/variaveis.env
     ports:
-      - 27017:27017
+      - "27017:27017"
     volumes:
-      - C:/Users/lisleny.silva/Documents/volumes:data/db
+      - naruto_dados:/data/db
 
 volumes:
   naruto_dados:
-    external: true
 
 
 

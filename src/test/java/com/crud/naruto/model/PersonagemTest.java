@@ -51,7 +51,7 @@ public class PersonagemTest {
     @Test
     @Order(4)
     void deveTestarAdicionarJutsu(){
-        personagem.adicionarJutsu(NOME_TAIJUTSU,taijutsu);
+        personagem.adicionarJutsu(taijutsu);
 
         AssertionsHelper.assertParaAdicionarJutsu(personagem, NOME_TAIJUTSU,taijutsu);
     }

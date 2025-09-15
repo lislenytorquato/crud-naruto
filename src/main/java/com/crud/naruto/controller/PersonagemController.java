@@ -31,14 +31,14 @@ public class PersonagemController {
 
     @ApiResponse(description = "Editar personagem", responseCode = "200")
     @PutMapping("/{id}")
-    ResponseEntity<PersonagemResponseDto> editar(@PathVariable Long id,@Valid @RequestBody PersonagemRequestDto personagemRequestDto){
+    ResponseEntity<PersonagemResponseDto> editar(@PathVariable String id,@Valid @RequestBody PersonagemRequestDto personagemRequestDto){
         PersonagemResponseDto responseDto = personagemService.editarPersonagem(id, personagemRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @ApiResponse(description = "Deletar personagem", responseCode = "204")
     @DeleteMapping("/{id}")
-    ResponseEntity<Void> deletar(@PathVariable Long id){
+    ResponseEntity<Void> deletar(@PathVariable String id){
         personagemService.deletarPersonagem(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -52,35 +52,35 @@ public class PersonagemController {
 
     @ApiResponse(description = "Adicionar jutsu ao personagem", responseCode = "200")
     @PutMapping("{id}/adiciona-jutsu")
-    ResponseEntity<Void> adicionarJutsu(@PathVariable Long id,@Valid @RequestBody JutsuDto jutsu){
+    ResponseEntity<Void> adicionarJutsu(@PathVariable String id,@Valid @RequestBody JutsuDto jutsu){
         personagemService.adiconarJutsu(id,jutsu);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ApiResponse(description = "Aumenta chakra do personagem", responseCode = "200")
     @PutMapping("{id}/aumenta-chakra")
-    ResponseEntity<Integer> aumentarChakra(@PathVariable Long id, @Valid @RequestBody int quantidade){
+    ResponseEntity<Integer> aumentarChakra(@PathVariable String id, @Valid @RequestBody int quantidade){
         int chakraAumentado = personagemService.aumentarChakra(id, quantidade);
         return new ResponseEntity<>(chakraAumentado,HttpStatus.OK);
     }
 
     @ApiResponse(description = "Ataque do personagem", responseCode = "200")
     @GetMapping("{id}/ataque")
-    ResponseEntity<String> ataque(@PathVariable Long id){
+    ResponseEntity<String> ataque(@PathVariable String id){
         String ataque = personagemService.ataque(id);
         return new ResponseEntity<>(ataque,HttpStatus.OK);
     }
 
     @ApiResponse(description = "defesa do personagem", responseCode = "200")
     @GetMapping("{id}/defesa")
-    ResponseEntity<String> defesa(@PathVariable Long id){
+    ResponseEntity<String> defesa(@PathVariable String id){
         String defesa = personagemService.defesa(id);
         return new ResponseEntity<>(defesa,HttpStatus.OK);
     }
 
     @ApiResponse(description = "derrota do personagem", responseCode = "200")
     @GetMapping("{id}/derrota")
-    ResponseEntity<String> derrota(@PathVariable Long id){
+    ResponseEntity<String> derrota(@PathVariable String id){
         String derrota = personagemService.derrota(id);
         return new ResponseEntity<>(derrota,HttpStatus.OK);
     }

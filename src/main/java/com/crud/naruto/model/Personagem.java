@@ -1,12 +1,10 @@
 package com.crud.naruto.model;
 
-import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
-import java.util.Map;
 
 @Document(collection = "personagens")
 @NoArgsConstructor
@@ -19,7 +17,7 @@ public class Personagem {
     @Id
     @Setter(AccessLevel.NONE)
     @ToString.Exclude
-    private Long id;
+    private String id;
 
     private String nome;
 

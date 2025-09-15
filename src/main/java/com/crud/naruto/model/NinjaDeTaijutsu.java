@@ -8,7 +8,7 @@ import java.util.List;
 public class NinjaDeTaijutsu extends Personagem implements Ninja {
 
 
-    public NinjaDeTaijutsu(Long id, String nome, List<Jutsu> jutsus, int chakra, int vida) {
+    public NinjaDeTaijutsu(String id, String nome, List<Jutsu> jutsus, int chakra, int vida) {
         super(id, nome, jutsus, chakra, vida);
     }
 
@@ -28,7 +28,9 @@ public class NinjaDeTaijutsu extends Personagem implements Ninja {
             return "Desviei com Taijutsu!!";
         }
         else {
-            personagem.setVida(personagem.getVida()-this.getJutsus().get("Taijutsu").getDano());
+            personagem.getJutsus().forEach(jutsu -> {
+                personagem.setVida(personagem.getVida()- jutsu.getDano());
+            });
             return "Não desviei!! Vida: "+personagem.getVida();
         }
 

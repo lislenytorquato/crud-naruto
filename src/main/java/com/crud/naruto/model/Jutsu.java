@@ -1,10 +1,7 @@
 package com.crud.naruto.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.*;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -13,14 +10,13 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Getter
 @Setter
 @ToString
-@Document(collection = "jutsu")
+@Document(collection = "jutsus")
 public class Jutsu {
 
     @ToString.Exclude
     @Setter(AccessLevel.NONE)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Field(name = "dano")
     private int dano;

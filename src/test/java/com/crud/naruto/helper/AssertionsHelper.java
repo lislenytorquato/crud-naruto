@@ -21,19 +21,21 @@ public class AssertionsHelper {
     }
 
     public static void assertParaAdicionarJutsu(Personagem personagem, String nomeJutsu, Jutsu jutsu){
-        Assertions.assertTrue(personagem.getJutsus().containsKey(nomeJutsu));
-        Assertions.assertEquals(jutsu.getDano(),personagem.getJutsus().get(nomeJutsu).getDano());
-        Assertions.assertEquals(jutsu.getConsumoDeChakra(),personagem.getJutsus().get(nomeJutsu).getConsumoDeChakra());
+        Assertions.assertTrue(personagem.getJutsus().get(personagem.getJutsus().size()-1).getNome().contains(nomeJutsu));
+        Assertions.assertEquals(jutsu.getDano(), personagem.getJutsus().get(personagem.getJutsus().size()-1).getDano());
+        Assertions.assertEquals(jutsu.getConsumoDeChakra(), personagem.getJutsus().get(personagem.getJutsus().size()-1).getConsumoDeChakra());
     }
 
     public static void assertEqualsParaAumentarChakra(Personagem personagem, int chakraAumentado){
         Assertions.assertEquals(personagem.getChakra(),chakraAumentado);
     }
 
-    public  static void assertEqualsParaCompararComResponse(PersonagemResponseDto response, PersonagemResponseDto responseDto,Object key){
-        Assertions.assertEquals(response.getNome(),responseDto.getNome());
-        Assertions.assertEquals(response.getJutsus().get(key).getDano(),responseDto.getJutsus().get(key).getDano());
-        Assertions.assertEquals(response.getJutsus().get(key).getConsumoDeChakra(),responseDto.getJutsus().get(key).getConsumoDeChakra());
-        Assertions.assertEquals(response.getChakra(),responseDto.getChakra());
+    public  static void assertEqualsParaCompararComResponse(PersonagemResponseDto response, PersonagemResponseDto responseDto) {
+
+            Assertions.assertEquals(response.getNome(), responseDto.getNome());
+            Assertions.assertEquals(response.getJutsus().get(0).getDano(), responseDto.getJutsus().get(0).getDano());
+            Assertions.assertEquals(response.getJutsus().get(0).getConsumoDeChakra(), responseDto.getJutsus().get(0).getConsumoDeChakra());
+            Assertions.assertEquals(response.getChakra(), responseDto.getChakra());
+
     }
 }

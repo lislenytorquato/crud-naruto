@@ -6,6 +6,7 @@ import com.crud.naruto.exception.PersonagemNaoEncontradoException;
 import com.crud.naruto.helper.AssertionsHelper;
 import com.crud.naruto.helper.TestHelper;
 import com.crud.naruto.mapper.PersonagemMapper;
+import com.crud.naruto.model.Jutsu;
 import com.crud.naruto.model.Personagem;
 import com.crud.naruto.repository.JutsuRepository;
 import com.crud.naruto.repository.PersonagemRepository;
@@ -32,17 +33,18 @@ public class PersonagemServiceTest {
 
     private static PersonagemRequestDto requestDto;
     private static Personagem personagemRockieLee;
-    private static Long idRockieLee;
+    private static String idRockieLee;
     private static Personagem personagemNaruto;
-    private static Long idNaruto;
-    private static Personagem personagemSakura;
-    private static Long idSakura;
+    private static String idNaruto;
 
     @InjectMocks
     PersonagemService personagemService;
 
     @Mock
     PersonagemRepository personagemRepository;
+
+    @Mock
+    JutsuRepository jutsuRepository;
 
     PersonagemMapper mapper = PersonagemMapper.INSTANCE;
 
@@ -53,8 +55,8 @@ public class PersonagemServiceTest {
          idRockieLee = ID_PERSONAGEM_ROCKIE_LEE;
          personagemNaruto = criarPersonagemNaruto();
          idNaruto = ID_PERSONAGEM_NARUTO;
-         personagemSakura = criarPersonagemSakura();
-         idSakura = ID_PERSONAGEM_SAKURA;
+        Personagem personagemSakura = criarPersonagemSakura();
+        String idSakura = ID_PERSONAGEM_SAKURA;
 
         requestDto = TestHelper.criarRockieLeeRequestDto();
     }
@@ -66,12 +68,13 @@ public class PersonagemServiceTest {
         Personagem personagem = mapper.requestDtoParaEntiy(requestDto);
 
         mockSalvarPersonagem(personagem);
+        Mockito.when(jutsuRepository.save(any(Jutsu.class))).thenReturn(taijutsu);
 
         PersonagemResponseDto responseDto = mapper.entityParaResponseDto(personagem);
 
         PersonagemResponseDto response = personagemService.criarPersonagem(requestDto);
 
-        AssertionsHelper.assertEqualsParaCompararComResponse(response,responseDto,NOME_TAIJUTSU);
+        AssertionsHelper.assertEqualsParaCompararComResponse(response,responseDto);
 
     }
 
@@ -86,11 +89,12 @@ public class PersonagemServiceTest {
 
         mockSalvarPersonagem(personagemRockieLee);
 
+        Mockito.when(jutsuRepository.save(any(Jutsu.class))).thenReturn(taijutsu);
         PersonagemResponseDto responseDto = mapper.entityParaResponseDto(personagemRockieLee);
 
         PersonagemResponseDto response = personagemService.editarPersonagem(idRockieLee,requestDto);
 
-        AssertionsHelper.assertEqualsParaCompararComResponse(response,responseDto,NOME_TAIJUTSU);
+        AssertionsHelper.assertEqualsParaCompararComResponse(response,responseDto);
     }
 
     @DisplayName("3- Deve deletar um personagem")
@@ -121,7 +125,7 @@ public class PersonagemServiceTest {
         List<PersonagemResponseDto> listaResponse = personagemService.listarPersonagens();
 
         Assertions.assertEquals(listaResponseDto.size(),listaResponse.size());
-        AssertionsHelper.assertEqualsParaCompararComResponse(listaResponse.get(0),listaResponseDto.get(0), NOME_TAIJUTSU);
+        AssertionsHelper.assertEqualsParaCompararComResponse(listaResponse.get(0),listaResponseDto.get(0));
     }
 
     @DisplayName("5- Deve adicionar o jutsu de um personagem ")
@@ -130,10 +134,13 @@ public class PersonagemServiceTest {
     void deveAdicionarJutsuDePersonagem(){
 
         mockEncontrarPorId(idRockieLee,personagemRockieLee);
+        Jutsu ninjutsu = mapper.jutsuDtoToJutsu(ninjutsuDto);
+        Mockito.when(jutsuRepository.save(any(Jutsu.class))).thenReturn(ninjutsu);
         mockSalvarPersonagem(personagemRockieLee);
+
         personagemService.adiconarJutsu(idRockieLee,ninjutsuDto);
 
-        AssertionsHelper.assertParaAdicionarJutsu(personagemRockieLee, NOME_NINJUTSU,ninjutsu);
+        AssertionsHelper.assertParaAdicionarJutsu(personagemRockieLee, NOME_NINJUTSU, TestHelper.ninjutsu);
     }
 
     @DisplayName("6- Deve aumentar o chakra de um personagem ")
@@ -152,20 +159,20 @@ public class PersonagemServiceTest {
     @Order(1)
     @ParameterizedTest
     @MethodSource("geraPersonagensAtacando")
-    void deveAtacarUmPersonagem(Long id,Personagem personagem,String frase, String nomeJutsu, int chakraConsumido){
+    void deveAtacarUmPersonagem(String id,Personagem personagem,String frase, String nomeJutsu, int chakraConsumido){
         mockEncontrarPorId(id,personagem);
         String response = personagemService.ataque(id);
 
         Assertions.assertEquals(frase+CHAKRA_CONSUMIDO_ATAQUE_FRASE+chakraConsumido,response);
-        Assertions.assertEquals(25, personagem.getJutsus().get(nomeJutsu).getDano());
-        Assertions.assertEquals(10,personagem.getJutsus().get(nomeJutsu).getConsumoDeChakra());
+        Assertions.assertEquals(25, personagem.getJutsus().get(0).getDano());
+        Assertions.assertEquals(10,personagem.getJutsus().get(0).getConsumoDeChakra());
     }
 
     @DisplayName("8- Deve se defender de um personagem quando conseguiuDesviar é true")
     @Order(2)
     @ParameterizedTest
     @MethodSource("geraPersonagensQueConseguem")
-    void deveSeDefenderDePersonagemQuandoConseguiuDesviarEhTrue(Long id,Personagem personagem,String frase, int chakraConsumido){
+    void deveSeDefenderDePersonagemQuandoConseguiuDesviarEhTrue(String id,Personagem personagem,String frase, int chakraConsumido){
         mockEncontrarPorId(id,personagem);
         String response = personagemService.defesa(id);
 
@@ -175,7 +182,7 @@ public class PersonagemServiceTest {
     @Order(2)
     @ParameterizedTest
     @MethodSource("geraPersonagensNaoDesviando")
-    void deveDesviarDePersonagemQuandoConseguiuDesviarEhFalse(Long id,Personagem personagem,String frase,int chakraConsumido){
+    void deveDesviarDePersonagemQuandoConseguiuDesviarEhFalse(String id,Personagem personagem,String frase,int chakraConsumido){
         mockEncontrarPorId(id,personagem);
         String response = personagemService.defesa(id);
 
@@ -186,7 +193,7 @@ public class PersonagemServiceTest {
     @Order(2)
     @ParameterizedTest
     @MethodSource("geraPersonagensQueConseguem")
-    void deveContinuarJogandoQuandoVidaEhMaiorQueZeroEChakraEhMaiorQueZero(Long id,Personagem personagem,String frase,int chakraConsumido){
+    void deveContinuarJogandoQuandoVidaEhMaiorQueZeroEChakraEhMaiorQueZero(String id,Personagem personagem,String frase,int chakraConsumido){
         mockEncontrarPorId(id,personagem);
         String response = personagemService.derrota(id);
 
@@ -197,7 +204,7 @@ public class PersonagemServiceTest {
     @Order(2)
     @ParameterizedTest
     @MethodSource("geraPersonagensSemVidaESemChakra")
-    void deveSerDerrotadoQuandoVidaEhMaiorQueZeroEChakraEhMaiorQueZero(Long id,Personagem personagem,String frase){
+    void deveSerDerrotadoQuandoVidaEhMaiorQueZeroEChakraEhMaiorQueZero(String id,Personagem personagem,String frase){
         mockEncontrarPorId(id,personagem);
         String response = personagemService.derrota(id);
 
@@ -209,7 +216,7 @@ public class PersonagemServiceTest {
     @Order(9)
     void deveLancarExcecaoPersonagemNaoEncontrado(){
 
-        Assertions.assertThrows(PersonagemNaoEncontradoException.class,()->personagemService.ataque(4L));
+        Assertions.assertThrows(PersonagemNaoEncontradoException.class,()->personagemService.ataque("4"));
     }
 
     @DisplayName("13- Deve lancar excecao para Jutsu nao encontrado ")
@@ -217,11 +224,11 @@ public class PersonagemServiceTest {
     @Order(10)
     void deveLancarExcecaoJutsuNaoEncontrado(){
 
-        personagemRockieLee.getJutsus().remove(NOME_TAIJUTSU);
+        personagemRockieLee.getJutsus().remove(taijutsu);
         Assertions.assertThrows(PersonagemNaoEncontradoException.class,()->personagemService.ataque(ID_PERSONAGEM_ROCKIE_LEE));
     }
 
-    private void mockEncontrarPorId(Long id, Personagem personagem){
+    private void mockEncontrarPorId(String id, Personagem personagem){
         Mockito.when(personagemRepository.findById(id)).thenReturn(Optional.of(personagem));
     }
     private void mockSalvarPersonagem(Personagem personagem){
@@ -236,9 +243,11 @@ public class PersonagemServiceTest {
         );
     }
     private static Stream<Arguments> geraPersonagensQueConseguem(){
+
+
         return Stream.of(
-                Arguments.of(idNaruto,personagemNaruto, DESVIAR_FRASE_NINJUTSU, personagemNaruto.getChakra()),
-                Arguments.of(idRockieLee,personagemRockieLee,DESVIAR_FRASE_TAIJUTSU, personagemRockieLee.getChakra())
+                Arguments.of(idNaruto,personagemNaruto, DESVIAR_FRASE_NINJUTSU, personagemNaruto.getChakra()-ninjutsu.getConsumoDeChakra()),
+                Arguments.of(idRockieLee,personagemRockieLee,DESVIAR_FRASE_TAIJUTSU, personagemRockieLee.getChakra()-taijutsu.getConsumoDeChakra())
         );
     }
     private static Stream<Arguments> geraPersonagensNaoDesviando(){

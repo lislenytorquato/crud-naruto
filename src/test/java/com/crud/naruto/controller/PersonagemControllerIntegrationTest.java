@@ -47,11 +47,11 @@ public class PersonagemControllerIntegrationTest {
     void setUp() {
         personagemRepository.deleteAll();
 
-        jsonPersonagemRockieLee = "{\"nome\": \"RockieLee\", \"jutsus\": {\"Taijutsu\": {\"dano\": 25, \"consumoDeChakra\": 10,\"nome\": \"Taijutsu\" }}, \"vida\": 100}";
+        jsonPersonagemRockieLee = "{\"nome\": \"RockieLee\", \"jutsus\": [{\"dano\": 25, \"consumoDeChakra\": 10,\"nome\": \"Taijutsu\" }], \"vida\": 100}";
 
-        jsonPersonagemNaruto=  "{\"nome\": \"Naruto\", \"jutsus\": {\"Ninjutsu\": {\"dano\": 25, \"consumoDeChakra\": 10, \"nome\": \"Ninjutsu\"}}}, \"vida\": 100}";
+        jsonPersonagemNaruto=  "{\"nome\": \"Naruto\", \"jutsus\": [{\"dano\": 25, \"consumoDeChakra\": 10, \"nome\": \"Ninjutsu\"}], \"vida\": 100}";
 
-        jsonPersonagemSakura =  "{\"nome\": \"Sakura\", \"jutsus\": {\"Taijutsu\": {\"dano\": 10, \"consumoDeChakra\": 25, \"nome\": \"Taijutsu\"}}}, \"vida\": 100}";
+        jsonPersonagemSakura =  "{\"nome\": \"Sakura\", \"jutsus\": [{\"dano\": 10, \"consumoDeChakra\": 25, \"nome\": \"Taijutsu\"}], \"vida\": 100}";
 
     }
 
@@ -101,7 +101,7 @@ public class PersonagemControllerIntegrationTest {
 
 
         Jutsu jutsuSalvo = jutsuRepository.save(TestHelper.ninjutsuNarutoSemId);
-        JUTSUS_PERSONAGEM_NARUTO.put(jutsuSalvo.getNome(),jutsuSalvo);
+        JUTSUS_PERSONAGEM_NARUTO.add(jutsuSalvo);
         Personagem personagemSalvo = personagemRepository.save(TestHelper.criarPersonagemNarutoSemId());
 
         mockMvc.perform(put("/api/personagem/"+personagemSalvo.getId()+"/adiciona-jutsu")

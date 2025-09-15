@@ -4,21 +4,18 @@ import com.crud.naruto.dto.JutsuDto;
 import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
 import com.crud.naruto.model.Jutsu;
-import com.crud.naruto.model.NinjaDeTaijutsu;
 import com.crud.naruto.model.Personagem;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TestHelper {
 
     public static final String NOME_NINJUTSU = "Ninjutsu";
     public static final String NOME_TAIJUTSU = "Taijutsu";
 
-    public static final Long ID_NINJUTSU = 1L;
-    public static final Long ID_TAIJUTSU = 2L;
+    public static final String ID_NINJUTSU = "1";
+    public static final String ID_TAIJUTSU = "2";
     public static final int DANO_NINJUTSU = 25;
     public static final int DANO_TAIJUTSU = 25;
 
@@ -31,26 +28,26 @@ public class TestHelper {
     public static Jutsu ninjutsuNarutoSemId = new Jutsu(null,DANO_NINJUTSU,CONSUMO_CHAKRA_NINJUTSU,NOME_NINJUTSU);
     public static Jutsu taijutsu = new Jutsu(ID_TAIJUTSU, DANO_TAIJUTSU,CONSUMO_CHAKRA_TAIJUTSU,NOME_TAIJUTSU);
 
-    public static final Long ID_PERSONAGEM_NARUTO = 1L;
+    public static final String ID_PERSONAGEM_NARUTO = "1";
     public static final String NOME_PERSONAGEM_NARUTO = "Naruto";
-    public static final Map<String, Jutsu> JUTSUS_PERSONAGEM_NARUTO = new HashMap<>();
+    public static final List<Jutsu> JUTSUS_PERSONAGEM_NARUTO = new ArrayList<>();
     public static final int CHAKRA_PERSONAGEM_NARUTO = 100;
     public static final int VIDA_PERSONAGEM_NARUTO = 100;
 
-    public static final Long ID_PERSONAGEM_SAKURA = 2L;
+    public static final String ID_PERSONAGEM_SAKURA = "2";
     public static final String NOME_PERSONAGEM_SAKURA = "Sakura";
-    public static final Map<String,Jutsu> JUTSUS_PERSONAGEM_SAKURA = new HashMap<>();
+    public static final List<Jutsu> JUTSUS_PERSONAGEM_SAKURA = new ArrayList<>();
     public static final int CHAKRA_PERSONAGEM_SAKURA = 100;
     public static final int VIDA_PERSONAGEM_SAKURA = 100;
 
 
     public static final int QUANTIDADE = 50;
 
-    public static final Long ID_PERSONAGEM_ROCKIE_LEE = 3L;
+    public static final String ID_PERSONAGEM_ROCKIE_LEE = "3";
     public static final String NOME_PERSONAGEM_ROCKIE_LEE = "Rockie Lee";
     public static final List<Jutsu> JUTSUS_PERSONAGEM_ROCKIE_LEE = new ArrayList<>();
-    public static final Map<String,JutsuDto> JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO = new HashMap<>();
-    public static final Map<String,Jutsu> JUTSUS_PERSONAGEM_ROCKIE_LEE_SEM_ID = new HashMap<>();
+    public static final List<JutsuDto> JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO = new ArrayList<>();
+    public static final List<Jutsu> JUTSUS_PERSONAGEM_ROCKIE_LEE_SEM_ID = new ArrayList<>();
     public static final int CHAKRA_PERSONAGEM_ROCKIE_LEE = 100;
     public static final int VIDA_PERSONAGEM_ROCKIE_LEE = 100;
 
@@ -67,29 +64,29 @@ public class TestHelper {
     public static final String DESVIAR_FRASE_TAIJUTSU = "Desviei com Taijutsu!!";
 
     public static Personagem criarPersonagemSakura(){
-        JUTSUS_PERSONAGEM_SAKURA.put(NOME_NINJUTSU, ninjutsu);
+        JUTSUS_PERSONAGEM_SAKURA.add(ninjutsu);
         return new Personagem(ID_PERSONAGEM_SAKURA,NOME_PERSONAGEM_SAKURA,JUTSUS_PERSONAGEM_SAKURA,CHAKRA_PERSONAGEM_SAKURA, VIDA_PERSONAGEM_SAKURA);
     }
 
     public static Personagem criarPersonagemNaruto(){
-        Map<String,Jutsu> JUTSUS_PERSONAGEM_NARUTO = new HashMap<>();
-        JUTSUS_PERSONAGEM_NARUTO.put(NOME_NINJUTSU,ninjutsu);
+        List<Jutsu> JUTSUS_PERSONAGEM_NARUTO = new ArrayList<>();
+        JUTSUS_PERSONAGEM_NARUTO.add(ninjutsu);
         return new Personagem(ID_PERSONAGEM_NARUTO,NOME_PERSONAGEM_NARUTO,JUTSUS_PERSONAGEM_NARUTO,CHAKRA_PERSONAGEM_NARUTO, VIDA_PERSONAGEM_NARUTO);
     }
 
     public static Personagem criarPersonagemNarutoSemId(){
-        Map<String,Jutsu> JUTSUS_PERSONAGEM_NARUTO = new HashMap<>();
-        JUTSUS_PERSONAGEM_NARUTO.put(NOME_NINJUTSU,ninjutsu);
+        List<Jutsu> JUTSUS_PERSONAGEM_NARUTO = new ArrayList<>();
+        JUTSUS_PERSONAGEM_NARUTO.add(ninjutsu);
         return new Personagem(null,NOME_PERSONAGEM_NARUTO,JUTSUS_PERSONAGEM_NARUTO,CHAKRA_PERSONAGEM_NARUTO, VIDA_PERSONAGEM_NARUTO);
     }
 
     public static Personagem criarPersonagemRockieLee(){
-        Map<String,Jutsu> JUTSUS_PERSONAGEM_ROCKIE_LEE = new HashMap<>();
-        JUTSUS_PERSONAGEM_ROCKIE_LEE.put(NOME_TAIJUTSU,taijutsu);
+        List<Jutsu> JUTSUS_PERSONAGEM_ROCKIE_LEE = new ArrayList<>();
+        JUTSUS_PERSONAGEM_ROCKIE_LEE.add(taijutsu);
         return new Personagem(ID_PERSONAGEM_ROCKIE_LEE,NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,CHAKRA_PERSONAGEM_ROCKIE_LEE,VIDA_PERSONAGEM_ROCKIE_LEE);
     }
     public static Personagem criarPersonagemRockieLeeSemId(int chakra, int vida){
-        JUTSUS_PERSONAGEM_ROCKIE_LEE_SEM_ID.put(NOME_TAIJUTSU,taijutsu);
+        JUTSUS_PERSONAGEM_ROCKIE_LEE_SEM_ID.add(taijutsu);
         return new Personagem(null,NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE_SEM_ID,chakra,vida);
     }
 
@@ -100,31 +97,31 @@ public class TestHelper {
 
     }
     public static PersonagemRequestDto criarRockieLeeRequestDto(){
-        JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO.put(NOME_TAIJUTSU,taijutsuDto);
+        JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO.add(taijutsuDto);
         return new PersonagemRequestDto(NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO,VIDA_PERSONAGEM_ROCKIE_LEE);
     }
     public static PersonagemResponseDto criarRockieLeeResponseDto(){
-        JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO.put(NOME_TAIJUTSU,taijutsuDto);
+        JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO.add(taijutsuDto);
         return new PersonagemResponseDto(NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO,CHAKRA_PERSONAGEM_ROCKIE_LEE, VIDA_PERSONAGEM_ROCKIE_LEE);
     }
     public static Personagem criarPersonagemNarutoSemChakra(){
-        JUTSUS_PERSONAGEM_NARUTO.put(NOME_NINJUTSU,ninjutsu);
+        JUTSUS_PERSONAGEM_NARUTO.add(ninjutsu);
         return new Personagem(ID_PERSONAGEM_NARUTO,NOME_PERSONAGEM_NARUTO,JUTSUS_PERSONAGEM_NARUTO,0,VIDA_PERSONAGEM_NARUTO);
     }
     public static Personagem criarPersonagemNarutoSemIdESemChakra(){
-        JUTSUS_PERSONAGEM_NARUTO.put(NOME_NINJUTSU,ninjutsu);
+        JUTSUS_PERSONAGEM_NARUTO.add(ninjutsu);
         return new Personagem(null,NOME_PERSONAGEM_NARUTO,JUTSUS_PERSONAGEM_NARUTO,0,VIDA_PERSONAGEM_NARUTO);
     }
     public static Personagem criarPersonagemRockieLeeSemChakra(){
-        JUTSUS_PERSONAGEM_NARUTO.put(NOME_TAIJUTSU,taijutsu);
+        JUTSUS_PERSONAGEM_ROCKIE_LEE.add(taijutsu);
         return new Personagem(ID_PERSONAGEM_ROCKIE_LEE,NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,0,VIDA_PERSONAGEM_ROCKIE_LEE);
     }
     public static Personagem criarPersonagemNarutoSemVidaESemChakra(){
-        JUTSUS_PERSONAGEM_NARUTO.put(NOME_NINJUTSU,ninjutsu);
+        JUTSUS_PERSONAGEM_NARUTO.add(ninjutsu);
         return new Personagem(ID_PERSONAGEM_NARUTO,NOME_PERSONAGEM_NARUTO,JUTSUS_PERSONAGEM_NARUTO,0,0);
     }
     public static Personagem criarPersonagemRockieLeeSemVidaESemChakra(){
-        JUTSUS_PERSONAGEM_NARUTO.put(NOME_TAIJUTSU,taijutsu);
+        JUTSUS_PERSONAGEM_ROCKIE_LEE.add(taijutsu);
         return new Personagem(ID_PERSONAGEM_ROCKIE_LEE,NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,0,0);
     }
     public static PersonagemRequestDto criarPersonagemRequestDtoNomeNulo(){
@@ -132,8 +129,8 @@ public class TestHelper {
     }
     public static PersonagemRequestDto criarPersonagemRequestDtoNomeEspacoEmBranco(){
         String NOME_ESPACO_BRANCO = "    ";
-        Map<String,JutsuDto> JUTSUS_PERSONAGEM_ROCKIE_LEE_REQUEST = new HashMap<>();
-        JUTSUS_PERSONAGEM_ROCKIE_LEE_REQUEST.put(NOME_TAIJUTSU,taijutsuDto);
+        List<JutsuDto> JUTSUS_PERSONAGEM_ROCKIE_LEE_REQUEST = new ArrayList<>();
+        JUTSUS_PERSONAGEM_ROCKIE_LEE_REQUEST.add(taijutsuDto);
         return new PersonagemRequestDto(NOME_ESPACO_BRANCO,JUTSUS_PERSONAGEM_ROCKIE_LEE_REQUEST,VIDA_PERSONAGEM_ROCKIE_LEE);
     }
     public static PersonagemRequestDto criarPersonagemRequestDtoNomeVazio(){

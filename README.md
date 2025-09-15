@@ -1,17 +1,10 @@
-# CRUD - NARUTO 2
+# CRUD - NARUTO 2 - MONGODB 
 
 O crud – naruto 2 é uma refatoração da api que simula o anime naruto para o treinamento na empresa db, utiliza a arquitetura em camadas mvc. Segue abaixo descrições dos pacotes e classes. 
 
 
 ## MODEL
-Classe Personagem: classe pai, é a única tabela no banco.
-
-Classe NinjaDeNinjutsu: implementa a interface Ninja conforme seu jutsu 
-
-Classe NinjaDeTaijutsu: implementa a interface Ninja conforme seu jutsu
-
-Classe Jutsu: em associação com classe Personagem através de um map.
-
+Para as classes usadas foram trocado o map pelo list e o id é uma string
 ## INTERFACES
 Ninja: possui dois métodos, usarJutsu e desviar, este recebe um personagem e um boolean se conseguiu desviar.
 
@@ -55,8 +48,8 @@ Interface PersonagemMapper: mapeia objetos da request para entity Personagem, da
 
 ## REPOSITORY 
 
-Interface PersonagemRepository estende a JpaRepository.
-Interface JutsuRepository estende a JpaRepository.
+Interface PersonagemRepository estende a MongoRepository.
+Interface JutsuRepository estende a MongoRepository.
 
 ## CONTROLLER 
 
@@ -78,9 +71,9 @@ Interface JutsuRepository estende a JpaRepository.
 
 ## BANCO DE DADOS: 
 
-- Apenas uma tabela 
+- Coleções dentro de outras coleções
 
-- POSTGRES NO DOCKER: O Volume foi persistido numa pasta local
+- POSTGRES NO DOCKER: O Volume não foi persistido
 
 ## TESTES: 
 

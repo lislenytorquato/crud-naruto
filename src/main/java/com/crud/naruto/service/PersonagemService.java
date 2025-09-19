@@ -1,46 +1,49 @@
 package com.crud.naruto.service;
 
+import com.crud.naruto.dto.AldeiaDto;
 import com.crud.naruto.dto.JutsuDto;
 import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
 import com.crud.naruto.exception.JutsuNaoEncontradoException;
 import com.crud.naruto.exception.PersonagemNaoEncontradoException;
-import com.crud.naruto.interfaces.Ninja;
+import com.crud.naruto.gateway.AldeiaClient;
 import com.crud.naruto.mapper.PersonagemMapper;
 import com.crud.naruto.model.Jutsu;
-import com.crud.naruto.model.NinjaDeNinjutsu;
-import com.crud.naruto.model.NinjaDeTaijutsu;
 import com.crud.naruto.model.Personagem;
 import com.crud.naruto.repository.JutsuRepository;
 import com.crud.naruto.repository.PersonagemRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class PersonagemService {
 
     PersonagemMapper mapper = PersonagemMapper.INSTANCE;
     private final PersonagemRepository personagemRepository;
-    private final JutsuRepository jutsuRepository;
+    private  final JutsuRepository jutsuRepository;
+    private final AldeiaClient aldeiaClient;
 
-    public PersonagemService(PersonagemRepository personagemRepository, JutsuRepository jutsuRepository){
+    public PersonagemService(PersonagemRepository personagemRepository, AldeiaClient aldeiaClient, JutsuRepository jutsuRepository){
         this.personagemRepository = personagemRepository;
+        this.aldeiaClient = aldeiaClient;
         this.jutsuRepository = jutsuRepository;
     }
 
     public PersonagemResponseDto criarPersonagem(PersonagemRequestDto personagemRequestDto){
         Personagem personagem = mapper.requestDtoParaEntiy(personagemRequestDto);
+
         personagemRequestDto.getJutsus().forEach(jutsuDto->{
             Jutsu jutsu = mapper.jutsuDtoToJutsu(jutsuDto);
             jutsuRepository.save(jutsu);
             personagem.getJutsus().add(jutsu);
         });
         salvarPersonagem(personagem);
-        return mapper.entityParaResponseDto(personagem);
+
+        AldeiaDto aldeiaDto = aldeiaDto(personagemRequestDto.getNome());
+
+        return mapper.entityParaResponseDto(personagem, aldeiaDto);
     }
 
     public PersonagemResponseDto editarPersonagem(String id, PersonagemRequestDto personagemRequestDto){
@@ -53,7 +56,10 @@ public class PersonagemService {
         personagem.setNome(personagemRequestDto.getNome());
         personagem.setVida(personagemRequestDto.getVida());
         salvarPersonagem(personagem);
-        return mapper.entityParaResponseDto(personagem);
+
+        AldeiaDto aldeiaDto = aldeiaDto(personagemRequestDto.getNome());
+
+        return mapper.entityParaResponseDto(personagem,aldeiaDto);
     }
 
     public void deletarPersonagem(String id){
@@ -61,8 +67,15 @@ public class PersonagemService {
         personagemRepository.delete(personagem);
     }
     public List<PersonagemResponseDto> listarPersonagens(){
+        List<AldeiaDto> aldeiaDtos = new ArrayList<>();
         List<Personagem> listaDePersonagens = personagemRepository.findAll();
-        return mapper.listaEntityParaListaResponseDto(listaDePersonagens);
+
+        listaDePersonagens.forEach(personagem -> {
+
+            aldeiaDtos.add(aldeiaDto(personagem.getNome()));
+        });
+
+        return mapper.listaEntityParaListaResponseDto(listaDePersonagens,aldeiaDtos);
     }
 
     public void adiconarJutsu(String id, JutsuDto jutsuDto){
@@ -162,5 +175,7 @@ public class PersonagemService {
         throw new JutsuNaoEncontradoException();
     }
 
-
+    private AldeiaDto aldeiaDto(String nome){
+        return aldeiaClient.buscarAldeiaPorNomeDoPersonagem(nome);
+    }
 }

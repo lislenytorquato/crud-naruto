@@ -52,8 +52,8 @@ public class PersonagemController {
 
     @ApiResponse(description = "Adicionar jutsu ao personagem", responseCode = "200")
     @PutMapping("{id}/adiciona-jutsu")
-    ResponseEntity<Void> adicionarJutsu(@PathVariable String id,@Valid @RequestBody JutsuDto jutsu){
-        personagemService.adiconarJutsu(id,jutsu);
+    ResponseEntity<Void> adicionarJutsu(@PathVariable String id,@Valid @RequestBody JutsuDto jutsuDto){
+        personagemService.adiconarJutsu(id,jutsuDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

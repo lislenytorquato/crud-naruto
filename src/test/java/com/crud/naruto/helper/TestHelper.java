@@ -1,5 +1,6 @@
 package com.crud.naruto.helper;
 
+import com.crud.naruto.dto.AldeiaDto;
 import com.crud.naruto.dto.JutsuDto;
 import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
@@ -31,6 +32,7 @@ public class TestHelper {
     public static final String ID_PERSONAGEM_NARUTO = "1";
     public static final String NOME_PERSONAGEM_NARUTO = "Naruto";
     public static final List<Jutsu> JUTSUS_PERSONAGEM_NARUTO = new ArrayList<>();
+    public static final List<JutsuDto> JUTSUS_DTO_PERSONAGEM_NARUTO = new ArrayList<>();
     public static final int CHAKRA_PERSONAGEM_NARUTO = 100;
     public static final int VIDA_PERSONAGEM_NARUTO = 100;
 
@@ -62,6 +64,9 @@ public class TestHelper {
     public static final String DESVIAR_FRASE_NINJUTSU = "Desviei com Ninjutsu!!";
     public static final String NAO_DESVIEI_FRASE =  "Não desviei!! Vida: ";
     public static final String DESVIAR_FRASE_TAIJUTSU = "Desviei com Taijutsu!!";
+
+    public static final String NOME_ALDEIA = "Aldeia da Folha";
+    public static final String LOCALIZACAO_ALDEIA = "País da neve";
 
     public static Personagem criarPersonagemSakura(){
         JUTSUS_PERSONAGEM_SAKURA.add(ninjutsu);
@@ -102,7 +107,9 @@ public class TestHelper {
     }
     public static PersonagemResponseDto criarRockieLeeResponseDto(){
         JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO.add(taijutsuDto);
-        return new PersonagemResponseDto(NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO,CHAKRA_PERSONAGEM_ROCKIE_LEE, VIDA_PERSONAGEM_ROCKIE_LEE);
+        AldeiaDto aldeiaDto = new AldeiaDto(NOME_ALDEIA,LOCALIZACAO_ALDEIA);
+
+        return new PersonagemResponseDto(NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO,CHAKRA_PERSONAGEM_ROCKIE_LEE, VIDA_PERSONAGEM_ROCKIE_LEE,aldeiaDto);
     }
     public static Personagem criarPersonagemNarutoSemChakra(){
         JUTSUS_PERSONAGEM_NARUTO.add(ninjutsu);
@@ -125,16 +132,17 @@ public class TestHelper {
         return new Personagem(ID_PERSONAGEM_ROCKIE_LEE,NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE,0,0);
     }
     public static PersonagemRequestDto criarPersonagemRequestDtoNomeNulo(){
+        JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO.add(taijutsuDto);
         return new PersonagemRequestDto(null,JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO,VIDA_PERSONAGEM_ROCKIE_LEE);
     }
     public static PersonagemRequestDto criarPersonagemRequestDtoNomeEspacoEmBranco(){
         String NOME_ESPACO_BRANCO = "    ";
-        List<JutsuDto> JUTSUS_PERSONAGEM_ROCKIE_LEE_REQUEST = new ArrayList<>();
-        JUTSUS_PERSONAGEM_ROCKIE_LEE_REQUEST.add(taijutsuDto);
-        return new PersonagemRequestDto(NOME_ESPACO_BRANCO,JUTSUS_PERSONAGEM_ROCKIE_LEE_REQUEST,VIDA_PERSONAGEM_ROCKIE_LEE);
+        JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO.add(taijutsuDto);
+        return new PersonagemRequestDto(NOME_ESPACO_BRANCO,JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO,VIDA_PERSONAGEM_ROCKIE_LEE);
     }
     public static PersonagemRequestDto criarPersonagemRequestDtoNomeVazio(){
         String NOME_VAZIO = "";
+        JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO.add(taijutsuDto);
         return new PersonagemRequestDto(NOME_VAZIO,JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO,VIDA_PERSONAGEM_ROCKIE_LEE);
     }
     public static PersonagemRequestDto criarPersonagemRequestDtoJutsusNulo(){

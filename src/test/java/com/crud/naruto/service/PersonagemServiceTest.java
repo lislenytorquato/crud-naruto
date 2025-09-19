@@ -1,8 +1,11 @@
 package com.crud.naruto.service;
 
+import com.crud.naruto.dto.AldeiaDto;
+import com.crud.naruto.dto.JutsuDto;
 import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
 import com.crud.naruto.exception.PersonagemNaoEncontradoException;
+import com.crud.naruto.gateway.AldeiaClient;
 import com.crud.naruto.helper.AssertionsHelper;
 import com.crud.naruto.helper.TestHelper;
 import com.crud.naruto.mapper.PersonagemMapper;
@@ -10,8 +13,14 @@ import com.crud.naruto.model.Jutsu;
 import com.crud.naruto.model.Personagem;
 import com.crud.naruto.repository.JutsuRepository;
 import com.crud.naruto.repository.PersonagemRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -19,7 +28,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -40,11 +53,19 @@ public class PersonagemServiceTest {
     @InjectMocks
     PersonagemService personagemService;
 
+
+    @RegisterExtension
+    static WireMockExtension wireMockExtension = WireMockExtension.newInstance()
+            .options(WireMockConfiguration.wireMockConfig().port(8089))
+            .build();
+
     @Mock
     PersonagemRepository personagemRepository;
 
     @Mock
     JutsuRepository jutsuRepository;
+    @Mock
+    AldeiaClient aldeiaClient;
 
     PersonagemMapper mapper = PersonagemMapper.INSTANCE;
 
@@ -64,13 +85,24 @@ public class PersonagemServiceTest {
     @DisplayName("1- Deve criar um personagem")
     @Test
     @Order(5)
-    void deveCriarUmPersonagem(){
+    void deveCriarUmPersonagem() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        AldeiaDto aldeiaDto = new AldeiaDto(NOME_ALDEIA, LOCALIZACAO_ALDEIA);
+
         Personagem personagem = mapper.requestDtoParaEntiy(requestDto);
 
-        mockSalvarPersonagem(personagem);
         Mockito.when(jutsuRepository.save(any(Jutsu.class))).thenReturn(taijutsu);
 
-        PersonagemResponseDto responseDto = mapper.entityParaResponseDto(personagem);
+        mockSalvarPersonagem(personagem);
+
+        wireMockExtension.stubFor(WireMock.get("/aldeia"+requestDto.getNome())
+        .willReturn(WireMock.aResponse()
+                        .withHeader("Content-Type","application/json")
+                .withBody(objectMapper.writeValueAsString(aldeiaDto))));
+
+        Mockito.when(aldeiaClient.buscarAldeiaPorNomeDoPersonagem(requestDto.getNome())).thenReturn(aldeiaDto);
+
+        PersonagemResponseDto responseDto = mapper.entityParaResponseDto(personagem,aldeiaDto);
 
         PersonagemResponseDto response = personagemService.criarPersonagem(requestDto);
 
@@ -81,7 +113,10 @@ public class PersonagemServiceTest {
     @DisplayName("2- Deve editar um personagem")
     @Test
     @Order(6)
-    void deveEditarUmPersonagem(){
+    void deveEditarUmPersonagem() throws JsonProcessingException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        AldeiaDto aldeiaDto = new AldeiaDto(NOME_ALDEIA, LOCALIZACAO_ALDEIA);
 
         mockEncontrarPorId(idRockieLee,personagemRockieLee);
 
@@ -90,7 +125,15 @@ public class PersonagemServiceTest {
         mockSalvarPersonagem(personagemRockieLee);
 
         Mockito.when(jutsuRepository.save(any(Jutsu.class))).thenReturn(taijutsu);
-        PersonagemResponseDto responseDto = mapper.entityParaResponseDto(personagemRockieLee);
+
+        wireMockExtension.stubFor(WireMock.get("/aldeia"+requestDto.getNome())
+                .willReturn(WireMock.aResponse()
+                        .withHeader("Content-Type","application/json")
+                        .withBody(objectMapper.writeValueAsString(aldeiaDto))));
+
+        Mockito.when(aldeiaClient.buscarAldeiaPorNomeDoPersonagem(requestDto.getNome())).thenReturn(aldeiaDto);
+
+        PersonagemResponseDto responseDto = mapper.entityParaResponseDto(personagemRockieLee,aldeiaDto);
 
         PersonagemResponseDto response = personagemService.editarPersonagem(idRockieLee,requestDto);
 
@@ -115,12 +158,33 @@ public class PersonagemServiceTest {
     @DisplayName("4- Deve listar todos os personagens")
     @Test
     @Order(4)
-    void deveListarPersonagens(){
+    void deveListarPersonagens() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        AldeiaDto aldeiaDto = new AldeiaDto(NOME_ALDEIA, LOCALIZACAO_ALDEIA);
+        List<AldeiaDto> aldeiaDtos = new ArrayList<>();
+        aldeiaDtos.add(aldeiaDto);
+
         List<Personagem> listaDePersonagens = List.of(personagemRockieLee);
 
         Mockito.when(personagemRepository.findAll()).thenReturn(listaDePersonagens);
 
-        List<PersonagemResponseDto> listaResponseDto = mapper.listaEntityParaListaResponseDto(listaDePersonagens);
+        wireMockExtension.stubFor(WireMock.get("/aldeia"+requestDto.getNome())
+                .willReturn(WireMock.aResponse()
+                        .withHeader("Content-Type","application/json")
+                        .withBody(objectMapper.writeValueAsString(aldeiaDtos))));
+
+        Mockito.when(aldeiaClient.buscarAldeiaPorNomeDoPersonagem(requestDto.getNome())).thenReturn(aldeiaDto);
+
+
+
+        List<PersonagemResponseDto> listaResponseDto = mapper.listaEntityParaListaResponseDto(listaDePersonagens,aldeiaDtos);
+
+        wireMockExtension.stubFor(WireMock.get("/aldeia"+requestDto.getNome())
+                .willReturn(WireMock.aResponse()
+                        .withHeader("Content-Type","application/json")
+                        .withBody(objectMapper.writeValueAsString(aldeiaDto))));
+
+        Mockito.when(aldeiaClient.buscarAldeiaPorNomeDoPersonagem(requestDto.getNome())).thenReturn(aldeiaDto);
 
         List<PersonagemResponseDto> listaResponse = personagemService.listarPersonagens();
 

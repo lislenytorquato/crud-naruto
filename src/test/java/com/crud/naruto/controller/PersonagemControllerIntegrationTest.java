@@ -5,29 +5,38 @@ import com.crud.naruto.dto.JutsuDto;
 import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
 import com.crud.naruto.helper.TestHelper;
+import com.crud.naruto.mapper.PersonagemMapper;
 import com.crud.naruto.model.Jutsu;
 import com.crud.naruto.model.Personagem;
+import com.crud.naruto.repository.JutsuRepository;
+import com.crud.naruto.repository.PersonagemRepository;
 import com.crud.naruto.service.PersonagemService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import com.github.tomakehurst.wiremock.stubbing.StubMapping;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.Optional;
 
 import static com.crud.naruto.helper.TestHelper.*;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
-@Import(Personagem.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @WireMockTest(httpPort = 8089)
 public class PersonagemControllerIntegrationTest {
@@ -35,11 +44,13 @@ public class PersonagemControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockitoBean
-    private PersonagemService personagemService;
-
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockitoBean
+    PersonagemService personagemService;
+
+
 
     private PersonagemRequestDto personagemRockieLeeRequestDto;
     private PersonagemResponseDto personagemRockieLeeResponseDto;
@@ -58,18 +69,18 @@ public class PersonagemControllerIntegrationTest {
                 .jutsus(JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO)
                 .vida(100)
                 .build();
-        personagemRockieLeeResponseDto = PersonagemResponseDto.builder()
-                .nome(NOME_PERSONAGEM_ROCKIE_LEE)
-                .jutsus(JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO)
-                .aldeiaDto(new AldeiaDto(NOME_ALDEIA,LOCALIZACAO_ALDEIA))
-                .vida(100)
-                .build();
+        personagemRockieLeeResponseDto = new PersonagemResponseDto();
+        personagemRockieLeeResponseDto.setNome(NOME_PERSONAGEM_ROCKIE_LEE);
+        personagemRockieLeeResponseDto.setJutsus(JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO);
+        personagemRockieLeeResponseDto.setChakra(CHAKRA_PERSONAGEM_ROCKIE_LEE);
+        personagemRockieLeeResponseDto.setVida(VIDA_PERSONAGEM_ROCKIE_LEE);
+
         personagemNarutoRequestDto = PersonagemRequestDto.builder()
                 .nome(NOME_PERSONAGEM_NARUTO)
                 .jutsus(JUTSUS_DTO_PERSONAGEM_NARUTO)
                 .vida(100)
                 .build();
-        personagemRockieLeeResponseDto = PersonagemResponseDto.builder()
+        personagemNarutoResponseDto = PersonagemResponseDto.builder()
                 .nome(NOME_PERSONAGEM_NARUTO)
                 .jutsus(JUTSUS_DTO_PERSONAGEM_NARUTO)
                 .aldeiaDto(aldeiaDto)
@@ -87,41 +98,49 @@ public class PersonagemControllerIntegrationTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody(objectMapper.writeValueAsString(aldeiaDto))));
 
+        Mockito.when(personagemService.criarPersonagem(personagemRockieLeeRequestDto)).thenReturn(personagemRockieLeeResponseDto);
+
         mockMvc.perform(post("/api/personagem")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(personagemRockieLeeRequestDto)))
                 .andExpect(status().isCreated());
-
-
     }
-//
-//    @DisplayName("2- deve editar personagem")
-//    @Test
-//    void deveEditar() throws Exception {
-//        Personagem personagemSalvo = personagemRepository.save(TestHelper.criarPersonagemNarutoSemId());
-//
-//        mockMvc.perform(put("/api/personagem/"+personagemSalvo.getId())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(jsonPersonagemSakura)).andExpect(status().isOk());
-//    }
-//
-//    @DisplayName("3- deve deletar personagem")
-//    @Test
-//    void deveDeletar() throws Exception {
-//        Personagem personagemSalvo = personagemRepository.save(TestHelper.criarPersonagemNarutoSemId());
-//
-//        mockMvc.perform(delete("/api/personagem/"+personagemSalvo.getId()))
-//                .andExpect(status().isNoContent());
-//    }
-//
-//    @DisplayName("4- deve listar personagens")
-//    @Test
-//    void develistar() throws Exception {
-//        Personagem personagemSalvo = personagemRepository.save(TestHelper.criarPersonagemNarutoSemId());
-//
-//        mockMvc.perform(get("/api/personagem"))
-//                .andExpect(status().isOk());
-//    }
+
+    @DisplayName("2- deve editar personagem")
+    @Test
+    void deveEditar() throws Exception {
+
+        Optional<Personagem> optionalPersonagem = Optional.of(TestHelper.criarPersonagemRockieLee());
+
+        WireMock.stubFor(WireMock.get("/aldeia/" + personagemRockieLeeRequestDto.getNome())
+                .willReturn(WireMock.aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(objectMapper.writeValueAsString(aldeiaDto))));
+
+        mockMvc.perform(put("/api/personagem/"+optionalPersonagem.get().getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(personagemNarutoRequestDto))).andExpect(status().isOk());
+    }
+
+    @DisplayName("3- deve deletar personagem")
+    @Test
+    void deveDeletar() throws Exception {
+
+        mockMvc.perform(delete("/api/personagem/"+ID_PERSONAGEM_ROCKIE_LEE))
+                .andExpect(status().isNoContent());
+    }
+
+    @DisplayName("4- deve listar personagens")
+    @Test
+    void develistar() throws Exception {
+        WireMock.stubFor(WireMock.get("/aldeia/" + personagemRockieLeeRequestDto.getNome())
+                .willReturn(WireMock.aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(objectMapper.writeValueAsString(aldeiaDto))));
+
+        mockMvc.perform(get("/api/personagem"))
+                .andExpect(status().isOk());
+    }
 //
 //    @DisplayName("5- deve adicionar Jutsu")
 //    @Test
@@ -200,7 +219,7 @@ public class PersonagemControllerIntegrationTest {
 //
 //        mockMvc.perform(get("/api/personagem/"+personagemSalvo.getId()+"/defesa"))
 //                .andExpect(status().isOk())
-//                .andExpect(content().string(DESVIAR_FRASE_NINJUTSU+CHAKRA_CONSUMIDO_DEFESA_FRASE+(personagemSalvo.getChakra()-CONSUMO_CHAKRA_NINJUTSU)));
+//                .andExpect(MockMvcResultMatchers.content().string(DESVIAR_FRASE_NINJUTSU+CHAKRA_CONSUMIDO_DEFESA_FRASE+(personagemSalvo.getChakra()-CONSUMO_CHAKRA_NINJUTSU)));
 //    }
 //
 //    @DisplayName("11- deve defender taijutsu quando chakra eh maior que zero")
@@ -231,7 +250,7 @@ public class PersonagemControllerIntegrationTest {
 //
 //        mockMvc.perform(get("/api/personagem/"+personagemSalvo.getId()+"/derrota"))
 //                .andExpect(status().isOk())
-//                .andExpect(content().string(PERDEU_FRASE));
+//                .andExpect(MockMvcResultMatchers.content().string(PERDEU_FRASE));
 //    }
 //
 //    @DisplayName("14- deve retornar 200 quando derrotado com chakra igual a zero")
@@ -242,7 +261,7 @@ public class PersonagemControllerIntegrationTest {
 //
 //        mockMvc.perform(get("/api/personagem/"+personagemSalvo.getId()+"/derrota"))
 //                .andExpect(status().isOk())
-//                .andExpect(content().string(PERDEU_FRASE));;
+//                .andExpect(MockMvcResultMatchers.content().string(PERDEU_FRASE));;
 //    }
 //
 //    @DisplayName("14- deve retornar 200 quando derrota tem chakra e vida diferentes de zero")
@@ -253,7 +272,7 @@ public class PersonagemControllerIntegrationTest {
 //
 //        mockMvc.perform(get("/api/personagem/"+personagemSalvo.getId()+"/derrota"))
 //                .andExpect(status().isOk())
-//                .andExpect(content().string(CONTINUE_JOGANDO_FRASE));
+//                .andExpect(MockMvcResultMatchers.content().string(CONTINUE_JOGANDO_FRASE));
 //    }
 //
 //

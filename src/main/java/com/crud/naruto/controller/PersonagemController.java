@@ -26,7 +26,10 @@ public class PersonagemController {
     @PostMapping
     ResponseEntity<PersonagemResponseDto> criar(@Valid @RequestBody PersonagemRequestDto personagemRequestDto){
         PersonagemResponseDto responseDto = personagemService.criarPersonagem(personagemRequestDto);
+        System.out.println("DTO retornado: " + responseDto);
+
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+
     }
 
     @ApiResponse(description = "Editar personagem", responseCode = "200")

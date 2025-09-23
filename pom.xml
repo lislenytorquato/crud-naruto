@@ -77,17 +77,26 @@
 		</dependency>
 
 		<dependency>
-		<groupId>org.wiremock</groupId>
-		<artifactId>wiremock</artifactId>
-		<version>3.13.1</version>
-		<scope>test</scope>
-	</dependency>
+			<groupId>org.wiremock</groupId>
+			<artifactId>wiremock-standalone</artifactId>
+			<version>3.13.1</version>
+			<scope>test</scope>
+		</dependency>
 
-	<dependency>
-		<groupId>de.flapdoodle.embed</groupId>
-		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>4.21.0</version>
-	</dependency>
+		<dependency>
+			<groupId>de.flapdoodle.embed</groupId>
+			<artifactId>de.flapdoodle.embed.mongo</artifactId>
+			<version>4.21.0</version>
+			<scope>test</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>de.flapdoodle.embed</groupId>
+			<artifactId>de.flapdoodle.embed.mongo.spring30x</artifactId>
+			<version>4.21.0</version>
+		</dependency>
+
 
 	</dependencies>
 

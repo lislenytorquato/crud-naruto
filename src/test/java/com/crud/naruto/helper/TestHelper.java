@@ -46,7 +46,7 @@ public class TestHelper {
     public static final int QUANTIDADE = 50;
 
     public static final String ID_PERSONAGEM_ROCKIE_LEE = "3";
-    public static final String NOME_PERSONAGEM_ROCKIE_LEE = "Rockie Lee";
+    public static final String NOME_PERSONAGEM_ROCKIE_LEE = "RockieLee";
     public static final List<Jutsu> JUTSUS_PERSONAGEM_ROCKIE_LEE = new ArrayList<>();
     public static final List<JutsuDto> JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO = new ArrayList<>();
     public static final List<Jutsu> JUTSUS_PERSONAGEM_ROCKIE_LEE_SEM_ID = new ArrayList<>();

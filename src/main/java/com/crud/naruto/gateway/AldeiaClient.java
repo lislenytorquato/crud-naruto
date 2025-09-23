@@ -1,10 +1,11 @@
 package com.crud.naruto.gateway;
 
 import com.crud.naruto.dto.AldeiaDto;
-import com.crud.naruto.dto.JutsuDto;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+@Component
 public class AldeiaClient {
 
     private final RestTemplate restTemplate;

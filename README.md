@@ -1,4 +1,4 @@
-# CRUD - NARUTO 2 - MONGODB 
+# CRUD - NARUTO 2 - MONGODB e WIREMOCK
 
 O crud – naruto 2 é uma refatoração da api que simula o anime naruto para o treinamento na empresa db, utiliza a arquitetura em camadas mvc. Segue abaixo descrições dos pacotes e classes. 
 # CRUD - NARUTO

@@ -1,7 +1,6 @@
 package com.crud.naruto.service;
 
 import com.crud.naruto.dto.AldeiaDto;
-import com.crud.naruto.dto.JutsuDto;
 import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
 import com.crud.naruto.exception.PersonagemNaoEncontradoException;
@@ -28,9 +27,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +83,7 @@ public class PersonagemServiceTest {
     @Order(5)
     void deveCriarUmPersonagem() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        AldeiaDto aldeiaDto = new AldeiaDto(NOME_ALDEIA, LOCALIZACAO_ALDEIA);
+        AldeiaDto aldeiaDto = new AldeiaDto(NOME_ALDEIA_NARUTO, LOCALIZACAO_ALDEIA_NARUTO);
 
         Personagem personagem = mapper.requestDtoParaEntiy(requestDto);
 
@@ -116,7 +112,7 @@ public class PersonagemServiceTest {
     void deveEditarUmPersonagem() throws JsonProcessingException {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        AldeiaDto aldeiaDto = new AldeiaDto(NOME_ALDEIA, LOCALIZACAO_ALDEIA);
+        AldeiaDto aldeiaDto = new AldeiaDto(NOME_ALDEIA_NARUTO, LOCALIZACAO_ALDEIA_NARUTO);
 
         mockEncontrarPorId(idRockieLee,personagemRockieLee);
 
@@ -160,7 +156,7 @@ public class PersonagemServiceTest {
     @Order(4)
     void deveListarPersonagens() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        AldeiaDto aldeiaDto = new AldeiaDto(NOME_ALDEIA, LOCALIZACAO_ALDEIA);
+        AldeiaDto aldeiaDto = new AldeiaDto(NOME_ALDEIA_NARUTO, LOCALIZACAO_ALDEIA_NARUTO);
         List<AldeiaDto> aldeiaDtos = new ArrayList<>();
         aldeiaDtos.add(aldeiaDto);
 

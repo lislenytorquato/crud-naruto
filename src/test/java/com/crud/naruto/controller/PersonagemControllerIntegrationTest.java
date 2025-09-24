@@ -4,38 +4,27 @@ import com.crud.naruto.dto.AldeiaDto;
 import com.crud.naruto.dto.JutsuDto;
 import com.crud.naruto.dto.PersonagemRequestDto;
 import com.crud.naruto.dto.PersonagemResponseDto;
-import com.crud.naruto.gateway.AldeiaClient;
 import com.crud.naruto.helper.TestHelper;
-import com.crud.naruto.mapper.PersonagemMapper;
 import com.crud.naruto.model.Jutsu;
 import com.crud.naruto.model.Personagem;
 import com.crud.naruto.repository.JutsuRepository;
 import com.crud.naruto.repository.PersonagemRepository;
-import com.crud.naruto.service.PersonagemService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.junit.jupiter.api.*;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.crud.naruto.helper.TestHelper.*;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,12 +55,15 @@ public class PersonagemControllerIntegrationTest {
     private PersonagemResponseDto personagemRockieLeeResponseDto;
     private PersonagemRequestDto personagemNarutoRequestDto;
     private PersonagemResponseDto personagemNarutoResponseDto;
-    private AldeiaDto aldeiaDto;
+    private AldeiaDto aldeiaDtoNaruto;
+    private AldeiaDto aldeiaDtoRockieLee;
 
     @BeforeEach
     void setUp() {
 
-        aldeiaDto = new AldeiaDto(NOME_ALDEIA,LOCALIZACAO_ALDEIA);
+        aldeiaDtoNaruto = new AldeiaDto(NOME_ALDEIA_NARUTO, LOCALIZACAO_ALDEIA_NARUTO);
+        aldeiaDtoRockieLee = new AldeiaDto(NOME_ALDEIA_ROCKIE_LEE,LOCALIZACAO_ALDEIA_ROCKIE_LEE);
+
         JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO.add(taijutsuDto);
         JUTSUS_DTO_PERSONAGEM_NARUTO.add(ninjutsuDto);
 
@@ -82,7 +74,7 @@ public class PersonagemControllerIntegrationTest {
                 .build();
         personagemRockieLeeResponseDto = PersonagemResponseDto.builder()
                 .nome(NOME_PERSONAGEM_ROCKIE_LEE)
-                .aldeiaDto(aldeiaDto)
+                .aldeiaDto(aldeiaDtoRockieLee)
                 .jutsus(JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO)
                 .vida(100)
                 .chakra(100)
@@ -96,7 +88,7 @@ public class PersonagemControllerIntegrationTest {
         personagemNarutoResponseDto = PersonagemResponseDto.builder()
                 .nome(NOME_PERSONAGEM_NARUTO)
                 .jutsus(JUTSUS_DTO_PERSONAGEM_NARUTO)
-                .aldeiaDto(aldeiaDto)
+                .aldeiaDto(aldeiaDtoNaruto)
                 .chakra(100)
                 .vida(100)
                 .build();
@@ -110,7 +102,7 @@ public class PersonagemControllerIntegrationTest {
         WireMock.stubFor(WireMock.get("/aldeia/" + personagemRockieLeeRequestDto.getNome())
                 .willReturn(WireMock.aResponse()
                         .withHeader("Content-Type", "application/json")
-                        .withBody(objectMapper.writeValueAsString(aldeiaDto))));
+                        .withBody(objectMapper.writeValueAsString(aldeiaDtoRockieLee))));
 
         mockMvc.perform(post("/api/personagem")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -134,7 +126,7 @@ public class PersonagemControllerIntegrationTest {
         WireMock.stubFor(WireMock.get("/aldeia/" + personagemNarutoRequestDto.getNome())
                 .willReturn(WireMock.aResponse()
                         .withHeader("Content-Type", "application/json")
-                        .withBody(objectMapper.writeValueAsString(aldeiaDto))));
+                        .withBody(objectMapper.writeValueAsString(aldeiaDtoNaruto))));
         Personagem personagem = personagemRepository.save(criarPersonagemNarutoSemId());
 
         mockMvc.perform(put("/api/personagem/"+personagem.getId())
@@ -165,15 +157,52 @@ public class PersonagemControllerIntegrationTest {
     @DisplayName("4- deve listar personagens")
     @Test
     void develistar() throws Exception {
-        WireMock.stubFor(WireMock.get("/aldeia/" + personagemRockieLeeRequestDto.getNome())
+
+        List<PersonagemRequestDto> listaRequest = new ArrayList<>();
+        listaRequest.add(0,personagemRockieLeeRequestDto);
+        listaRequest.add(1,personagemNarutoRequestDto);
+
+        List<PersonagemResponseDto> listaResponse = new ArrayList<>();
+        listaResponse.add(0,personagemRockieLeeResponseDto);
+        listaResponse.add(1,personagemNarutoResponseDto);
+
+        personagemRepository.save(TestHelper.criarPersonagemRockieLeeSemId(100,100));
+        personagemRepository.save(TestHelper.criarPersonagemNarutoSemId());
+
+
+        WireMock.stubFor(WireMock.get("/aldeia/" + listaRequest.get(0).getNome())
                 .willReturn(WireMock.aResponse()
                         .withHeader("Content-Type", "application/json")
-                        .withBody(objectMapper.writeValueAsString(aldeiaDto))));
+                        .withBody(objectMapper.writeValueAsString(aldeiaDtoRockieLee))));
+
+        WireMock.stubFor(WireMock.get("/aldeia/" + listaRequest.get(1).getNome())
+                .willReturn(WireMock.aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(objectMapper.writeValueAsString(aldeiaDtoNaruto))));
+
 
         mockMvc.perform(get("/api/personagem"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].nome").value(listaResponse.get(0).getNome()))
+                .andExpect(jsonPath("$.[0].chakra").value(listaResponse.get(0).getChakra()))
+                .andExpect(jsonPath("$.[0].jutsus[0].nome").value(listaResponse.get(0).getJutsus().get(0).getNome()))
+                .andExpect(jsonPath("$.[0].jutsus[0].consumoDeChakra").value(listaResponse.get(0).getJutsus().get(0).getConsumoDeChakra()))
+                .andExpect(jsonPath("$.[0].jutsus[0].dano").value(listaResponse.get(0).getJutsus().get(0).getDano()))
+                .andExpect(jsonPath("$.[0].vida").value(listaResponse.get(0).getVida()))
+                .andExpect(jsonPath("$.[0].aldeiaDto.nome").value(listaResponse.get(0).getAldeiaDto().getNome()))
+                .andExpect(jsonPath("[0].aldeiaDto.localizacao").value(listaResponse.get(0).getAldeiaDto().getLocalizacao()))
+
+                .andExpect(jsonPath("$.[1].nome").value(listaResponse.get(1).getNome()))
+                .andExpect(jsonPath("$.[1].chakra").value(listaResponse.get(1).getChakra()))
+                .andExpect(jsonPath("$.[1].jutsus[0].nome").value(listaResponse.get(1).getJutsus().get(0).getNome()))
+                .andExpect(jsonPath("$.[1].jutsus[0].consumoDeChakra").value(listaResponse.get(1).getJutsus().get(0).getConsumoDeChakra()))
+                .andExpect(jsonPath("$.[1].jutsus[0].dano").value(listaResponse.get(1).getJutsus().get(0).getDano()))
+                .andExpect(jsonPath("$.[1].vida").value(listaResponse.get(1).getVida()))
+                .andExpect(jsonPath("$.[1].aldeiaDto.nome").value(listaResponse.get(1).getAldeiaDto().getNome()))
+                .andExpect(jsonPath("[1].aldeiaDto.localizacao").value(listaResponse.get(1).getAldeiaDto().getLocalizacao()));
+
     }
-//
+
     @DisplayName("5- deve adicionar Jutsu")
     @Test
     void deveAdicionarJutsu() throws Exception {

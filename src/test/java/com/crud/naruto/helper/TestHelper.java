@@ -65,8 +65,10 @@ public class TestHelper {
     public static final String NAO_DESVIEI_FRASE =  "Não desviei!! Vida: ";
     public static final String DESVIAR_FRASE_TAIJUTSU = "Desviei com Taijutsu!!";
 
-    public static final String NOME_ALDEIA = "Aldeia da Folha";
-    public static final String LOCALIZACAO_ALDEIA = "País da neve";
+    public static final String NOME_ALDEIA_NARUTO = "Aldeia da Folha";
+    public static final String LOCALIZACAO_ALDEIA_NARUTO = "País da neve";
+    public static final String NOME_ALDEIA_ROCKIE_LEE = "Aldeia Oculta da Folha";
+    public static final String LOCALIZACAO_ALDEIA_ROCKIE_LEE = "País do Fogo";
 
     public static Personagem criarPersonagemSakura(){
         JUTSUS_PERSONAGEM_SAKURA.add(ninjutsu);
@@ -107,7 +109,7 @@ public class TestHelper {
     }
     public static PersonagemResponseDto criarRockieLeeResponseDto(){
         JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO.add(taijutsuDto);
-        AldeiaDto aldeiaDto = new AldeiaDto(NOME_ALDEIA,LOCALIZACAO_ALDEIA);
+        AldeiaDto aldeiaDto = new AldeiaDto(NOME_ALDEIA_NARUTO, LOCALIZACAO_ALDEIA_NARUTO);
 
         return new PersonagemResponseDto(NOME_PERSONAGEM_ROCKIE_LEE,JUTSUS_PERSONAGEM_ROCKIE_LEE_DTO,CHAKRA_PERSONAGEM_ROCKIE_LEE, VIDA_PERSONAGEM_ROCKIE_LEE,aldeiaDto);
     }

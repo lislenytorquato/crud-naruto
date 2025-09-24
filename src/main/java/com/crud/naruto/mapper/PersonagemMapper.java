@@ -42,31 +42,30 @@ public interface PersonagemMapper {
     void atualizarPersonagem(@MappingTarget Personagem personagem, PersonagemRequestDto personagemRequestDto);
     default List<PersonagemResponseDto> listaEntityParaListaResponseDto(List<Personagem> personagens, List<AldeiaDto> aldeiaDtos){
         List<PersonagemResponseDto> responseDtos = new ArrayList<>();
-        PersonagemResponseDto responseDto = new PersonagemResponseDto();
-        List<JutsuDto> jutsuDtos = new ArrayList<>();
 
-            personagens.forEach(personagem -> {
-                responseDto.setNome(personagem.getNome());
 
-                personagem.getJutsus().forEach(jutsu -> {
-                    jutsuDtos.add(jutsuToJutsuDto(jutsu));
-                    responseDto.setJutsus(jutsuDtos);
-                });
+            for (int i =0; i< personagens.size();i++) {
+                PersonagemResponseDto responseDto = new PersonagemResponseDto();
+                responseDto.setNome(personagens.get(i).getNome());
 
-                responseDto.setVida(personagem.getVida());
-                responseDto.setChakra(personagem.getChakra());
+                List<JutsuDto> jutsuDtoList = listaDeJutsuToListaDeJutsuDto(personagens.get(i).getJutsus());
+                responseDto.setJutsus(jutsuDtoList);
 
+                responseDto.setVida(personagens.get(i).getVida());
+                responseDto.setChakra(personagens.get(i).getChakra());
+
+                responseDto.setAldeiaDto(aldeiaDtos.get(i));
                 responseDtos.add(responseDto);
-            });
-            aldeiaDtos.forEach(aldeiaDto -> {
-                responseDto.setAldeiaDto(aldeiaDto);
-                responseDtos.add(responseDto);
-            });
-            return responseDtos;
+        }
+
+        return responseDtos;
+
+
     }
     NinjaDeNinjutsu personagemParaNinjutsu(Personagem personagem);
     NinjaDeTaijutsu personagemParaTaijutsu(Personagem personagem);
     Jutsu jutsuDtoToJutsu(JutsuDto jutsuDto);
     JutsuDto jutsuToJutsuDto(Jutsu jutsu);
+    List<JutsuDto> listaDeJutsuToListaDeJutsuDto(List<Jutsu> jutsus);
 
 }

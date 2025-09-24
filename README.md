@@ -1,93 +1,58 @@
 # CRUD - NARUTO 2 - MONGODB 
 
 O crud – naruto 2 é uma refatoração da api que simula o anime naruto para o treinamento na empresa db, utiliza a arquitetura em camadas mvc. Segue abaixo descrições dos pacotes e classes. 
+# CRUD - NARUTO
 
+O crud – naruto é uma api que simula o anime naruto para o treinamento na empresa db, utiliza a arquitetura em camadas mvc. Segue abaixo descrições dos pacotes e classes. 
 
-## MODEL
-Para as classes usadas foram trocado o map pelo list e o id é uma string
-## INTERFACES
-Ninja: possui dois métodos, usarJutsu e desviar, este recebe um personagem e um boolean se conseguiu desviar.
+## FUNCIONALIDADES
 
-## DTO 
+- CriarPersonagem: permite criar um personagem
 
-Classe PersonagemRequestDto: objeto de request com os atributos de personagem sem o id; 
+- EditarPersonagem: permite editar todo o personagem de uma vez só
 
-Classe PersonagemResponseDto: objeto de response com os atributos de personagem sem o id.
+- DeletarPersonagem: permite deletar o personagem
 
-JutsuDto: Os atributos da classe Jutsu sem id;
+- ListarPersonagens: retorna todos os personagens numa lista
 
-## MAPPER 
+- AdicionarJutsu: permite adicionar um jutsu a lista de jutsus do personagem
 
-Interface PersonagemMapper: mapeia objetos da request para entity Personagem, da entity para response, lista de objetos da entity para response, atualiza Personagem e de personagem para as classes ninjas. 
+- AumentarChakra: permite aumentar o chakra do personagem
 
-## EXCEPTION 
+- UsarJutsu: permite usar o jutsu do personagem
 
-- JutsuNaoEncontradoException(404): lançada quando jutsu não é encontrado; 
+- desviar: permite desviar do jutsu do personagem
 
-- PersonagemNaoEncontradoException(404): lançada quando personagem não é encontrado; 
+- ataque: permite que personagem ataque
 
-## SERVICE 
+- defesa: permite que o personagem se defenda
 
-	É a camada das regras de negócio 
-
-- CriarPersonagem: recebe uma request, mapeia para entity,antes salva o Jutsu, salva no banco e retorna a response; 
-
-- EditarPersonagem: recebe uma request e um id, busca o personagem,antes salva o Jutsu, atualiza e salva no banco e retorna a response; 
-
-- DeletarPersonagem: recebe um id, busca o id no banco  e deleta. Não há retorno. 
-
-- ListarPersonagens: busca todos os personagens no banco e retorna uma lista de response 
-
-- AdicionarJutsu: recebe um id, e um Jutsu, salva o jutsu no banco,busca o id no banco e adiciona o jutsu ao personagem e salva no banco. Retorna boolean. 
-
-- AumentarChakra: recebe um id, e uma quantidade, busca o id no banco e adiciona quantidade ao chakra personagem e salva no banco. Retorna o chakra. 
-
-- UsarJutsu: recebe um id, verifica se o personagem tem ninjutsu ou taijutsu, então, transforma-o em um objeto das classes filhas e chama o método usarJutsu; Se não houver jutsu lança JutsuNaoEncontradoException; 
-
-- desviar: recebe um id, verifica se o personagem tem genjutsu, ninjutsu ou taijutsu, então, transforma-o em um objeto das classes filhas e chama o método desviar; Se não houver jutsu lança JutsuNaoEncontradoException; 
-
-## REPOSITORY 
-
-Interface PersonagemRepository estende a MongoRepository.
-Interface JutsuRepository estende a MongoRepository.
-
-## CONTROLLER 
-
-- POST api/personagem: Cria personagem, 201 
-
-- PUT api/personagem/{id}: Edita personagem, 200 
-
-- DELETE api/personagem/{id}: Deleta personagem, 204 
-
-- GET api/personagem: listar personagens, 200 
-
-- PUT api/personagem/{id}/adiciona-jutsu: adicionar jutsu ao personagem, 200 
-
-- PUT api/personagem/{id}/aumenta-chakra: aumentar chakra do personagem, 200 
-
-- GET api/personagem/{id}/usa-jutsu: usar jutsu do personagem, 200 
-
-- GET api/personagem/{id}/desvia: desviar do personagem, 200 
+- derrota: permite a derrota do personagem  
 
 ## BANCO DE DADOS: 
 
-- Coleções dentro de outras coleções
-
+- O banco utilizado foi Mongo community para produção e Mongo embedded para testes
+-  Coleções dentro de outras coleções
 - POSTGRES NO DOCKER: O Volume não foi persistido
 
 ## TESTES: 
 
 - Testes unitários da camada service e controller  
 
-- Testes integrados completos e reais utilizando a anotação @springboottest, da camada controller até o banco. 
+- Testes integrados completos e reais utilizando a anotação @springboottest @MockMvc e @Wiremock, da camada controller até o banco. 
 
+## O QUE É WIREMOCK?
+- O Wiremock é uma ferramenta usada para simular api externa, para usá-la no projeto foi criada AldeiaClient com RestTemplate.
  
 ## FERRAMENTAS: 
 
-- SPRINGBOOT 
-- SPRING DATA JPA 
+- SPRINGBOOT
+- MOCKMVC
+- WIREMOCK
+- SPRING DATA MONGO
+- MONGODB
+- MONGO EMBEDDED
 - DOCKER 
-- POSTGRESQL 
 - LOMBOK 
 - MAPSTRUCT 
 - MOCKITO 
